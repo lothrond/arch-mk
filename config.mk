@@ -58,18 +58,18 @@ MICROCODE := intel-ucode
 # Define bootloader (Don't change. (Probably.)):
 BOOTLOADER := grub
 
-# Define Arch linux base packages.
+# Define base system packages.
 # (This includes the kernel and kernel firmware.)
-PKGS_BASE := base $(KERNEL) $(MICROCODE)
+PKGS_BASE := base $(KERNEL) $(MICROCODE) $(BOOTLOADER)
 
-# Define base documentation:
+# Define base system documentation:
 PKGS_DOCS := man-db man-pages texinfo
 
-# Define base development tools:
-PKGS_TOOLS := base-devel dosfstools e2fsprogs efibootmgr git nano sudo
+# Define base system tools:
+PKGS_TOOLS := dosfstools e2fsprogs efibootmgr git make nano sudo
 
-# Define base networking packages:
-PKGS_NET := iwd dhcpcd firewalld
+# Define base system networking packages:
+PKGS_NET := networkmanager dhcpcd firewalld
 
 # Define remote development tools:
 PKGS_REMOTE := openssh screen

@@ -56,7 +56,7 @@ include config.mk
 archlinux-base: partitions filesystems mount base other
 
 ## Build base system configuration:
-archlinux-system: timezone locales keymap host init $(BOOTLOADER) pass exit-chroot
+archlinux-system: timezone locales keymap host init $(BOOTLOADER) pass
 
 ## Build development tools:
 archlinux-dev: dev-pkgs remote-pkgs
@@ -110,7 +110,7 @@ mount:
 .PHONY: base
 base:
 	@echo -e "\n* Installing base system packages to $(DRIVE)"
-	@pacstrap -K /mnt $(PKGS_BASE) $(PKGS_NET) $(PKGS_TOOLS) $(PKGS_DOCS) $(PKGS_BOOT)
+	@pacstrap -K /mnt $(PKGS_BASE) $(PKGS_NET) $(PKGS_TOOLS) $(PKGS_DOCS)
 
 PHONY: other
 other:
