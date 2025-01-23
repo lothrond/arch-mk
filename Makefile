@@ -169,8 +169,8 @@ init:
 .PHONY: grub
 grub:
 	@echo -e "\n* Installing GRUB bootloader ..."
-	@grub-install --target=x86_64-efi --boot-directory=/boot --bootloader-id="$(GRUB_ID)"
-	@grub-mkconfig -o /boot/grb/grub.cfg
+	@grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$(GRUB_ID)"
+	@grub-mkconfig -o /boot/grub/grub.cfg
 
 .PHONY: pass
 pass:
