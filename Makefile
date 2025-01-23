@@ -50,6 +50,8 @@ help:
 
 ############################################################
 
+include config.mk
+
 ## Build base installation:
 archlinux-base: partitions filesystems mount base other
 
