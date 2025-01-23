@@ -48,6 +48,9 @@ SESSION := plasma
 #GRAPHICS := intel
 GRAPHICS := nvidia
 
+# Define Nvidia graphics:
+NVIDIA_BOARD := Nvidia Geforce GTX 970 
+
 # Define Linux kernel:
 KERNEL := linux linux-firmware
 

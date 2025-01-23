@@ -65,7 +65,7 @@ archlinux-dev: dev-pkgs remote-pkgs
 archlinux-silent: grub-silent lastlogin kmsgs agetty fsck
 
 ## Build desktop:
-archlinux-desktop: user x $(GRAPHICS) $(DESKTOP) bluetooth
+archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
 
 ## Enable 32 bit architecture support.
 archlinux-32: multilib $(GRAPHICS)-32
@@ -208,7 +208,7 @@ remote-pkgs:
 # Hide GRUB bootloader.
 .PHONY: grub-silent
 grub-silent:
-	@echo -e "\n Configuring silent boot for GRUB bootloader ..."
+	@echo -e "\n* Configuring silent boot for GRUB bootloader ..."
 	@cp /etc/default/grub /root
 	@echo 'GRUB_DEFAULT=0' > /etc/default/grub
 	@echo 'GRUB_TIMEOUT=0' >> /etc/default/grub
@@ -224,13 +224,13 @@ grub-silent:
 # Hide last login message.
 .PHONY: lastlogin
 lastlogin:
-	@echo -e "\n Removing last login massage ..."
+	@echo -e "\n* Removing last login massage ..."
 	touch ~/.hushlogin
 
 # Hide kernel messages.
 .PHONY: kmsgs
 kmsgs:
-	@echo -e "\n Removing kernel messages ..."
+	@echo -e "\n* Removing kernel messages ..."
 	@echo "kernel.printk = 3 3 3 3" > /etc/sysctl.d/20-quiet-printk.conf
 
 # Hide agetty messages.
@@ -238,7 +238,7 @@ AGETTY_OVERRIDE := /etc/systemd/system/getty@tty1.service.d/skip-prompt.conf
 
 .PHONY: agetty
 agetty:
-	@echo -e "\n Hiding agetty messages ..."
+	@echo -e "\n* Hiding agetty messages ..."
 	@mkdir /etc/systemd/system/getty@tty1.service.d || touch $(AGETTY_OVERRIDE)
 	@echo "[Service]" >> $(AGETTY_OVERRIDE)
 	@echo "ExecStart=" >> $(AGETTY_OVERRIDE)
@@ -247,7 +247,7 @@ agetty:
 # Hide fsck messages.
 .PHONY: fsck
 fsck:
-	@echo -e "\n Hiding fsck messages ..."
+	@echo -e "\n* Hiding fsck messages ..."
 	@cp /etc/mkinitcpio.conf /root
 	@echo '# vim:set ft=sh' > /etc/mkinitcpio.conf
 	@echo 'MODULES=()' >> /etc/mkinitcpio.conf
@@ -311,7 +311,6 @@ vulkan-graphics-32:
 #intel-32: intel-multilib vulkan-32
 
 ## Nvidia graphics:
-
 .PHONY: nvidia-graphics
 nvidia-graphics:
 	@echo -e 'Installing Nvidia base graphics driver packages ...'
@@ -320,13 +319,54 @@ nvidia-graphics:
 nvidia: nvidia-graphics cuda-graphics vulkan-graphics
 
 # Nvidia 32 bit architecture support:
-
 .PHONY: nvidia-graphics-32
 nvidia-graphics-32:
 	@echo -e "\n Installing 32 bit Nvidia Graphics driver packages ..."
 	@pacman -S $(PKGS_NVIDIA_GRAPHICS_32)
 
 nvidia-32: nvidia-graphics-32 cuda-graphics-32 vulkan-grahics-32
+
+# Configure Nvidia X11 Xorg config:
+.PHONY: nvidia-xconfig
+nvidia-xconfig:
+@echo -e "\n* Creating Nvidia graphics X11 Xorg configuration ..."
+@mkdir /etc/X11/xorg.conf.d | touch /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo 'Section "Device"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Identifier "NVIDIA Card"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Driver "nvidia"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    VendorName "NVIDIA Corporation"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo "    BoardName \"$(NVIDIA_BOARD)\"" >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Option "RegistryDwords" "EnableBrightnessControl=1\"'' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+
+# Fix screen tearing issues:
+.PHONY: nvidia-tearing
+nvidia-tearing:
+@echo -e "\n* Fixing screen tearing issues for Nvidia graphics graphics ..."
+@echo 'Section "Screen"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Identifier     "Screen0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Device         "Device0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Monitor        "Monitor0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Option         "ForceFullCompositionPipeline" "on"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Option         "AllowIndirectGLXProtocol" "off"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo '    Option         "TripleBuffer" "on"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+
+# Enabling the following will enable the PAT feature for Nvidia Graphics:
+.PHONY: nvidia-pat
+nvidia-pat:
+	@echo -e "\n* Enabling PAT for Nvidia graphics ..."
+	@touch /etc/modprobe.d/nvidia.conf
+	@echo "options nvidia NVreg_UsePageAttributeTable=1" >> /etc/modprobe.d/nvidia.conf
+
+# Early Kernel module loading (KMS) for NVIDIA graphics:
+.PHONY: nvidia-kms
+nvidia-kms:
+	@echo -e "\n* Setting early kernel mode settings for Nvidia graphics ..."
+	@sed -i 's/MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/g' /etc/mkinitcpio.conf
+
+nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 
 ##############
 ## DESKTOP: ##
