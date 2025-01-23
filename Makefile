@@ -56,7 +56,7 @@ include config.mk
 archlinux-base: partitions filesystems mount base other
 
 ## Build base system configuration:
-archlinux-system: timezone locales keymap host init $(BOOT) pass exit
+archlinux-system: timezone locales keymap host init $(BOOTLOADER) pass exit-chroot
 
 ## Build development tools:
 archlinux-dev: dev-pkgs remote-pkgs
@@ -163,7 +163,7 @@ host:
 
 .PHONY: init
 init:
-	@echo -e "\n* Generating system initramfs .."
+	@echo -e "\n* Generating system initramfs ..."
 	@mkinitcpio -P
 
 .PHONY: grub
@@ -177,14 +177,15 @@ pass:
 	@echo -e "\n* Setting system root password ..."
 	@passwd
 
-.PHONY: exit
-exit:
+.PHONY: exit-chroot
+exit-chroot:
 	@echo
-	@echo 'Exiting build chroot environment ...'
-	@echo 'Once you are in the liveiso installer,'
-	@echo 'Run `make done` to reboot into the the new system.'
-	@echo '(Don't forget to remove the installation medium.)'
+	@echo -e "* Exiting build chroot environment ..."
+	@echo -e "Once you are in the liveiso installer,"
+	@echo -e "Run \`make done\` to reboot into the the new system."
+	@echo -e "(Don't forget to remove the installation medium.)"
 	@echo
+	@exit
 
 ###################################
 ## ADDITIONAL DEVELOPMENT TOOLS: ##
