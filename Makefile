@@ -329,29 +329,29 @@ nvidia-32: nvidia-graphics-32 cuda-graphics-32 vulkan-grahics-32
 # Configure Nvidia X11 Xorg config:
 .PHONY: nvidia-xconfig
 nvidia-xconfig:
-@echo -e "\n* Creating Nvidia graphics X11 Xorg configuration ..."
-@mkdir /etc/X11/xorg.conf.d | touch /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo 'Section "Device"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Identifier "NVIDIA Card"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Driver "nvidia"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    VendorName "NVIDIA Corporation"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo "    BoardName \"$(NVIDIA_BOARD)\"" >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Option "RegistryDwords" "EnableBrightnessControl=1\"'' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo -e "\n* Creating Nvidia graphics X11 Xorg configuration ..."
+	@mkdir /etc/X11/xorg.conf.d | touch /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo 'Section "Device"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Identifier "NVIDIA Card"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Driver "nvidia"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    VendorName "NVIDIA Corporation"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo "    BoardName \"$(NVIDIA_BOARD)\"" >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Option "RegistryDwords" "EnableBrightnessControl=1\"'' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 
 # Fix screen tearing issues:
 .PHONY: nvidia-tearing
 nvidia-tearing:
-@echo -e "\n* Fixing screen tearing issues for Nvidia graphics graphics ..."
-@echo 'Section "Screen"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Identifier     "Screen0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Device         "Device0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Monitor        "Monitor0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Option         "ForceFullCompositionPipeline" "on"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Option         "AllowIndirectGLXProtocol" "off"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo '    Option         "TripleBuffer" "on"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
-@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo -e "\n* Fixing screen tearing issues for Nvidia graphics graphics ..."
+	@echo 'Section "Screen"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Identifier     "Screen0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Device         "Device0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Monitor        "Monitor0"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Option         "ForceFullCompositionPipeline" "on"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Option         "AllowIndirectGLXProtocol" "off"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Option         "TripleBuffer" "on"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 
 # Enabling the following will enable the PAT feature for Nvidia Graphics:
 .PHONY: nvidia-pat
