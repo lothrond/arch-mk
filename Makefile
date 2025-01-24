@@ -402,7 +402,7 @@ plasma:
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
-.PHONY: gnome:
+.PHONY: gnome
 gnome:
 	@echo -e "\n* Installing GNOME desktop environment packages ..."
 	@pacman -S $(PKGS_GNOME_DESKTOP)
