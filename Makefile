@@ -183,12 +183,12 @@ exit-chroot:
 
 .PHONY: dev-pkgs
 dev-pkgs:
-	@echo -e "\nInstalling additional development packages ..."
+	@echo -e "\n* Installing additional development packages ..."
 	@pacman -S $(PKGS_DEV)
 
 .PHONY: remote-pkgs
 remote-pkgs:
-	@echo -e "\nInstalling remote development packages ..."
+	@echo -e "\n* Installing remote development packages ..."
 	@pacman -S $(PKGS_REMOTE)
 
 ##################################
@@ -255,7 +255,7 @@ fsck:
 .PHONY: cuda-graphics
 cuda-graphics:
 	@echo -e "Installing CUDA graphics driver ..."
-	@pacman -S (NVIDIA_DRIVER)
+	@pacman -S $(NVIDIA_DRIVER)
 
 .PHONY: cuda-graphics-32
 cuda-graphics-32:
@@ -320,13 +320,13 @@ nvidia-32: nvidia-graphics-32 cuda-graphics-32 vulkan-grahics-32
 .PHONY: nvidia-xconfig
 nvidia-xconfig:
 	@echo -e "\n* Creating Nvidia graphics X11 Xorg configuration ..."
-	@mkdir /etc/X11/xorg.conf.d | touch /etc/X11/xorg.conf.d/20-nvidia.conf
+	@touch /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo 'Section "Device"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '    Identifier "NVIDIA Card"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '    Driver "nvidia"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '    VendorName "NVIDIA Corporation"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo "    BoardName \"$(NVIDIA_BOARD)\"" >> /etc/X11/xorg.conf.d/20-nvidia.conf
-	@echo '    Option "RegistryDwords" "EnableBrightnessControl=1\"'' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo '    Option "RegistryDwords" "EnableBrightnessControl=1\"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 
@@ -365,7 +365,7 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 # Create user:
 .PHONY: user
 user:
-	@echo "\n* Creating user account ..."
+	@echo -e "\n* Creating user account ..."
 	@useradd -c "" -m -G audio,input,video,wheel $(USER)
 
 # Create desktop user.
@@ -425,7 +425,7 @@ gnome-nologin:
 	@touch /etc/gdm3/auto.conf
 	@echo "[Autologin]" > /etc/gdm3/auto.conf
 	@echo "User=$(USER)" >> /etc/gdm3/auto.conf
-	@echo "Session=$(SESSION)" >> /etc/gdm3/auto.conf
+	@echo "Session=$(DESKTOP_SESSION)" >> /etc/gdm3/auto.conf
 
 ###################
 ## STEAM GAMING: ##
