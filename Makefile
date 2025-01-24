@@ -65,7 +65,7 @@ archlinux-dev: dev-pkgs remote-pkgs
 archlinux-silent: grub-silent lastlogin kmsgs agetty fsck
 
 ## Build desktop:
-archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
+archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth user-nopasswd user-nologin plasma-nologin
 
 ## Enable 32 bit architecture support.
 archlinux-32: multilib $(GRAPHICS)-32
@@ -74,7 +74,7 @@ archlinux-32: multilib $(GRAPHICS)-32
 archlinux-steam: steam-pkgs wine-pkgs
 
 ## Build SteamOS configuration:
-archlinux-steamos: steamos-config $(DESKTOP)-dm-auto
+archlinux-steamos: steamos-session $(DESKTOP)-autologin
 
 ############################################################
 ## BASE SYSTEM INSTALLATION (RUN IN ARCHISO ENVIRONMENT): ##
@@ -372,17 +372,17 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 ## DESKTOP: ##
 ##############
 
-# Create steam client user:
-.PHONY: client-user
-client-user:
-	@echo "\n Creating SteamOS client user account ..."
+# Create user:
+.PHONY: user
+user:
+	@echo "\n* Creating user account ..."
 	@useradd -c "" -m -G audio,input,video,bluetooth,wheel $(USER)
 
 # Create desktop user.
 .PHONY: desktop-user
 desktop-user:
-	@echo -e "\n Creating SteamOS desktop user account ..."
-	@adduser -c "" -m -G $(USER) $(DESKTOP_USER)
+	@echo -e "\n* Creating desktop user account ..."
+	@adduser -c "" -m -G audio,input,video,bluetooth,$(USER) desktop
 
 .PHONY: x
 x:
@@ -402,22 +402,35 @@ plasma:
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
-#.PHONY: gnome:
-#gnome:
-#	...
+.PHONY: gnome:
+gnome:
+	@echo -e "\n* Installing GNOME desktop environment packages ..."
+	@pacman -S $(PKGS_GNOME_DESKTOP)
 
-# Configure automatic login for KDE display manager.
-.PHONY: plasma-dm-auto
-plasma-dm-auto:
+# Configure passwordless login for user account:
+.PHONY: user-nopasswd
+user-nopasswd:
+	@echo -e "\n* Building automatic login for user accounts ..."
+	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
+
+# Configure passwordless login for KDE Plasma login screen:
+.PHONY: plasma-nopasswd
+plasma-nopasswd:
+	@echo -e "\n* Building passwordless login for KDE login screen ..."
+	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
+
+# Configure automatic login for KDE Plasma display manager:
+.PHONY: plasma-nologin
+plasma-nologin:
 	@echo -e "\n Building automatic login for KDE display manager service ..."
 	@touch /etc/sddm.conf
 	@echo "[Autologin]" > /etc/sddm.conf
 	@echo "User=$(USER)" >> /etc/sddm.conf
-	@echo "Session=$(SESSION)" >> /etc/sddm.conf
+	@echo "Session=$(DESKTOP_SESSION)" >> /etc/sddm.conf
 
-# Configure automatic login for GNOME display manager.
-.PHONY: gnome-dm-auto
-gnome-dm-auto:
+# Configure automatic login for GNOME display manager:
+.PHONY: gnome-nologin
+gnome-nologin:
 	@echo -e "\n Building automatic login for GNOME display manger service ..."
 	@touch /etc/gdm3/auto.conf
 	@echo "[Autologin]" > /etc/gdm3/auto.conf
@@ -460,8 +473,8 @@ wine-pkgs:
 ###############
 
 ## Create SteamOS desktop session:
-.PHONY: session
-session:
+.PHONY: steamos-session
+steamos-session:
 	@touch /usr/share/wayland-sessions/steamos.desktop
 	@echo "[Desktop Entry]" > /usr/share/wayland-sessions/steamos.desktop
 	@echo "Name=Steam OS Mode" >> /usr/share/wayland-sessions/steamos.desktop

@@ -39,14 +39,20 @@ DESKTOP := plasma
 #DESKTOP := gnome
 
 # Define default desktop login session:
-SESSION := plasma
-#SESSION := steamos
-#SESSION := plasmax11
+DESKTOP_SESSION := plasma
+#DESKTOP_SESSION := steamos
+#DESKTOP_SESSION := plasmax11
 
 # Define graphics card:
 #GRAPHICS := amd-graphics
 #GRAPHICS := intel
 GRAPHICS := nvidia
+
+# Define AMD graphics:
+#AMD_BOARD :=
+
+# Define Intel graphics:
+#INTEL_BOARD :=
 
 # Define Nvidia graphics:
 NVIDIA_BOARD := Nvidia Geforce GTX 970 
