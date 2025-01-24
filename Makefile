@@ -25,9 +25,10 @@ help:
 	@echo "    archlinux-system   -  Arch Linux base system configuration."
 	@echo "    archlinux-silent   -  Configure a silent Arch Linux boot process"
 	@echo "    archlinux-desktop  -  Install Arch Linux desktop (including display server and graphics drivers)."
+	@echo "    archlinux-nologin  -  Enable automatic login support for Arch Linux desktop."
 	@echo "    archlinux-32       -  Enable Arch Linux 32 bit architecture support."
 	@echo "    archlinux-steam    -  Install Arch Linux steam gaming packages."
-	@echo "    archlinux-steamos  -  Configure Arch Linux SteamOS environment."
+	@echo "    archlinux-steamos  -  Configure Arch Linux for SteamOS."
 	@echo
 	@echo " Use only one of these options at a time."
 	@echo
@@ -65,7 +66,10 @@ archlinux-dev: dev-pkgs remote-pkgs
 archlinux-silent: grub-silent lastlogin kmsgs agetty fsck
 
 ## Build desktop:
-archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth user-nopasswd user-nologin plasma-nologin
+archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
+
+## Enable automatic desktop login (no password for lock screen):
+archlinux-nologin: user-nopasswd $(DESKTOP)-nologin $(DESKTOP)-nopasswd
 
 ## Enable 32 bit architecture support.
 archlinux-32: multilib $(GRAPHICS)-32
@@ -365,36 +369,36 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 # Create user:
 .PHONY: user
 user:
-	@echo -e "\n* Creating user account ..."
+	@echo -e "\n* Building user account ..."
 	@useradd -c "" -m -G audio,input,video,wheel $(USER)
 
 # Create desktop user.
 .PHONY: desktop-user
 desktop-user:
-	@echo -e "\n* Creating desktop user account ..."
+	@echo -e "\n* Building desktop user account ..."
 	@adduser -c "" -m -G audio,input,video,$(USER) desktop
 
 .PHONY: x
 x:
-	@echo -e "\n* Installing display server packages ..."
+	@echo -e "\n* Building display server packages ..."
 	@pacman -S $(PKGS_X)
 
 .PHONY: bluetooth
 bluetooth:
-	@echo -e "\n* Installing desktop bluetooth packages ..."
+	@echo -e "\n* Building desktop bluetooth packages ..."
 	@pacman -S $(PKGS_BLUEZ)
 	@systemctl enable bluetooth
 
 PHONY: plasma
 plasma:
-	@echo -e "\n* Installing KDE plasma desktop environment packages ..."
+	@echo -e "\n* Building KDE plasma desktop environment packages ..."
 	@pacman -S $(PKGS_PLASMA_DESKTOP) $(PKGS_PLASMA_APPS) $(PKGS_PLASMA_FILES)
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
 .PHONY: gnome
 gnome:
-	@echo -e "\n* Installing GNOME desktop environment packages ..."
+	@echo -e "\n* Building GNOME desktop environment packages ..."
 	@pacman -S $(PKGS_GNOME_DESKTOP)
 
 # Configure passwordless login for user account:
