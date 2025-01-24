@@ -121,16 +121,6 @@ other:
 	@echo "Changing root to system ..."
 	@arch-chroot /mnt
 
-## This command is to be run after all other commands.
-
-done:
-	@echo -e "\nDone."
-	@echo
-	@echo "Remove installation medium, and power on into your new system."
-	@echo "Powering off ..."
-	@umount -R /mnt
-	@systemctl poweroff
-
 ###################################################################
 ## BASE SYSTEM CONFIGURATION (RUN INSIDE OF CHROOT ENVIRONMENT): ##
 ###################################################################
@@ -376,28 +366,28 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 .PHONY: user
 user:
 	@echo "\n* Creating user account ..."
-	@useradd -c "" -m -G audio,input,video,bluetooth,wheel $(USER)
+	@useradd -c "" -m -G audio,input,video,wheel $(USER)
 
 # Create desktop user.
 .PHONY: desktop-user
 desktop-user:
 	@echo -e "\n* Creating desktop user account ..."
-	@adduser -c "" -m -G audio,input,video,bluetooth,$(USER) desktop
+	@adduser -c "" -m -G audio,input,video,$(USER) desktop
 
 .PHONY: x
 x:
-	@echo -e "\nInstalling display server packages ..."
+	@echo -e "\n* Installing display server packages ..."
 	@pacman -S $(PKGS_X)
 
 .PHONY: bluetooth
 bluetooth:
-	@echo -e "\n Installing desktop bluetooth packages ..."
+	@echo -e "\n* Installing desktop bluetooth packages ..."
 	@pacman -S $(PKGS_BLUEZ)
 	@systemctl enable bluetooth
 
 PHONY: plasma
 plasma:
-	@echo -e "\nInstalling KDE plasma desktop environment packages ..."
+	@echo -e "\n* Installing KDE plasma desktop environment packages ..."
 	@pacman -S $(PKGS_PLASMA_DESKTOP) $(PKGS_PLASMA_APPS) $(PKGS_PLASMA_FILES)
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
@@ -422,7 +412,7 @@ plasma-nopasswd:
 # Configure automatic login for KDE Plasma display manager:
 .PHONY: plasma-nologin
 plasma-nologin:
-	@echo -e "\n Building automatic login for KDE display manager service ..."
+	@echo -e "\n* Building automatic login for KDE display manager service ..."
 	@touch /etc/sddm.conf
 	@echo "[Autologin]" > /etc/sddm.conf
 	@echo "User=$(USER)" >> /etc/sddm.conf
@@ -431,7 +421,7 @@ plasma-nologin:
 # Configure automatic login for GNOME display manager:
 .PHONY: gnome-nologin
 gnome-nologin:
-	@echo -e "\n Building automatic login for GNOME display manger service ..."
+	@echo -e "\n* Building automatic login for GNOME display manger service ..."
 	@touch /etc/gdm3/auto.conf
 	@echo "[Autologin]" > /etc/gdm3/auto.conf
 	@echo "User=$(USER)" >> /etc/gdm3/auto.conf
@@ -444,7 +434,7 @@ gnome-nologin:
 # Enable 32 bit architecture support.
 .PHONY: multilib
 multilib:
-	@echo -e "\n Enabling 32 bit architecture support ..."
+	@echo -e "\n* Building 32 bit architecture support ..."
 	@sed -i 's/#[multilib]/[multilib]/g' /etc/pacman.conf
 	@sed -i 's/#Include = /etc/pacman.d/mirrorlist/Include = /etc/pacman.d/mirrorlist/g' /etc/pacman.conf
 	@pacman -Sy
@@ -452,20 +442,20 @@ multilib:
 # Increase VM max heap count for better performance:
 .PHONY: vm-max
 vm-max:
-	@echo -e "\n Increasing VM Max heap count ..."
+	@echo -e "\n* Increasing VM Max heap count ..."
 	@touch /etc/sysctl.d/80-gamecompatibility.conf
 	@echo "" > /etc/sysctl.d/80-gamecompatibility.conf
 
 # Install steam client packages:
 .PHONY: steam-pkgs
 steam-pkgs:
-	@echo -e "\n Installing steam client packages ..."
+	@echo -e "\n* Building steam client packages ..."
 	@pacman -S $(PKGS_STEAM)
 
 # Install WINE packages.
 .PHONY: wine-pkgs
 wine-pkgs:
-	@echo -e "\n Installing system WINE packages ..."
+	@echo -e "\n* Building WINE packages ..."
 	@pacman -S $(PKGS_WINE)
 
 ###############
@@ -475,6 +465,7 @@ wine-pkgs:
 ## Create SteamOS desktop session:
 .PHONY: steamos-session
 steamos-session:
+	@echo -e "\n* Building SteamOS desktop session ..."
 	@touch /usr/share/wayland-sessions/steamos.desktop
 	@echo "[Desktop Entry]" > /usr/share/wayland-sessions/steamos.desktop
 	@echo "Name=Steam OS Mode" >> /usr/share/wayland-sessions/steamos.desktop
