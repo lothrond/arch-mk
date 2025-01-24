@@ -78,7 +78,7 @@ archlinux-32: multilib $(GRAPHICS)-32
 archlinux-steam: steam-pkgs wine-pkgs
 
 ## Build SteamOS configuration:
-archlinux-steamos: steamos-session $(DESKTOP)-autologin
+archlinux-steamos: steamos-session
 
 ############################################################
 ## BASE SYSTEM INSTALLATION (RUN IN ARCHISO ENVIRONMENT): ##
@@ -439,8 +439,8 @@ gnome-nologin:
 .PHONY: multilib
 multilib:
 	@echo -e "\n* Building 32 bit architecture support ..."
-	@sed -i 's/#[multilib]/[multilib]/g' /etc/pacman.conf
-	@sed -i 's/#Include = \/etc\/pacman.d\/mirrorlist\/Include = \/etc\/pacman.d\/mirrorlist/g' /etc/pacman.conf
+	@sed -i "92i [multilib]" /etc/pacman.conf
+	@sed -i "93i Include = /etc/pacman.d/mirrorlist" /etc/pacman.conf
 	@pacman -Sy
 
 # Increase VM max heap count for better performance:
