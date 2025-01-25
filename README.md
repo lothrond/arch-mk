@@ -38,7 +38,7 @@ Now:
 	dd if=/path/to/liveISO of=/path/to/USB bs=1M status=progress
 
 # With an archiso
-## Arch Linux build environment setup:
+## Arch Linux build environment setup
 Boot the archiso installation medium.
 
 * Setup root password with `passwd`
@@ -52,6 +52,8 @@ Obtain this repository:
 
 Change into working directory, and make sure to edit `config.mk` as needed.
 
+## Arch Linux build options
+
 The mian build options are:
 
 	make help
@@ -59,53 +61,55 @@ The mian build options are:
 	make archlinux-dev
 	make archlinux-system
 	make archlinux-desktop
+	make archlinux-nologin
 
 Gaming and SteamOS build options:
 
 	make archlinux-steam
 	make archlinux-steamos
 
-Start The build by running:
-
-	make base
-
-Once complete, you will be inside the chroot build environment.
-
 ## Building Arch Linux
 
 ### Base system
 
-First, configure base system with:
+Make base system packages by running:
+
+	make archlinux-base
+
+Once complete, you will be inside the chroot build environment.
+
+Make the base system configuration with:
 
 	make archlinux-system
 
 Once complete, you will be prompted for a root password.
 
-Additional developer tools can be installed with:
+Additional developer tools can be made with:
 
 	make archlinux-dev
 
-It is then recommended at this point,
-to reboot into the base system for all other build options.
-(after removing the archiso installation medium).
-
-You can use `make done` To poweroff the system.
-
 ### Desktop
 
-Once inside the base system environment run:
+To make the desktop environment, run:
 
 	archlinux-desktop
 
-To build the desktop environment.
+#### Automatic login
 
-### Gaming (steam)
+After making the desktop environment, for automatic login support, run:
 
-To install steam client packages, and system WINE packages:
+	make archlinux-nologin
+
+This will also allow the user to still have a lock screen
+for the desktop environment, without requiring a password to unlock the desktop session.
+
+### Gaming (Steam)
+
+To make steam client and WINE packages, with additional system configuration, run:
 
 	make archlinux-steam
 
-Additionally, to configure a SteamOS environment:
+Additionally, to make a SteamOS desktop session, run:
 
 	make archlinux-steamos
 

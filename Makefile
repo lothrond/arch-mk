@@ -406,6 +406,7 @@ gnome:
 user-nopasswd:
 	@echo -e "\n* Building automatic login for user accounts ..."
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
+	@gpasswd -a $(USER) nopasswdlogin
 
 # Configure passwordless login for KDE Plasma login screen:
 .PHONY: plasma-nopasswd
