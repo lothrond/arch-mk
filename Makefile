@@ -87,6 +87,10 @@ archlinux-steamos: steamos-session
 ## BASE SYSTEM INSTALLATION (RUN IN ARCHISO ENVIRONMENT): ##
 ############################################################
 
+.PHONY: welcome
+welcome:
+	@echo "Making Arch Linux ..."
+
 PHONY: partitions
 partitions:
 	@echo -e "\n* Partioning $(DRIVE) ..."
@@ -127,6 +131,21 @@ other:
 	@cp Makefile config.mk /mnt
 	@echo -e "\n* Changing root to system ..."
 	@arch-chroot /mnt
+
+.PHONY: exit-chroot
+exit-chroot:
+	@echo -e "\nDone."
+	@echo
+	@echo "* Now exiting the chroot build environment ..."
+	@echo
+	@echo "(DRIVE STILL MOUNTED.)"
+	@echo "Run \`make done\` or \`systemctl poweroff\` when done."
+
+.PHONY: done
+done:
+	@echo -e "\n* Powering off ..."
+	@umount -R /mnt
+	@systemctl poweroff
 
 ###################################################################
 ## BASE SYSTEM CONFIGURATION (RUN INSIDE OF CHROOT ENVIRONMENT): ##
@@ -321,7 +340,7 @@ nvidia-graphics-32:
 	@echo -e "\n Installing 32 bit Nvidia Graphics driver packages ..."
 	@pacman -S $(PKGS_NVIDIA_GRAPHICS_32) --noconfirm
 
-nvidia-32: nvidia-graphics-32 cuda-graphics-32 vulkan-grahics-32
+nvidia-32: nvidia-graphics-32 cuda-graphics-32 vulkan-graphics-32
 
 # Configure Nvidia X11 Xorg config:
 .PHONY: nvidia-xconfig
