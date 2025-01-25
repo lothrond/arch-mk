@@ -177,6 +177,19 @@ host:
 	@touch /etc/hostname
 	@echo "$(HOSTNAME)" > /etc/hostname
 
+.PHONY: net
+net:
+	@echo -e "\n* Configuring base system network ..."
+	@systemctl enable networkmanger
+	@systemctl enable dhcpcd
+
+.PHONY: fire
+fire:
+	@echo -e "\n* Configuring third party kernel-based iptables firewall ..."
+	@git cone https://github.com/lothrond/iptables-firewall-systemd
+	@cd iptables-firewall-systemd
+	@make install
+
 .PHONY: init
 init:
 	@echo -e "\n* Generating system initramfs ..."
