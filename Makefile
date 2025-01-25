@@ -57,13 +57,16 @@ include config.mk
 archlinux-base: partitions filesystems mount base other
 
 ## Build base system configuration:
-archlinux-system: timezone locales keymap host init $(BOOTLOADER) pass
+archlinux-system: timezone locales keymap host net-sys init $(BOOTLOADER) pass
 
 ## Build development tools:
 archlinux-dev: dev-pkgs remote-pkgs
 
 ## Build silent bootloader:
 archlinux-silent: grub-silent lastlogin kmsgs agetty fsck
+
+## Configure third party kernel-based iptables network firewall:
+archlinux-firewall: firewall
 
 ## Build desktop:
 archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
@@ -177,14 +180,14 @@ host:
 	@touch /etc/hostname
 	@echo "$(HOSTNAME)" > /etc/hostname
 
-.PHONY: net
-net:
+.PHONY: net-sys
+net-sys:
 	@echo -e "\n* Configuring base system network ..."
 	@systemctl enable networkmanger
 	@systemctl enable dhcpcd
 
-.PHONY: fire
-fire:
+.PHONY: firewall
+firewall:
 	@echo -e "\n* Configuring third party kernel-based iptables firewall ..."
 	@git cone https://github.com/lothrond/iptables-firewall-systemd
 	@cd iptables-firewall-systemd
