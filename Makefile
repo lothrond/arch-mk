@@ -45,7 +45,7 @@ help:
 	@echo "   You will also create a desktop user account, and be prompted for a user password."
 	@echo
 	@echo " root@archiso: make archlinux-base"
-	@echo " [root@chroot]: make archlinux-system archlinux-silent archlinux-desktop archlinux-nologin"
+	@echo " [root@chroot]: make archlinux-system archlinux-silent archlinux-dev archlinux-desktop archlinux-nologin"
 	@echo
 	@echo "Copyright (C) 2025, lothrond <lothrond@proton.me>"
 
@@ -123,9 +123,9 @@ PHONY: other
 other:
 	@echo -e "\n* Generating fstab ..."
 	@genfstab -U /mnt >> /mnt/etc/fstab
-	@echo -e "Copying over Makefile to chroot ..."
+	@echo -e "\n* Copying over Makefile to chroot ..."
 	@cp Makefile config.mk /mnt
-	@echo "Changing root to system ..."
+	@echo -e "\n* Changing root to system ..."
 	@arch-chroot /mnt
 
 ###################################################################
@@ -134,7 +134,7 @@ other:
 
 PHONY: timezone
 timezone:
-	@echo -e "\n* Setting systemtimezone ..."
+	@echo -e "\n* Setting system timezone ..."
 	@ln -sf /usr/share/zoneinfo/$(TZ) /etc/localtime
 	@hwclock --systohc
 
