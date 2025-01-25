@@ -236,7 +236,7 @@ agetty:
 	@mkdir /etc/systemd/system/getty@tty1.service.d || touch $(AGETTY_OVERRIDE)
 	@echo "[Service]" >> $(AGETTY_OVERRIDE)
 	@echo "ExecStart=" >> $(AGETTY_OVERRIDE)
-	@echo "ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin username --noclear %I $TERM" >> $(AGETTY_OVERRIDE)
+	@echo "ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin $(USER) --noclear %I $TERM" >> $(AGETTY_OVERRIDE)
 
 # Hide fsck messages.
 .PHONY: fsck
