@@ -191,12 +191,12 @@ exit-chroot:
 .PHONY: dev-pkgs
 dev-pkgs:
 	@echo -e "\n* Installing additional development packages ..."
-	@pacman -S $(PKGS_DEV)
+	@pacman -S $(PKGS_DEV) --noconfirm
 
 .PHONY: remote-pkgs
 remote-pkgs:
 	@echo -e "\n* Installing remote development packages ..."
-	@pacman -S $(PKGS_REMOTE)
+	@pacman -S $(PKGS_REMOTE) --noconfirm
 
 ##################################
 ## CONFIGURE SILENT BOOTLOADER: ##
@@ -262,22 +262,22 @@ fsck:
 .PHONY: cuda-graphics
 cuda-graphics:
 	@echo -e "Installing CUDA graphics driver ..."
-	@pacman -S $(NVIDIA_DRIVER)
+	@pacman -S $(NVIDIA_DRIVER) --noconfirm
 
 .PHONY: cuda-graphics-32
 cuda-graphics-32:
 	@echo "\n Installing CUDA graphics 32 bit libraries ..."
-	@pacman -S lib32-$(NVIDIA_DRIVER)-utils
+	@pacman -S lib32-$(NVIDIA_DRIVER)-utils --noconfirm
 
 .PHONY: vulkan-graphics
 vulkan-graphics:
 	@echo -e "\n Installing Vulkan graphics libraries ..."
-	@pacman -S $(PKGS_VULKAN)
+	@pacman -S $(PKGS_VULKAN) --noconfirm
 
 .PHONY: vulkan-graphics-32
 vulkan-graphics-32:
 	@echo -e "\n Installing Vulkan graphics 32 bit libraries ..."
-	@pacman -S $(PKGS_VULKAN_32)
+	@pacman -S $(PKGS_VULKAN_32) --noconfirm
 
 ## AMD Graphics:
 #
@@ -311,7 +311,7 @@ vulkan-graphics-32:
 .PHONY: nvidia-graphics
 nvidia-graphics:
 	@echo -e 'Installing Nvidia base graphics driver packages ...'
-	@pacman -S $(PKGS_NVIDIA_GRAPHICS)
+	@pacman -S $(PKGS_NVIDIA_GRAPHICS) --noconfirm
 
 nvidia: nvidia-graphics cuda-graphics vulkan-graphics
 
@@ -319,7 +319,7 @@ nvidia: nvidia-graphics cuda-graphics vulkan-graphics
 .PHONY: nvidia-graphics-32
 nvidia-graphics-32:
 	@echo -e "\n Installing 32 bit Nvidia Graphics driver packages ..."
-	@pacman -S $(PKGS_NVIDIA_GRAPHICS_32)
+	@pacman -S $(PKGS_NVIDIA_GRAPHICS_32) --noconfirm
 
 nvidia-32: nvidia-graphics-32 cuda-graphics-32 vulkan-grahics-32
 
@@ -384,25 +384,25 @@ desktop-user:
 .PHONY: x
 x:
 	@echo -e "\n* Building display server packages ..."
-	@pacman -S $(PKGS_X)
+	@pacman -S $(PKGS_X) --noconfirm
 
 .PHONY: bluetooth
 bluetooth:
 	@echo -e "\n* Building desktop bluetooth packages ..."
-	@pacman -S $(PKGS_BLUEZ)
+	@pacman -S $(PKGS_BLUEZ) --noconfirm
 	@systemctl enable bluetooth
 
 PHONY: plasma
 plasma:
 	@echo -e "\n* Building KDE plasma desktop environment packages ..."
-	@pacman -S $(PKGS_PLASMA_DESKTOP) $(PKGS_PLASMA_APPS) $(PKGS_PLASMA_FILES)
+	@pacman -S $(PKGS_PLASMA_DESKTOP) $(PKGS_PLASMA_APPS) $(PKGS_PLASMA_FILES) --noconfirm
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
 .PHONY: gnome
 gnome:
 	@echo -e "\n* Building GNOME desktop environment packages ..."
-	@pacman -S $(PKGS_GNOME_DESKTOP)
+	@pacman -S $(PKGS_GNOME_DESKTOP) --noconfirm
 
 # Configure passwordless login for user account:
 .PHONY: user-nopasswd
@@ -445,7 +445,7 @@ multilib:
 	@echo -e "\n* Building 32 bit architecture support ..."
 	@sed -i "92i [multilib]" /etc/pacman.conf
 	@sed -i "93i Include = /etc/pacman.d/mirrorlist" /etc/pacman.conf
-	@pacman -Sy
+	@pacman -Syu
 
 # Increase VM max heap count for better performance:
 .PHONY: vm-max
@@ -458,13 +458,13 @@ vm-max:
 .PHONY: steam-pkgs
 steam-pkgs:
 	@echo -e "\n* Building steam client packages ..."
-	@pacman -S $(PKGS_STEAM)
+	@pacman -S $(PKGS_STEAM) --noconfirm
 
 # Install WINE packages.
 .PHONY: wine-pkgs
 wine-pkgs:
 	@echo -e "\n* Building WINE packages ..."
-	@pacman -S $(PKGS_WINE)
+	@pacman -S $(PKGS_WINE) --noconfirm
 
 ###############
 ## STEAM OS: ##
