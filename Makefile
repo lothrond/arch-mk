@@ -26,9 +26,10 @@ help:
 	@echo "    archlinux-silent   -  Configure a silent Arch Linux boot process"
 	@echo "    archlinux-desktop  -  Install Arch Linux desktop (including display server and graphics drivers)."
 	@echo "    archlinux-nologin  -  Enable automatic login support for Arch Linux desktop."
+	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC."
 	@echo "    archlinux-32       -  Enable Arch Linux 32 bit architecture support."
 	@echo "    archlinux-steam    -  Install Arch Linux steam gaming packages."
-	@echo "    archlinux-steamos  -  Configure Arch Linux for SteamOS."
+	@echo "    archlinux-steamos  -  Configure a SteamOS Arch Linux."
 	@echo
 	@echo "[EXAMPLES]:"
 	@echo
@@ -69,6 +70,9 @@ archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
 
 ## Enable automatic desktop login (no password for lock screen):
 archlinux-nologin: user-nopasswd $(DESKTOP)-nologin $(DESKTOP)-nopasswd
+
+## Ebable CD/DVD and bluray disk suport:
+#archlinux-dvd: (wip)
 
 ## Enable 32 bit architecture support.
 archlinux-32: multilib $(GRAPHICS)-32
