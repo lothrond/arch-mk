@@ -105,7 +105,11 @@ for the desktop environment, without requiring a password to unlock the desktop 
 
 ### Gaming (Steam)
 
-To make steam client and WINE packages, with additional system configuration, run:
+First, enable 32 bit architecture support with:
+
+	make archlinux-32
+
+Then, make steam client and WINE packages (with system configurations):
 
 	make archlinux-steam
 

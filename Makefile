@@ -30,22 +30,21 @@ help:
 	@echo "    archlinux-steam    -  Install Arch Linux steam gaming packages."
 	@echo "    archlinux-steamos  -  Configure Arch Linux for SteamOS."
 	@echo
-	@echo " Use only one of these options at a time."
-	@echo
 	@echo "[EXAMPLES]:"
 	@echo
 	@echo ' * Run `make archlinux-base` to setup the build process.'
 	@echo "   Once completed, you will be inside an arch linux build chroot."
 	@echo
-	@echo ' * Run `make archlinux-system` to start building the base system.'
+	@echo "(All other make options are ran in the chroot)"
+	@echo
+	@echo ' * Run `make archlinux-system` to start making the base system.'
 	@echo "   You will be prompted for a root password at the end."
 	@echo
-	@echo ' * Run `make archlinux-desktop` Inside of the base system, to build the desktop environment.'
+	@echo ' * Run `make archlinux-desktop` To make the desktop environment.'
 	@echo "   You will also create a desktop user account, and be prompted for a user password."
 	@echo
 	@echo " root@archiso: make archlinux-base"
-	@echo " [root@chroot]: make archlinux-system"
-	@echo " root: make archlinux-desktop"
+	@echo " [root@chroot]: make archlinux-system archlinux-silent archlinux-desktop archlinux-nologin"
 	@echo
 	@echo "Copyright (C) 2025, lothrond <lothrond@proton.me>"
 
@@ -86,7 +85,7 @@ archlinux-steamos: steamos-session
 
 PHONY: partitions
 partitions:
-	@echo -e "\n* Partioning $(DRIVE)"
+	@echo -e "\n* Partioning $(DRIVE) ..."
 	@parted $(DRIVE) --script mklabel gpt
 	@parted $(DRIVE) --script mkpart 'EFI' 1MiB 4097MiB
 	@parted $(DRIVE) --script set 1 esp on
@@ -97,7 +96,7 @@ partitions:
 
 PHONY: filesystems
 filesystems:
-	@echo -e "\n* Making filesystems for $(DRIVE)"
+	@echo -e "\n* Making filesystems for $(DRIVE) ..."
 	@mkfs.vfat -F 32 $(DRIVE)1
 	@mkswap $(DRIVE)2
 	@mkfs.ext4 $(DRIVE)3
@@ -105,7 +104,7 @@ filesystems:
 
 PHONY: mount
 mount:
-	@echo -e "\n* Mounting $(DRIVE)"
+	@echo -e "\n* Mounting $(DRIVE) ..."
 	@mount $(DRIVE)3 /mnt
 	@mount --mkdir $(DRIVE)1 /mnt/boot
 	@mount --mkdir $(DRIVE)4 /mnt/home
@@ -113,7 +112,7 @@ mount:
 
 .PHONY: base
 base:
-	@echo -e "\n* Installing base system packages to $(DRIVE)"
+	@echo -e "\n* Installing base system packages ..."
 	@pacstrap -K /mnt $(PKGS_BASE) $(PKGS_NET) $(PKGS_TOOLS) $(PKGS_DOCS)
 
 PHONY: other
@@ -213,7 +212,7 @@ grub-silent:
 	@echo 'GRUB_DISABLE_RECOVERY=true' >> /etc/default/grub
 	@echo 'GRUB_GFXPAYLOAD_LINUX=keep' >> /etc/default/grub
 	@echo 'GRUB_GFXMODE=auto' >> /etc/default/grub
-	grub-mkconfig -o /boot/grub/grub.cfg
+	@grub-mkconfig -o /boot/grub/grub.cfg
 
 # Hide last login message.
 .PHONY: lastlogin
@@ -250,9 +249,9 @@ fsck:
 	@echo 'HOOKS=(base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems)' >> /etc/mkinitcpio.conf
 	@mkinitcpio -P
 
-#################################
-## CONFIGURE GRAPHICS DRIVERS: ##
-#################################
+#######################
+## GRAPHICS DRIVERS: ##
+#######################
 
 ## CUDA/Vulkan graphics:
 
