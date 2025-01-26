@@ -78,7 +78,7 @@ PKGS_DOCS := man-db man-pages texinfo
 PKGS_TOOLS := dosfstools e2fsprogs efibootmgr git make nano sudo
 
 # Define base system networking packages:
-PKGS_NET := networkmanager dhcpcd firewalld
+PKGS_NET := networkmanager dhcpcd firewalld iwd
 
 # Define remote development tools:
 PKGS_REMOTE := openssh screen

@@ -20,10 +20,10 @@ help:
 	@echo "[OPTIONS]:"
 	@echo
 	@echo "    help               -  Show this help message"
-	@echo "    archlinux-base     -  Install Arch Linux base system."
+	@echo "    archlinux-base     -  Make the base Arch linux system."
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-system   -  Arch Linux base system configuration."
-	@echo "    archlinux-silent   -  Configure a silent Arch Linux boot process"
+	@echo "    archlinux-silent   -  Configure a silent Arch Linux bootloader (made by archlinux-base)"
 	@echo "    archlinux-desktop  -  Install Arch Linux desktop (including display server and graphics drivers)."
 	@echo "    archlinux-nologin  -  Enable automatic login support for Arch Linux desktop."
 	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC."
@@ -54,7 +54,7 @@ help:
 include config.mk
 
 ## Build base installation:
-archlinux-base: partitions filesystems mount base other
+archlinux-base: partitions filesystems mount base other exit-chroot
 
 ## Build base system configuration:
 archlinux-system: timezone locales keymap host net-sys init $(BOOTLOADER) pass
@@ -90,10 +90,12 @@ archlinux-steamos: steamos-session
 ## BASE SYSTEM INSTALLATION (RUN IN ARCHISO ENVIRONMENT): ##
 ############################################################
 
+# Invoke some kind of startup message.
 .PHONY: welcome
 welcome:
 	@echo "Making Arch Linux ..."
 
+# Create system disk partitioning layout.
 PHONY: partitions
 partitions:
 	@echo -e "\n* Partioning $(DRIVE) ..."
@@ -105,6 +107,7 @@ partitions:
 	@parted $(DRIVE) --script mkpart 'user' ext4 51201MiB 100%
 	@parted $(DRIVE) --script print
 
+# Create filesystems on disk.
 PHONY: filesystems
 filesystems:
 	@echo -e "\n* Making filesystems for $(DRIVE) ..."
@@ -113,6 +116,7 @@ filesystems:
 	@mkfs.ext4 $(DRIVE)3
 	@mkfs.ext4 $(DRIVE)4
 
+# Mount disk.
 PHONY: mount
 mount:
 	@echo -e "\n* Mounting $(DRIVE) ..."
@@ -121,11 +125,13 @@ mount:
 	@mount --mkdir $(DRIVE)4 /mnt/home
 	@swapon $(DRIVE)2
 
+# Install base system packages.
 .PHONY: base
 base:
 	@echo -e "\n* Installing base system packages ..."
 	@pacstrap -K /mnt $(PKGS_BASE) $(PKGS_NET) $(PKGS_TOOLS) $(PKGS_DOCS)
 
+# Configure base system.
 PHONY: other
 other:
 	@echo -e "\n* Generating fstab ..."
@@ -133,16 +139,9 @@ other:
 	@echo -e "\n* Copying over Makefile to chroot ..."
 	@cp Makefile config.mk /mnt
 	@echo -e "\n* Changing root to system ..."
-	@arch-chroot /mnt
+	@arch-chroot /mnt make archlinux-system archlinux-silent 
 
-.PHONY: exit-chroot
-exit-chroot:
-	@echo -e "\nDone."
-	@echo
-	@echo "* Now exiting the chroot build environment ..."
-	@echo
-	@echo "(DRIVE STILL MOUNTED.)"
-	@echo "Run \`make done\` or \`systemctl poweroff\` when done."
+## Run this command when your done with all other commands.
 
 .PHONY: done
 done:
@@ -183,7 +182,7 @@ host:
 .PHONY: net-sys
 net-sys:
 	@echo -e "\n* Configuring base system network ..."
-	@systemctl enable networkmanger
+	@systemctl enable NetworkManager
 	@systemctl enable dhcpcd
 
 .PHONY: firewall
@@ -211,13 +210,12 @@ pass:
 
 .PHONY: exit-chroot
 exit-chroot:
+	@echo -e "\nDone."
 	@echo
-	@echo -e "* Exiting build chroot environment ..."
-	@echo -e "Once you are in the liveiso installer,"
-	@echo -e "Run \`make done\` to reboot into the the new system."
-	@echo -e "(Don't forget to remove the installation medium.)"
+	@echo "* Now exiting the chroot build environment ..."
 	@echo
-	@exit
+	@echo "(DRIVE STILL MOUNTED.)"
+	@echo "Run \`make done\` or \`systemctl poweroff\` when done."
 
 ###################################
 ## ADDITIONAL DEVELOPMENT TOOLS: ##
