@@ -12,6 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Define base system Hostname:
+HOSTNAME := train
+
+# Define user name:
+USER := steam
+
+# Define device drive:
+DRIVE := /dev/sda
+
 # Define base system timezone:
 TZ := America/New_York
 
@@ -21,18 +30,6 @@ LOCALE_B := UTF-8
 
 # Define base system keyboard keymap:
 KEYB := US
-
-# Define base system Hostname:
-HOSTNAME := train
-
-# Define user name:
-USER := steam
-
-# Define GRUB bootloader ID:
-GRUB_ID := Arch Linux
-
-# Define device drive:
-DRIVE := /dev/sda
 
 # Define Arch Linux desktop:
 #DESKTOP := plasma
@@ -66,7 +63,14 @@ KERNEL := linux linux-firmware
 MICROCODE := intel-ucode
 
 # Define bootloader (Don't change. (Probably.)):
-BOOTLOADER := grub
+#BOOTLOADER := grub
+BOOTLOADER := systemd
+
+# Define bootloader ID:
+BOOT_ID := Arch Linux
+
+# Define (silent) boot options:
+BOOT_OPTIONS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 splash
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)
@@ -126,7 +130,7 @@ PKGS_PLASMA_APPS := konsole kdialog kgpg kdf sweeper
 PKGS_PLASMA_FILES := dolphin ark ffmpegthumbs kdegraphics-thumbnailers kio-admin xdg-desktop-portal-kde
 
 # Define GNOME base desktop packages:
-PKGS_GNOME_DESKTOP := gnome networkmanager
+PKGS_GNOME_DESKTOP := gnome gnome-flashback networkmanager
 
 # Define GNOME desktop application packages:
 PKGS_GNOME_APPS := gnome-extra firewalld
@@ -138,7 +142,7 @@ PKGS_GNOME_APPS := gnome-extra firewalld
 PKGS_STEAM := steam ttf-liberation gamemode gamescope
 
 # Define WINE (gaming) packages (also for steam):
-PKGS_WINE := wine-staging
+PKGS_WINE := wine
 
 # Define CLI development tools:
 PKGS_DEV := base-devel htool atool libcaca mediainfo highlight ranger tree vim

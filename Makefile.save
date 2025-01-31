@@ -217,6 +217,7 @@ systemd:
 	@echo "initrd=\initramfs-linux.img" >> /boot/loader/entries/systemd.conf
 	@echo "options=$(BOOT_OPTIONS)" >> /boot/loader/entries/systemd.conf
 	@touch /boot/loader/loader.conf
+	
 
 # Configure base system password.
 .PHONY: pass
@@ -265,15 +266,15 @@ zsh-pkgs:
 grub-silent:
 	@echo -e "\n* Configuring silent boot for GRUB bootloader ..."
 	@cp /etc/default/grub /root
-	@echo "GRUB_DEFAULT=0" > /etc/default/grub
-	@echo "GRUB_TIMEOUT=0" >> /etc/default/grub
-	@echo "GRUB_RECORDFAIL_TIMEOUT=$GRUB_TIMEOUT" >> /etc/default/grub
-	@echo "GRUB_CMDLINE_LINUX=\"$(BOOT_OPTIONS)\"" >> /etc/default/grub
-	@echo "FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER=y" >> /etc/default/grub
-	@echo "GRUB_CMDLINE_LINUX_DEFAULT=$GRUB_CMDLINE_LINUX" >> /etc/default/grub
-	@echo "GRUB_DISABLE_RECOVERY=true" >> /etc/default/grub
-	@echo "GRUB_GFXPAYLOAD_LINUX=keep" >> /etc/default/grub
-	@echo "GRUB_GFXMODE=auto" >> /etc/default/grub
+	@echo -e "GRUB_DEFAULT=0" > /etc/default/grub
+	@echo -e "GRUB_TIMEOUT=0" >> /etc/default/grub
+	@echo -e "GRUB_RECORDFAIL_TIMEOUT=$GRUB_TIMEOUT" >> /etc/default/grub
+	@echo -e "GRUB_CMDLINE_LINUX=\"$(BOOT_OPTIONS)\"" >> /etc/default/grub
+	@echo -e "FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER=y" >> /etc/default/grub
+	@echo -e "GRUB_CMDLINE_LINUX_DEFAULT=$GRUB_CMDLINE_LINUX" >> /etc/default/grub
+	@echo -e "GRUB_DISABLE_RECOVERY=true" >> /etc/default/grub
+	@echo -e "GRUB_GFXPAYLOAD_LINUX=keep" >> /etc/default/grub
+	@echo -e "GRUB_GFXMODE=auto" >> /etc/default/grub
 	@grub-mkconfig -o /boot/grub/grub.cfg
 
 # Hide last login message.
@@ -407,7 +408,7 @@ nvidia-pat:
 .PHONY: nvidia-kms
 nvidia-kms:
 	@echo -e "\n* Setting early kernel mode settings for Nvidia graphics ..."
-	@sed -i 's/MODULES=()/MODULES=(nvidia\ nvidia_modeset\ nvidia_uvm\ nvidia_drm)/g' /etc/mkinitcpio.conf
+	@sed -i 's/MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/g' /etc/mkinitcpio.conf
 
 nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 
