@@ -424,8 +424,8 @@ plasma:
 gnome:
 	@echo -e "\n* Building GNOME desktop environment packages ..."
 	@pacman -S $(PKGS_GNOME_DESKTOP) $(PKGS_GNOME_APPS) --noconfirm
-    @systemctl enable NetworkManager
-    @systemctl enable power-profiles-daemon
+	@systemctl enable NetworkManager
+	@systemctl enable power-profiles-daemon
 
 # Configure passwordless login for user account:
 .PHONY: user-nopasswd
