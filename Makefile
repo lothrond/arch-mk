@@ -282,6 +282,11 @@ grub-silent:
 	@echo "GRUB_GFXMODE=auto" >> /etc/default/grub
 	@grub-mkconfig -o /boot/grub/grub.cfg
 
+# Hide systemd bootloader.
+.PHONY: systemd-silent:
+systemd-silent:
+	@echo -e "\n* Systemd-boot is already silent ..."
+
 # Hide last login message.
 .PHONY: lastlogin
 lastlogin:
