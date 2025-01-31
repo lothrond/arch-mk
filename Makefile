@@ -20,6 +20,8 @@ help:
 	@echo "[OPTIONS]:"
 	@echo
 	@echo "    help               -  Show this help message"
+	@echo "    clean              -  Quickly wipe device disk drive."
+	@echo "    wipe               -  Completely wipe device disk drive."
 	@echo "    archlinux-base     -  Make the base Arch linux system."
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-system   -  Arch Linux base system configuration."
@@ -77,7 +79,7 @@ archlinux-nologin: user-nopasswd $(DESKTOP)-nologin $(DESKTOP)-nopasswd
 ## Ebable CD/DVD and bluray disk suport:
 #archlinux-dvd: (wip)
 
-## Enable 32 bit architecture support.
+## Enable 32 bit architecture support:
 archlinux-32: multilib $(GRAPHICS)-32
 
 ## Build steam client:
@@ -85,6 +87,10 @@ archlinux-steam: steam-pkgs wine-pkgs
 
 ## Build SteamOS configuration:
 archlinux-steamos: steamos-session
+
+# Clean/Wipe device disk drive.
+clean: archlinux-clean
+wipe: archlinux-wipe
 
 ############################################################
 ## BASE SYSTEM INSTALLATION (RUN IN ARCHISO ENVIRONMENT): ##
@@ -529,3 +535,21 @@ steamos-session:
 	@echo "Comment=Start Steam in Big Picture Mode" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Exec=/usr/bin/gamescope -e -- /usr/bin/steam -tenfoot" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Type=Application" >> /usr/share/wayland-sessions/steamos.desktop
+
+################
+## Clean/Wipe ##
+################
+
+# Quickly clean device disk drive.
+.PHONY: archlinux-clean
+archlinux-clean:
+	@echo -e "\n* Cleaning device disk drive ..."
+	@umount -R /mnt | swapoff $(DRIVE)2 | wipefs -af $(DRIVE) && mkfs.ext4 $(DRIVE)
+	@echo -e "\n*Done."
+
+# Completely wipe device disk drive.
+.PHONY: archlinux-wipe
+archlinux-wipe:
+	@echo -e "\n* Wiping device disk drive ..."
+    @umount -R /mnt | swapoff $(DRIVE)2 | wipefs -af $(DRIVE) && dd if=/dev/zero of=$(DRIVE) status=progress
+    @echo -e "\n*Done."
