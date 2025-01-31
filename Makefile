@@ -283,7 +283,7 @@ grub-silent:
 	@grub-mkconfig -o /boot/grub/grub.cfg
 
 # Hide systemd bootloader.
-.PHONY: systemd-silent:
+.PHONY: systemd-silent
 systemd-silent:
 	@echo -e "\n* Systemd-boot is already silent ..."
 
