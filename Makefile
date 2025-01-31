@@ -148,12 +148,14 @@ done:
 ## BASE SYSTEM CONFIGURATION (RUN INSIDE OF CHROOT ENVIRONMENT): ##
 ###################################################################
 
+# Configure base system timezone.
 PHONY: timezone
 timezone:
 	@echo -e "\n* Setting system timezone ..."
 	@ln -sf /usr/share/zoneinfo/$(TZ) /etc/localtime
 	@hwclock --systohc
 
+# Configure base system locales.
 PHONY: locales
 locales:
 	@echo -e "\n* Setting system locales ..."
@@ -162,24 +164,28 @@ locales:
 	@touch /etc/locale.conf
 	@echo "LANG=$(LOCALE_A)" > /etc/locale.conf
 
+# Configure base system keyboard keymap.
 PHONY: keymap
 keymap:
 	@echo -e "\n* Setting system keyboard keymap ..."
 	@touch /etc/vconsole.conf
 	@echo "$(KEYB)" > /etc/vconsole.conf
 
+# Configure base system hostname.
 PHONY: host
 host:
 	@echo -e "\n* Setting system hostname ..."
 	@touch /etc/hostname
 	@echo "$(HOSTNAME)" > /etc/hostname
 
+# Configure base system network.
 .PHONY: net-sys
 net-sys:
 	@echo -e "\n* Configuring base system network ..."
-	@systemctl enable NetworkManager
+	@systemctl enable iwd
 	@systemctl enable dhcpcd
 
+# Configure base system firewall.
 .PHONY: firewall
 firewall:
 	@echo -e "\n* Configuring third party kernel-based iptables firewall ..."
@@ -187,27 +193,32 @@ firewall:
 	@cd iptables-firewall-systemd
 	@make install
 
+# Configure base system initramfs.
 .PHONY: init
 init:
 	@echo -e "\n* Generating system initramfs ..."
 	@mkinitcpio -P
 
+# Install GRUB bootloader.
 .PHONY: grub
 grub:
 	@echo -e "\n* Installing GRUB bootloader ..."
 	@grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="$(GRUB_ID)"
 	@grub-mkconfig -o /boot/grub/grub.cfg
 
+# Install systemd bootloader.
 .PHONY: systemd
 systemd:
 	@echo -e "\n* Installing systemd UEFI boot manager ..."
 	@bootctl --esp-path=/boot install
 
+# Configure base system password.
 .PHONY: pass
 pass:
 	@echo -e "\n* Setting system root password ..."
 	@passwd
 
+# Exit build environment.
 .PHONY: exit-chroot
 exit-chroot:
 	@echo -e "\nDone."
@@ -221,16 +232,19 @@ exit-chroot:
 ## ADDITIONAL DEVELOPMENT TOOLS: ##
 ###################################
 
+# Make additonal development tools.
 .PHONY: dev-pkgs
 dev-pkgs:
 	@echo -e "\n* Installing additional development packages ..."
 	@pacman -S $(PKGS_DEV) --noconfirm
 
+# Make remote development tools.
 .PHONY: remote-pkgs
 remote-pkgs:
 	@echo -e "\n* Installing remote development packages ..."
 	@pacman -S $(PKGS_REMOTE) --noconfirm
 
+# Make development shell.
 .PHONY: zsh-pkgs
 zsh-pkgs:
 	@echo -e "\n* Installing ZSH developer shell packages ..."
