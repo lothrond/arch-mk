@@ -23,7 +23,7 @@ LOCALE_B := UTF-8
 KEYB := US
 
 # Define base system Hostname:
-HOSTNAME := fathership
+HOSTNAME := train
 
 # Define user name:
 USER := steam
@@ -35,13 +35,14 @@ GRUB_ID := Arch Linux
 DRIVE := /dev/sda
 
 # Define Arch Linux desktop:
-DESKTOP := plasma
-#DESKTOP := gnome
+#DESKTOP := plasma
+DESKTOP := gnome
 
 # Define default desktop login session:
-DESKTOP_SESSION := plasma
+#DESKTOP_SESSION := plasma
 #DESKTOP_SESSION := steamos
 #DESKTOP_SESSION := plasmax11
+DESKTOP_SESSION := gnome-flashback
 
 # Define graphics card:
 #GRAPHICS := amd-graphics
@@ -55,7 +56,7 @@ GRAPHICS := nvidia
 #INTEL_BOARD :=
 
 # Define Nvidia graphics:
-NVIDIA_BOARD := Nvidia Geforce GTX 970 
+NVIDIA_BOARD := Nvidia Geforce GTX 970
 
 # Define Linux kernel:
 KERNEL := linux linux-firmware
@@ -78,10 +79,10 @@ PKGS_DOCS := man-db man-pages texinfo
 PKGS_TOOLS := dosfstools e2fsprogs efibootmgr git make nano sudo
 
 # Define base system networking packages:
-PKGS_NET := networkmanager dhcpcd firewalld iwd
+PKGS_NET := dhcpcd iwd
 
 # Define remote development tools:
-PKGS_REMOTE := openssh screen
+PKGS_REMOTE := openssh screen tmux
 
 # Define bluetooth packages:
 PKGS_BLUEZ := bluez bluez-utils
@@ -104,7 +105,7 @@ PKGS_X := xorg xdg-desktop-portal
 # Define Nvidia graphics driver packages:
 #NVIDIA_DRIVER := nvidia-dkms
 NVIDIA_DRIVER := nvidia
-PKGS_NVIDIA_GRAPHICS := $(NVIDIA_DRIVER) nvidia-utils 
+PKGS_NVIDIA_GRAPHICS := $(NVIDIA_DRIVER) nvidia-utils
 
 # Define Nvidia graphics driver 32 bit library support:
 PKGS_NVIDIA_GRAPHICS_32 := lib32-nvidia-utils
@@ -125,12 +126,12 @@ PKGS_PLASMA_APPS := konsole kdialog kgpg kdf sweeper
 PKGS_PLASMA_FILES := dolphin ark ffmpegthumbs kdegraphics-thumbnailers kio-admin xdg-desktop-portal-kde
 
 # Define GNOME base desktop packages:
-#PKGS_GNOME_DESKTOP :=
-#
-# Define KDE Plasma base desktop application packages:
-#PKGS_GNOME_APPS :=
-#
-# Define KDE Plasma base desktop file manager packages:
+PKGS_GNOME_DESKTOP := gnome networkmanager
+
+# Define GNOME desktop application packages:
+PKGS_GNOME_APPS := gnome-extra firewalld
+
+# Define GNOME desktop file manager packages:
 #PKGS_GNOME_FILES :=
 
 # Define steam (gaming) packages:
@@ -140,7 +141,7 @@ PKGS_STEAM := steam ttf-liberation gamemode gamescope
 PKGS_WINE := wine-staging
 
 # Define CLI development tools:
-PKGS_DEV := base-devel atool libcaca mediainfo highlight ranger tmux tree vim
+PKGS_DEV := base-devel htool atool libcaca mediainfo highlight ranger tree vim
 
 # Define CLI development shell (zsh):
 PKGS_ZSH := zsh zsh-syntax-highlighting zsh-completions

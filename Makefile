@@ -60,13 +60,13 @@ archlinux-base: partitions filesystems mount base other exit-chroot
 archlinux-system: timezone locales keymap host net-sys init $(BOOTLOADER) pass
 
 ## Build development tools:
-archlinux-dev: dev-pkgs remote-pkgs
+archlinux-dev: dev-pkgs remote-pkgs zsh-pkgs
 
 ## Build silent bootloader:
-archlinux-silent: grub-silent lastlogin kmsgs agetty fsck
+archlinux-silent: $(BOOTLOADER)-silent lastlogin kmsgs agetty fsck
 
 ## Configure third party kernel-based iptables network firewall:
-archlinux-firewall: firewall
+#archlinux-firewall: firewall
 
 ## Build desktop:
 archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
@@ -139,7 +139,7 @@ other:
 	@echo -e "\n* Copying over Makefile to chroot ..."
 	@cp Makefile config.mk /mnt
 	@echo -e "\n* Changing root to system ..."
-	@arch-chroot /mnt make archlinux-system archlinux-silent 
+	@arch-chroot /mnt make archlinux-system archlinux-silent
 
 ## Run this command when your done with all other commands.
 
@@ -231,6 +231,11 @@ remote-pkgs:
 	@echo -e "\n* Installing remote development packages ..."
 	@pacman -S $(PKGS_REMOTE) --noconfirm
 
+.PHONY: zsh-pkgs
+zsh=pkgs:
+	@echo -e "\n* Installing ZSH developer shell packages ..."
+	@pacman -S $(PKGS_ZSH) --noconfirm
+
 ##################################
 ## CONFIGURE SILENT BOOTLOADER: ##
 ##################################
@@ -290,18 +295,6 @@ fsck:
 ## GRAPHICS DRIVERS: ##
 #######################
 
-## CUDA/Vulkan graphics:
-
-.PHONY: cuda-graphics
-cuda-graphics:
-	@echo -e "Installing CUDA graphics driver ..."
-	@pacman -S $(NVIDIA_DRIVER) --noconfirm
-
-.PHONY: cuda-graphics-32
-cuda-graphics-32:
-	@echo "\n Installing CUDA graphics 32 bit libraries ..."
-	@pacman -S lib32-$(NVIDIA_DRIVER)-utils --noconfirm
-
 .PHONY: vulkan-graphics
 vulkan-graphics:
 	@echo -e "\n Installing Vulkan graphics libraries ..."
@@ -346,7 +339,7 @@ nvidia-graphics:
 	@echo -e 'Installing Nvidia base graphics driver packages ...'
 	@pacman -S $(PKGS_NVIDIA_GRAPHICS) --noconfirm
 
-nvidia: nvidia-graphics cuda-graphics vulkan-graphics
+nvidia: nvidia-graphics vulkan-graphics
 
 # Nvidia 32 bit architecture support:
 .PHONY: nvidia-graphics-32
@@ -354,7 +347,7 @@ nvidia-graphics-32:
 	@echo -e "\n Installing 32 bit Nvidia Graphics driver packages ..."
 	@pacman -S $(PKGS_NVIDIA_GRAPHICS_32) --noconfirm
 
-nvidia-32: nvidia-graphics-32 cuda-graphics-32 vulkan-graphics-32
+nvidia-32: nvidia-graphics-32 vulkan-graphics-32
 
 # Configure Nvidia X11 Xorg config:
 .PHONY: nvidia-xconfig
@@ -435,7 +428,9 @@ plasma:
 .PHONY: gnome
 gnome:
 	@echo -e "\n* Building GNOME desktop environment packages ..."
-	@pacman -S $(PKGS_GNOME_DESKTOP) --noconfirm
+	@pacman -S $(PKGS_GNOME_DESKTOP) $(PKGS_GNOME_APPS) --noconfirm
+    @systemctl enable NetworkManager
+    @systemctl enable power-profiles-daemon
 
 # Configure passwordless login for user account:
 .PHONY: user-nopasswd
