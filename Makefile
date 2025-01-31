@@ -551,5 +551,5 @@ archlinux-clean:
 .PHONY: archlinux-wipe
 archlinux-wipe:
 	@echo -e "\n* Wiping device disk drive ..."
-    @umount -R /mnt | swapoff $(DRIVE)2 | wipefs -af $(DRIVE) && dd if=/dev/zero of=$(DRIVE) status=progress
-    @echo -e "\n*Done."
+	@umount -R /mnt | swapoff $(DRIVE)2 | wipefs -af $(DRIVE) && dd if=/dev/zero of=$(DRIVE) status=progress
+	@echo -e "\n*Done."
