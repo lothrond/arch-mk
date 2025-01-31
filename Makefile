@@ -239,6 +239,7 @@ exit-chroot:
 	@echo
 	@echo "(DRIVE STILL MOUNTED.)"
 	@echo "Run \`make done\` or \`systemctl poweroff\` when done."
+	@echo
 
 ###################################
 ## ADDITIONAL DEVELOPMENT TOOLS: ##
