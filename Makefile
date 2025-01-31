@@ -90,11 +90,6 @@ archlinux-steamos: steamos-session
 ## BASE SYSTEM INSTALLATION (RUN IN ARCHISO ENVIRONMENT): ##
 ############################################################
 
-# Invoke some kind of startup message.
-.PHONY: welcome
-welcome:
-	@echo "Making Arch Linux ..."
-
 # Create system disk partitioning layout.
 PHONY: partitions
 partitions:
@@ -232,7 +227,7 @@ remote-pkgs:
 	@pacman -S $(PKGS_REMOTE) --noconfirm
 
 .PHONY: zsh-pkgs
-zsh=pkgs:
+zsh-pkgs:
 	@echo -e "\n* Installing ZSH developer shell packages ..."
 	@pacman -S $(PKGS_ZSH) --noconfirm
 
