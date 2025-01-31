@@ -70,7 +70,7 @@ BOOTLOADER := systemd
 BOOT_ID := Arch Linux
 
 # Define (silent) boot options:
-BOOT_OPTIONS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 splash
+BOOT_OPTIONS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 bootsplash.bootfile=/usr/share/systemd/bootctl/arch-splash.bmp splash
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)
