@@ -223,6 +223,10 @@ systemd:
 	@echo "initrd=\initramfs-linux.img" >> /boot/loader/entries/systemd.conf
 	@echo "options=$(BOOT_OPTIONS)" >> /boot/loader/entries/systemd.conf
 	@touch /boot/loader/loader.conf
+	@echo "default systemd.conf" > /boot/loader/loader.conf
+	@echo "console-mode auto" >> /boot/loader/loader.conf
+	@echo "editor no" >> /boot/loader/loader.conf
+	@systemctl enable systemd-boot-update
 
 # Configure base system password.
 .PHONY: pass
