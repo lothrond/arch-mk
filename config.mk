@@ -18,8 +18,11 @@ HOSTNAME := train
 # Define user name:
 USER := steam
 
-# Define device drive:
+# Define device disk drive:
 DRIVE := /dev/sda
+
+# Define UUID of device disk drive:
+BLKID := `blkid -s UUID | grep $(DRIVE)3 | cut -d '"' -f 2 | cut -d '"' -f 1`
 
 # Define base system timezone:
 TZ := America/New_York
@@ -70,7 +73,10 @@ BOOTLOADER := systemd
 BOOT_ID := Arch Linux
 
 # Define (silent) boot options:
-BOOT_OPTIONS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 bootsplash.bootfile=/usr/share/systemd/bootctl/arch-splash.bmp splash
+BOOT_OPTS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 bootsplash.bootfile=/usr/share/systemd/bootctl/arch-splash.bmp splash
+
+# Define initramfs base system options:
+INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)

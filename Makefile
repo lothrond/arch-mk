@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+###########################################################################
 
 help:
 	@echo Arch Linux - Makefile installation
@@ -51,7 +53,7 @@ help:
 	@echo
 	@echo "Copyright (C) 2025, lothrond <lothrond@proton.me>"
 
-############################################################
+###########################################################################
 
 include config.mk
 
@@ -59,13 +61,13 @@ include config.mk
 archlinux-base: partitions filesystems mount base other exit-chroot
 
 ## Build base system configuration:
-archlinux-system: timezone locales keymap host net-sys init $(BOOTLOADER) pass
+archlinux-system: timezone locales host net-sys init $(BOOTLOADER) pass
 
 ## Build development tools:
 archlinux-dev: dev-pkgs remote-pkgs zsh-pkgs
 
 ## Build silent bootloader:
-archlinux-silent: $(BOOTLOADER)-silent lastlogin kmsgs agetty fsck
+archlinux-silent: $(BOOTLOADER)-silent lastlogin kmsgs agetty
 
 ## Configure third party kernel-based iptables network firewall:
 #archlinux-firewall: firewall
@@ -202,7 +204,12 @@ firewall:
 # Configure base system initramfs.
 .PHONY: init
 init:
-	@echo -e "\n* Generating system initramfs ..."
+	@echo -e "\n* Generating base system (silent) initramfs ..."
+	@echo '# vim:set ft=sh' > /etc/mkinitcpio.conf
+	@echo 'MODULES=()' >> /etc/mkinitcpio.conf
+	@echo 'BINARIES=()' >> /etc/mkinitcpio.conf
+	@echo 'FILES=()' >> /etc/mkinitcpio.conf
+	@echo 'HOOKS=($(INITRAMFS_OPTS))' >> /etc/mkinitcpio.conf
 	@mkinitcpio -P
 
 # Install GRUB bootloader.
@@ -221,7 +228,7 @@ systemd:
 	@echo "title=$(BOOT_ID)" > /boot/loader/entries/systemd.conf
 	@echo "linux=\vmlinuz-linux" >> /boot/loader/entries/systemd.conf
 	@echo "initrd=\initramfs-linux.img" >> /boot/loader/entries/systemd.conf
-	@echo "options=$(BOOT_OPTIONS)" >> /boot/loader/entries/systemd.conf
+	@echo "root=UUID=$(BLKID) options=$(BOOT_OPTIONS)" >> /boot/loader/entries/systemd.conf
 	@touch /boot/loader/loader.conf
 	@echo "default systemd.conf" > /boot/loader/loader.conf
 	@echo "console-mode auto" >> /boot/loader/loader.conf
@@ -286,6 +293,7 @@ grub-silent:
 	@echo "GRUB_GFXPAYLOAD_LINUX=keep" >> /etc/default/grub
 	@echo "GRUB_GFXMODE=auto" >> /etc/default/grub
 	@grub-mkconfig -o /boot/grub/grub.cfg
+	@sed -i 's/echo/#echo/g' /boot/grub/grub.cfg
 
 # Hide systemd bootloader.
 .PHONY: systemd-silent
@@ -307,25 +315,14 @@ kmsgs:
 # Hide agetty messages.
 AGETTY_OVERRIDE := /etc/systemd/system/getty@tty1.service.d/skip-prompt.conf
 OVERRIDE := -/usr/bin/agetty --skip-login --nonewline --noissue --autologin $(USER) --noclear %I $TERM
+
 .PHONY: agetty
 agetty:
 	@echo -e "\n* Hiding agetty messages ..."
 	@mkdir /etc/systemd/system/getty@tty1.service.d || touch $(AGETTY_OVERRIDE)
 	@echo "[Service]" >> $(AGETTY_OVERRIDE)
 	@echo "ExecStart=" >> $(AGETTY_OVERRIDE)
-	@echo "ExecStart=$(OVERRIDE)" >> $(AGETTY_OVERRIDE)
-
-# Hide fsck messages.
-.PHONY: fsck
-fsck:
-	@echo -e "\n* Hiding fsck messages ..."
-	@cp /etc/mkinitcpio.conf /root
-	@echo '# vim:set ft=sh' > /etc/mkinitcpio.conf
-	@echo 'MODULES=()' >> /etc/mkinitcpio.conf
-	@echo 'BINARIES=()' >> /etc/mkinitcpio.conf
-	@echo 'FILES=()' >> /etc/mkinitcpio.conf
-	@echo 'HOOKS=(base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems)' >> /etc/mkinitcpio.conf
-	@mkinitcpio -P
+	@echo "ExecStart=$(OVERRIDE)" >> $(AGETTY_OVERRIDE)	
 
 #######################
 ## GRAPHICS DRIVERS: ##
@@ -423,7 +420,7 @@ nvidia-pat:
 .PHONY: nvidia-kms
 nvidia-kms:
 	@echo -e "\n* Setting early kernel mode settings for Nvidia graphics ..."
-	@sed -i 's/MODULES=()/MODULES=(nvidia\ nvidia_modeset\ nvidia_uvm\ nvidia_drm)/g' /etc/mkinitcpio.conf
+	@sed -i 's/MODULES*/MODULES=(nvidia\ nvidia_modeset\ nvidia_uvm\ nvidia_drm)/g' /etc/mkinitcpio.conf
 
 nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 
