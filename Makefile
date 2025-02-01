@@ -26,8 +26,8 @@ help:
 	@echo "    wipe               -  Completely wipe device disk drive."
 	@echo "    archlinux-base     -  Make the base Arch linux system."
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
-	@echo "    archlinux-system   -  Arch Linux base system configuration."
-	@echo "    archlinux-silent   -  Configure a silent Arch Linux bootloader (made by archlinux-base)"
+	@echo "    archlinux-system   -  Arch Linux base system configuration (made by archlinux-base)."
+	@echo "    archlinux-silent   -  Configure a silent Arch Linux bootloader."
 	@echo "    archlinux-desktop  -  Install Arch Linux desktop (including display server and graphics drivers)."
 	@echo "    archlinux-nologin  -  Enable automatic login support for Arch Linux desktop."
 	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC."
@@ -40,7 +40,7 @@ help:
 	@echo ' * Run `make archlinux-base` to setup the build process.'
 	@echo "   Once completed, you will be inside an arch linux build chroot."
 	@echo
-	@echo "(All other make options are ran in the chroot)"
+	@echo "(All other make options are executed in the chroot build environment.)"
 	@echo
 	@echo ' * Run `make archlinux-system` to start making the base system.'
 	@echo "   You will be prompted for a root password at the end."
@@ -49,7 +49,7 @@ help:
 	@echo "   You will also create a desktop user account, and be prompted for a user password."
 	@echo
 	@echo " root@archiso: make archlinux-base"
-	@echo " [root@chroot]: make archlinux-system archlinux-silent archlinux-dev archlinux-desktop archlinux-nologin"
+	@echo " [root@chroot]: make archlinux-desktop archlinux-nologin archlinux-silent archlinux-dev"
 	@echo
 	@echo "Copyright (C) 2025, lothrond <lothrond@proton.me>"
 
@@ -90,7 +90,7 @@ archlinux-steam: steam-pkgs wine-pkgs
 ## Build SteamOS configuration:
 archlinux-steamos: steamos-session
 
-# Clean/Wipe device disk drive.
+## Clean/Wipe device disk drive.
 clean: archlinux-clean
 wipe: archlinux-wipe
 
@@ -142,7 +142,7 @@ other:
 	@echo -e "\n* Copying over Makefile to chroot ..."
 	@cp Makefile config.mk /mnt
 	@echo -e "\n* Changing root to system ..."
-	@arch-chroot /mnt make archlinux-system archlinux-silent
+	@arch-chroot /mnt
 
 ## Run this command when your done with all other commands.
 
@@ -338,7 +338,7 @@ vulkan-graphics-32:
 	@echo -e "\n Installing Vulkan graphics 32 bit libraries ..."
 	@pacman -S $(PKGS_VULKAN_32) --noconfirm
 
-## AMD Graphics:
+## AMD Graphics ##
 #
 #.PHONY: amd-graphics
 #amd-graphics:
@@ -352,7 +352,7 @@ vulkan-graphics-32:
 #
 #amd-32: amd-graphics-32 vulkan-graphics-32
 
-## Intel Graphics:
+## Intel Graphics ##
 #
 #.PHONY: intel-graphics
 #intel-graphics:
@@ -366,7 +366,8 @@ vulkan-graphics-32:
 #
 #intel-32: intel-multilib vulkan-32
 
-## Nvidia graphics:
+## Nvidia graphics ##
+
 .PHONY: nvidia-graphics
 nvidia-graphics:
 	@echo -e 'Installing Nvidia base graphics driver packages ...'
@@ -382,12 +383,12 @@ nvidia-graphics-32:
 
 nvidia-32: nvidia-graphics-32 vulkan-graphics-32
 
-# Configure Nvidia X11 Xorg config:
+# Configure nvidia X11 Xorg config:
 .PHONY: nvidia-xconfig
 nvidia-xconfig:
 	@echo -e "\n* Creating Nvidia graphics X11 Xorg configuration ..."
 	@touch /etc/X11/xorg.conf.d/20-nvidia.conf
-	@echo 'Section "Device"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
+	@echo 'Section "Device"' > /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '    Identifier "NVIDIA Card"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '    Driver "nvidia"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '    VendorName "NVIDIA Corporation"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
@@ -396,7 +397,7 @@ nvidia-xconfig:
 	@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 
-# Fix screen tearing issues:
+# Fix nvidia screen tearing issues:
 .PHONY: nvidia-tearing
 nvidia-tearing:
 	@echo -e "\n* Fixing screen tearing issues for Nvidia graphics graphics ..."
@@ -409,18 +410,18 @@ nvidia-tearing:
 	@echo '    Option         "TripleBuffer" "on"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 
-# Enabling the following will enable the PAT feature for Nvidia Graphics:
+# Enable the PAT feature for nvidia graphics:
 .PHONY: nvidia-pat
 nvidia-pat:
 	@echo -e "\n* Enabling PAT for Nvidia graphics ..."
 	@touch /etc/modprobe.d/nvidia.conf
 	@echo "options nvidia NVreg_UsePageAttributeTable=1" >> /etc/modprobe.d/nvidia.conf
 
-# Early Kernel module loading (KMS) for NVIDIA graphics:
+# Early Kernel module loading (KMS) for nvidia graphics:
 .PHONY: nvidia-kms
 nvidia-kms:
 	@echo -e "\n* Setting early kernel mode settings for Nvidia graphics ..."
-	@sed -i 's/MODULES*/MODULES=(nvidia\ nvidia_modeset\ nvidia_uvm\ nvidia_drm)/g' /etc/mkinitcpio.conf
+	@sed -i 's/MODULES=(*)/MODULES=($(NVIDIA_KMOD))/g' /etc/mkinitcpio.conf
 
 nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 
@@ -428,29 +429,26 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 ## DESKTOP: ##
 ##############
 
-# Create user:
+# Create desktop user:
 .PHONY: user
 user:
 	@echo -e "\n* Building user account ..."
 	@useradd -c "" -m -G audio,input,video,wheel $(USER)
 
-# Create desktop user.
-.PHONY: desktop-user
-desktop-user:
-	@echo -e "\n* Building desktop user account ..."
-	@adduser -c "" -m -G audio,input,video,$(USER) desktop
-
+# Make the (X11) (xorg) display server.
 .PHONY: x
 x:
 	@echo -e "\n* Building display server packages ..."
 	@pacman -S $(PKGS_X) --noconfirm
 
+# Make bluetooth.
 .PHONY: bluetooth
 bluetooth:
 	@echo -e "\n* Building desktop bluetooth packages ..."
 	@pacman -S $(PKGS_BLUEZ) --noconfirm
 	@systemctl enable bluetooth
 
+# Make KDE Plasma dektop.
 PHONY: plasma
 plasma:
 	@echo -e "\n* Building KDE plasma desktop environment packages ..."
@@ -458,6 +456,7 @@ plasma:
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
+# Make GNOME desktop.
 .PHONY: gnome
 gnome:
 	@echo -e "\n* Building GNOME desktop environment packages ..."
@@ -516,13 +515,13 @@ vm-max:
 	@touch /etc/sysctl.d/80-gamecompatibility.conf
 	@echo "" > /etc/sysctl.d/80-gamecompatibility.conf
 
-# Install steam client packages:
+# Make steam client packages:
 .PHONY: steam-pkgs
 steam-pkgs:
 	@echo -e "\n* Building steam client packages ..."
 	@pacman -S $(PKGS_STEAM) --noconfirm
 
-# Install WINE packages.
+# Make WINE packages.
 .PHONY: wine-pkgs
 wine-pkgs:
 	@echo -e "\n* Building WINE packages ..."
@@ -532,7 +531,7 @@ wine-pkgs:
 ## STEAM OS: ##
 ###############
 
-## Create SteamOS desktop session:
+# Create SteamOS desktop session.
 .PHONY: steamos-session
 steamos-session:
 	@echo -e "\n* Building SteamOS desktop session ..."
@@ -542,6 +541,12 @@ steamos-session:
 	@echo "Comment=Start Steam in Big Picture Mode" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Exec=/usr/bin/gamescope -e -- /usr/bin/steam -tenfoot" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Type=Application" >> /usr/share/wayland-sessions/steamos.desktop
+
+# Create SteamOS desktop user.
+.PHONY: desktop-user
+desktop-user:
+	@echo -e "\n* Building SteamOS desktop user account ..."
+	@adduser -c "" -m -G audio,input,video,$(USER) desktop
 
 ################
 ## Clean/Wipe ##

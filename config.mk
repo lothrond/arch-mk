@@ -58,6 +58,9 @@ GRAPHICS := nvidia
 # Define Nvidia graphics:
 NVIDIA_BOARD := Nvidia Geforce GTX 970
 
+# Define nvidia graphics kernel modules:
+NVIDIA_KMOD := nvidia nvidia_modeset nvidia_uvm nvidia_drm
+
 # Define Linux kernel:
 KERNEL := linux linux-firmware
 
