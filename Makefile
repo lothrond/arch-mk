@@ -205,11 +205,11 @@ firewall:
 .PHONY: init
 init:
 	@echo -e "\n* Generating base system (silent) initramfs ..."
-	@echo =e "# vim:set ft=sh" > /etc/mkinitcpio.conf
-	@echo =e "MODULES=()" >> /etc/mkinitcpio.conf
-	@echo =e "BINARIES=()" >> /etc/mkinitcpio.conf
-	@echo =e "FILES=()" >> /etc/mkinitcpio.conf
-	@echo -e "HOOKS=($(INITRAMFS_OPTS))" >> /etc/mkinitcpio.conf
+	@echo "# vim:set ft=sh" > /etc/mkinitcpio.conf
+	@echo "MODULES=()" >> /etc/mkinitcpio.conf
+	@echo "BINARIES=()" >> /etc/mkinitcpio.conf
+	@echo "FILES=()" >> /etc/mkinitcpio.conf
+	@echo "HOOKS=($(INITRAMFS_OPTS))" >> /etc/mkinitcpio.conf
 	@mkinitcpio -P
 
 # Install GRUB bootloader.
