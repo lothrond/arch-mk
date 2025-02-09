@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Define base system Hostname:
-HOSTNAME := train
+HOSTNAME := fathership
 
 # Define user name:
 USER := steam
@@ -69,8 +69,8 @@ KERNEL := linux linux-firmware
 MICROCODE := intel-ucode
 
 # Define bootloader (Don't change. (Probably.)):
-#BOOTLOADER := grub
-BOOTLOADER := systemd
+BOOTLOADER := grub
+#BOOTLOADER := systemd
 
 # Define bootloader ID:
 BOOT_ID := Arch Linux
