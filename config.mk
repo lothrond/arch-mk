@@ -154,7 +154,7 @@ PKGS_STEAM := steam ttf-liberation gamemode gamescope
 PKGS_WINE := wine
 
 # Define CLI development tools:
-PKGS_DEV := base-devel htool atool libcaca mediainfo highlight ranger tree vim
+PKGS_DEV := base-devel htop strace lm_sensors atool libcaca mediainfo highlight ranger tree vim
 
 # Define CLI development shell (zsh):
 PKGS_ZSH := zsh zsh-syntax-highlighting zsh-completions
