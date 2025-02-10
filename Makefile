@@ -232,7 +232,7 @@ systemd:
 	@echo "title=$(BOOT_ID)" > /boot/loader/entries/systemd.conf
 	@echo "linux=\vmlinuz-linux" >> /boot/loader/entries/systemd.conf
 	@echo "initrd=\initramfs-linux.img" >> /boot/loader/entries/systemd.conf
-	@echo "root=UUID=$(BLKID) options=$(BOOT_OPTIONS)" >> /boot/loader/entries/systemd.conf
+	@echo "root=UUID=$(BLKID) options=$(BOOT_OPTS)" >> /boot/loader/entries/systemd.conf
 	@touch /boot/loader/loader.conf
 	@echo "default systemd.conf" > /boot/loader/loader.conf
 	@echo "console-mode auto" >> /boot/loader/loader.conf
@@ -299,10 +299,9 @@ grub-silent:
 	@cp /etc/default/grub /root
 	@echo "GRUB_DEFAULT=0" > /etc/default/grub
 	@echo "GRUB_TIMEOUT=0" >> /etc/default/grub
-	@echo "GRUB_RECORDFAIL_TIMEOUT=$GRUB_TIMEOUT" >> /etc/default/grub
-	@echo "GRUB_CMDLINE_LINUX=\"$(BOOT_OPTIONS)\"" >> /etc/default/grub
-	@echo "FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER=y" >> /etc/default/grub
-	@echo "GRUB_CMDLINE_LINUX_DEFAULT=$GRUB_CMDLINE_LINUX" >> /etc/default/grub
+	@echo 'GRUB_RECORDFAIL_TIMEOUT=$GRUB_TIMEOUT' >> /etc/default/grub
+	@echo -e "GRUB_CMDLINE_LINUX=\"$(BOOT_OPTS)\"" >> /etc/default/grub
+	@echo -e 'GRUB_CMDLINE_LINUX_DEFAULT=$GRUB_CMDLINE_LINUX' >> /etc/default/grub
 	@echo "GRUB_DISABLE_RECOVERY=true" >> /etc/default/grub
 	@echo "GRUB_GFXPAYLOAD_LINUX=keep" >> /etc/default/grub
 	@echo "GRUB_GFXMODE=auto" >> /etc/default/grub
@@ -328,7 +327,7 @@ kmsgs:
 
 # Hide agetty messages.
 AGETTY_OVERRIDE := /etc/systemd/system/getty@tty1.service.d/skip-prompt.conf
-OVERRIDE := -/usr/bin/agetty --skip-login --nonewline --noissue --autologin $(USER) --noclear %I $TERM
+OVERRIDE := -/usr/bin/agetty --skip-login --nonewline --noissue --autologin $(USER) --noclear %I \$TERM
 
 .PHONY: agetty
 agetty:
