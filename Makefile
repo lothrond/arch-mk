@@ -28,6 +28,7 @@ help:
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-system   -  Arch Linux base system configuration (made by archlinux-base)."
 	@echo "    archlinux-silent   -  Configure a silent Arch Linux bootloader."
+	@echo "    archlinux-lqx      -  Install custom liqourix linux kernel."
 	@echo "    archlinux-desktop  -  Install Arch Linux desktop (including display server and graphics drivers)."
 	@echo "    archlinux-nologin  -  Enable automatic login support for Arch Linux desktop."
 	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC."
@@ -71,6 +72,9 @@ archlinux-silent: $(BOOTLOADER)-silent lastlogin kmsgs agetty
 
 ## Configure third party kernel-based iptables network firewall:
 #archlinux-firewall: firewall
+
+## Custom (Gaming) kernel:
+archlinux-lqx: lqx
 
 ## Build desktop:
 archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
@@ -251,6 +255,16 @@ exit-chroot:
 	@echo "(DRIVE STILL MOUNTED.)"
 	@echo "Run \`make done\` or \`systemctl poweroff\` when done."
 	@echo
+
+###########################
+## Liqourix Linux kernel ##
+###########################
+
+.PHONY: lqx
+lqx:
+	@echo -e "\n* Installing liqourix kernel ..."
+	@curl -s 'https://liquorix.net/install-liquorix.sh' | sudo bash
+	@echo -e "\n* Reboot before installing new graphics drivers ..."
 
 ###################################
 ## ADDITIONAL DEVELOPMENT TOOLS: ##
