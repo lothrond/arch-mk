@@ -61,7 +61,7 @@ include config.mk
 archlinux-base: partitions filesystems mount base other exit-chroot
 
 ## Build base system configuration:
-archlinux-system: timezone locales host net-sys init $(BOOTLOADER) pass
+archlinux-system: timezone locales keymap host net-sys init $(BOOTLOADER) pass
 
 ## Build development tools:
 archlinux-dev: dev-pkgs remote-pkgs zsh-pkgs
