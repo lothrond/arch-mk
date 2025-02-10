@@ -81,6 +81,9 @@ BOOT_OPTS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.g
 # Define initramfs base system options:
 INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems
 
+# Define Arch Linux base system make operations:
+ARCH_BASE := archlinux-system archlinux-silent archlinux-dev
+
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)
 PKGS_BASE := base $(KERNEL) $(MICROCODE) $(BOOTLOADER)

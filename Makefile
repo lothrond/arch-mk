@@ -142,7 +142,7 @@ other:
 	@echo -e "\n* Copying over Makefile to chroot ..."
 	@cp Makefile config.mk /mnt
 	@echo -e "\n* Changing root to system ..."
-	@arch-chroot /mnt
+	@arch-chroot /mnt make $(ARCH_BASE)
 
 ## Run this command when your done with all other commands.
 
