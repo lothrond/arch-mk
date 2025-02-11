@@ -448,13 +448,13 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 # Create desktop user:
 .PHONY: user
 user:
-	@echo -e "\n* Building user account ..."
+	@echo -e "\n* Making desktop user account ..."
 	@useradd -c "" -m -G audio,input,video,wheel $(USER)
 
 # Make the (X11) (xorg) display server.
 .PHONY: x
 x:
-	@echo -e "\n* Building display server packages ..."
+	@echo -e "\n* Making desktop display server packages ..."
 	@pacman -S $(PKGS_X) --noconfirm
 
 # Make bluetooth.
