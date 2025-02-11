@@ -75,14 +75,17 @@ BOOTLOADER := grub
 # Define bootloader ID:
 BOOT_ID := Arch Linux
 
+# Define Arch Linux bootloader bitmap image:
+BOOT_BM := /usr/share/systemd/bootctl/arch-splash.bmp
+
 # Define (silent) boot options:
-BOOT_OPTS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 bootsplash.bootfile=/usr/share/systemd/bootctl/arch-splash.bmp splash
+BOOT_OPTS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 bootsplash.bootfile=$(BOOT_BM) splash
 
 # Define initramfs base system options:
 INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems
 
-# Define Arch Linux base system make operations:
-ARCH_BASE := archlinux-system archlinux-silent archlinux-dev
+# Define Archlinux base system make operations:
+ARCH_MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin archlinux-32 archlinux-steam 
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)
@@ -142,7 +145,7 @@ PKGS_PLASMA_APPS := konsole kdialog kgpg kdf sweeper
 PKGS_PLASMA_FILES := dolphin ark ffmpegthumbs kdegraphics-thumbnailers kio-admin xdg-desktop-portal-kde
 
 # Define GNOME base desktop packages:
-PKGS_GNOME_DESKTOP := gnome gnome-flashback networkmanager
+PKGS_GNOME_DESKTOP := gnome gnome-flashback networkmanager power-profiles-daemon
 
 # Define GNOME desktop application packages:
 PKGS_GNOME_APPS := gnome-extra firewalld

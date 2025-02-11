@@ -24,6 +24,7 @@ help:
 	@echo "    help               -  Show this help message"
 	@echo "    clean              -  Quickly wipe device disk drive."
 	@echo "    wipe               -  Completely wipe device disk drive."
+	@echo "    archlinux          -"
 	@echo "    archlinux-base     -  Make the base Arch linux system."
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-system   -  Arch Linux base system configuration (made by archlinux-base)."
@@ -57,6 +58,8 @@ help:
 ###########################################################################
 
 include config.mk
+
+archlinux: archlinux-base
 
 ## Build base installation:
 archlinux-base: partitions filesystems mount base other exit-chroot
@@ -146,7 +149,7 @@ other:
 	@echo -e "\n* Copying over Makefile to chroot ..."
 	@cp Makefile config.mk /mnt
 	@echo -e "\n* Changing root to system ..."
-	@arch-chroot /mnt make $(ARCH_BASE)
+	@arch-chroot /mnt make $(ARCH_MAKEOPTS)
 
 ## Run this command when your done with all other commands.
 
