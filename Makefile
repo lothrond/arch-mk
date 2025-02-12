@@ -493,7 +493,7 @@ plasma-nologin:
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
 
 # Configure passwordless login for KDE Plasma user account:
-.PHONY: user-nopasswd
+.PHONY: plasma-nopasswd
 plasma-nopasswd:
     @echo -e "\n* Making automatic login for KDE Plasma desktop user accounts ..."
     @sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
