@@ -83,7 +83,7 @@ archlinux-lqx: lqx
 archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
 
 ## Enable automatic desktop login (no password for lock screen):
-archlinux-nologin: user-nopasswd $(DESKTOP)-nologin $(DESKTOP)-nopasswd
+archlinux-nologin: $(DESKTOP)-nologin $(DESKTOP)-nopasswd
 
 ## Ebable CD/DVD and bluray disk suport:
 #archlinux-dvd: (wip)
@@ -265,7 +265,7 @@ exit-chroot:
 
 .PHONY: lqx
 lqx:
-	@echo -e "\n* Installing liqourix kernel ..."
+	@echo -e "\n* Making liqourix kernel ..."
 	@curl -s 'https://liquorix.net/install-liquorix.sh' | sudo bash
 	@echo -e "\n* Reboot before installing new graphics drivers ..."
 
@@ -276,19 +276,19 @@ lqx:
 # Make additonal development tools.
 .PHONY: dev-pkgs
 dev-pkgs:
-	@echo -e "\n* Installing additional development packages ..."
+	@echo -e "\n* Making additional development packages ..."
 	@pacman -S $(PKGS_DEV) --noconfirm
 
 # Make remote development tools.
 .PHONY: remote-pkgs
 remote-pkgs:
-	@echo -e "\n* Installing remote development packages ..."
+	@echo -e "\n* Making remote development packages ..."
 	@pacman -S $(PKGS_REMOTE) --noconfirm
 
 # Make development shell.
 .PHONY: zsh-pkgs
 zsh-pkgs:
-	@echo -e "\n* Installing ZSH developer shell packages ..."
+	@echo -e "\n* Making ZSH developer shell packages ..."
 	@pacman -S $(PKGS_ZSH) --noconfirm
 
 ##################################
@@ -346,12 +346,12 @@ agetty:
 
 .PHONY: vulkan-graphics
 vulkan-graphics:
-	@echo -e "\n Installing Vulkan graphics libraries ..."
+	@echo -e "\n Making Vulkan graphics libraries ..."
 	@pacman -S $(PKGS_VULKAN) --noconfirm
 
 .PHONY: vulkan-graphics-32
 vulkan-graphics-32:
-	@echo -e "\n Installing Vulkan graphics 32 bit libraries ..."
+	@echo -e "\n Making Vulkan graphics 32 bit libraries ..."
 	@pacman -S $(PKGS_VULKAN_32) --noconfirm
 
 ## AMD Graphics ##
@@ -386,7 +386,7 @@ vulkan-graphics-32:
 
 .PHONY: nvidia-graphics
 nvidia-graphics:
-	@echo -e 'Installing Nvidia base graphics driver packages ...'
+	@echo -e 'Making Nvidia base graphics driver packages ...'
 	@pacman -S $(PKGS_NVIDIA_GRAPHICS) --noconfirm
 
 nvidia: nvidia-graphics vulkan-graphics
@@ -394,7 +394,7 @@ nvidia: nvidia-graphics vulkan-graphics
 # Nvidia 32 bit architecture support:
 .PHONY: nvidia-graphics-32
 nvidia-graphics-32:
-	@echo -e "\n Installing 32 bit Nvidia Graphics driver packages ..."
+	@echo -e "\n Making 32 bit Nvidia Graphics driver packages ..."
 	@pacman -S $(PKGS_NVIDIA_GRAPHICS_32) --noconfirm
 
 nvidia-32: nvidia-graphics-32 vulkan-graphics-32
@@ -460,14 +460,14 @@ x:
 # Make bluetooth.
 .PHONY: bluetooth
 bluetooth:
-	@echo -e "\n* Building desktop bluetooth packages ..."
+	@echo -e "\n* Making desktop bluetooth packages ..."
 	@pacman -S $(PKGS_BLUEZ) --noconfirm
 	@systemctl enable bluetooth
 
 # Make KDE Plasma dektop.
 PHONY: plasma
 plasma:
-	@echo -e "\n* Building KDE plasma desktop environment packages ..."
+	@echo -e "\n* Making KDE plasma desktop environment packages ..."
 	@pacman -S $(PKGS_PLASMA_DESKTOP) $(PKGS_PLASMA_APPS) $(PKGS_PLASMA_FILES) --noconfirm
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
@@ -475,42 +475,47 @@ plasma:
 # Make GNOME desktop.
 .PHONY: gnome
 gnome:
-	@echo -e "\n* Building GNOME desktop environment packages ..."
+	@echo -e "\n* Making GNOME desktop environment packages ..."
 	@pacman -S $(PKGS_GNOME_DESKTOP) $(PKGS_GNOME_APPS) --noconfirm
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
-# Configure passwordless login for user account:
-.PHONY: user-nopasswd
-user-nopasswd:
-	@echo -e "\n* Building automatic login for user accounts ..."
-	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
-	@groupadd nopasswdlogin
-	@gpasswd -a $(USER) nopasswdlogin
-
-# Configure passwordless login for KDE Plasma login screen:
-.PHONY: plasma-nopasswd
-plasma-nopasswd:
-	@echo -e "\n* Building passwordless login for KDE login screen ..."
-	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
-
 # Configure automatic login for KDE Plasma display manager:
+# Also, configure passwordless login for KDE Plasma login screen:
 .PHONY: plasma-nologin
 plasma-nologin:
-	@echo -e "\n* Building automatic login for KDE display manager service ..."
+	@echo -e "\n* Making automatic login for KDE display manager service ..."
 	@touch /etc/sddm.conf
 	@echo "[Autologin]" > /etc/sddm.conf
 	@echo "User=$(USER)" >> /etc/sddm.conf
 	@echo "Session=$(DESKTOP_SESSION)" >> /etc/sddm.conf
+	@echo -e "\n* Making passwordless login for KDE plasma desktop login screen ..."
+	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
+
+# Configure passwordless login for KDE Plasma user account:
+.PHONY: user-nopasswd
+plasma-nopasswd:
+    @echo -e "\n* Making automatic login for KDE Plasma desktop user accounts ..."
+    @sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
+    @groupadd nopasswdlogin
+    @gpasswd -a $(USER) nopasswdlogin
 
 # Configure automatic login for GNOME display manager:
 .PHONY: gnome-nologin
 gnome-nologin:
-	@echo -e "\n* Building automatic login for GNOME display manger service ..."
+	@echo -e "\n* Making automatic login for GNOME display manger service ..."
 	@touch /etc/gdm3/auto.conf
 	@echo "[Autologin]" > /etc/gdm3/auto.conf
 	@echo "User=$(USER)" >> /etc/gdm3/auto.conf
 	@echo "Session=$(DESKTOP_SESSION)" >> /etc/gdm3/auto.conf
+
+# Configure passwordless login for GNOME desktop user account:
+.PHONY: gnome-nopasswd
+gnome-nopasswd:
+	@echo -e "\n* Making automatic login for GNOME desktop lockscreen ..."
+	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/gdm-password
+	@groupadd nopasswdlogin
+	@gpasswd -a $(USER) nopasswdlogin
 
 ###################
 ## STEAM GAMING: ##
@@ -519,7 +524,7 @@ gnome-nologin:
 # Enable 32 bit architecture support.
 .PHONY: multilib
 multilib:
-	@echo -e "\n* Building 32 bit architecture support ..."
+	@echo -e "\n* Making 32 bit architecture support ..."
 	@sed -i "92i [multilib]" /etc/pacman.conf
 	@sed -i "93i Include = /etc/pacman.d/mirrorlist" /etc/pacman.conf
 	@pacman -Syu
@@ -534,13 +539,13 @@ vm-max:
 # Make steam client packages:
 .PHONY: steam-pkgs
 steam-pkgs:
-	@echo -e "\n* Building steam client packages ..."
+	@echo -e "\n* Making steam client packages ..."
 	@pacman -S $(PKGS_STEAM) --noconfirm
 
 # Make WINE packages.
 .PHONY: wine-pkgs
 wine-pkgs:
-	@echo -e "\n* Building WINE packages ..."
+	@echo -e "\n* Making WINE packages ..."
 	@pacman -S $(PKGS_WINE) --noconfirm
 
 ###############
@@ -550,7 +555,7 @@ wine-pkgs:
 # Create SteamOS desktop session.
 .PHONY: steamos-session
 steamos-session:
-	@echo -e "\n* Building SteamOS desktop session ..."
+	@echo -e "\n* Making SteamOS desktop session ..."
 	@touch /usr/share/wayland-sessions/steamos.desktop
 	@echo "[Desktop Entry]" > /usr/share/wayland-sessions/steamos.desktop
 	@echo "Name=Steam OS Mode" >> /usr/share/wayland-sessions/steamos.desktop
@@ -561,7 +566,7 @@ steamos-session:
 # Create SteamOS desktop user.
 .PHONY: desktop-user
 desktop-user:
-	@echo -e "\n* Building SteamOS desktop user account ..."
+	@echo -e "\n* Making SteamOS desktop user account ..."
 	@adduser -c "" -m -G audio,input,video,$(USER) desktop
 
 ################
