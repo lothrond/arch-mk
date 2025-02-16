@@ -336,9 +336,9 @@ OVERRIDE := -/usr/bin/agetty --skip-login --nonewline --noissue --autologin $(US
 agetty:
 	@echo -e "\n* Hiding agetty messages ..."
 	@mkdir /etc/systemd/system/getty@tty1.service.d || touch $(AGETTY_OVERRIDE)
-	@echo "[Service]" >> $(AGETTY_OVERRIDE)
-	@echo "ExecStart=" >> $(AGETTY_OVERRIDE)
-	@echo "ExecStart=$(OVERRIDE)" >> $(AGETTY_OVERRIDE)
+	@echo -e "[Service]" >> $(AGETTY_OVERRIDE)
+	@echo -e "ExecStart=" >> $(AGETTY_OVERRIDE)
+	@echo -e "ExecStart=$(OVERRIDE)" >> $(AGETTY_OVERRIDE)
 
 #######################
 ## GRAPHICS DRIVERS: ##
