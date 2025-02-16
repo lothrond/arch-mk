@@ -495,10 +495,10 @@ plasma-nologin:
 # Configure passwordless login for KDE Plasma user account:
 .PHONY: plasma-nopasswd
 plasma-nopasswd:
-    @echo -e "\n* Making automatic login for KDE Plasma desktop user accounts ..."
-    @sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
-    @groupadd nopasswdlogin
-    @gpasswd -a $(USER) nopasswdlogin
+	@echo -e "\n* Making automatic login for KDE Plasma desktop user accounts ..."
+	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
+	@groupadd nopasswdlogin
+	@gpasswd -a $(USER) nopasswdlogin
 
 # Configure automatic login for GNOME display manager:
 .PHONY: gnome-nologin
