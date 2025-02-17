@@ -119,4 +119,4 @@ Additionally, to make a SteamOS desktop session, run:
 
 See `make` or `make help` for more information.
 
-#### Copyright (C) 2025, lothrond <lothrond@proton.me>
+#### Copyright (C) 2025, lothrond <lothrond AT proton DOT me>
