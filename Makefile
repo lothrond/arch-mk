@@ -385,7 +385,7 @@ vulkan-graphics-32:
 
 .PHONY: nvidia-graphics
 nvidia-graphics:
-	@echo -e 'Making Nvidia base graphics driver packages ...'
+	@echo -e "\n* Making Nvidia base graphics driver packages ..."
 	@pacman -S $(PKGS_NVIDIA_GRAPHICS) --noconfirm
 
 nvidia: nvidia-graphics vulkan-graphics
@@ -393,7 +393,7 @@ nvidia: nvidia-graphics vulkan-graphics
 # Nvidia 32 bit architecture support:
 .PHONY: nvidia-graphics-32
 nvidia-graphics-32:
-	@echo -e "\n Making 32 bit Nvidia Graphics driver packages ..."
+	@echo -e "\n* Making 32 bit Nvidia Graphics driver packages ..."
 	@pacman -S $(PKGS_NVIDIA_GRAPHICS_32) --noconfirm
 
 nvidia-32: nvidia-graphics-32 vulkan-graphics-32
