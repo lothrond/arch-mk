@@ -24,7 +24,6 @@ help:
 	@echo "    help               -  Show this help message"
 	@echo "    clean              -  Quickly wipe device disk drive."
 	@echo "    wipe               -  Completely wipe device disk drive."
-	@echo "    archlinux          -"
 	@echo "    archlinux-base     -  Make the base Arch linux system."
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-system   -  Arch Linux base system configuration (made by archlinux-base)."
@@ -330,7 +329,7 @@ kmsgs:
 
 # Hide agetty messages.
 AGETTY_OVERRIDE := /etc/systemd/system/getty@tty1.service.d/skip-prompt.conf
-OVERRIDE := -/usr/bin/agetty --skip-login --nonewline --noissue --autologin $(USER) --noclear %I \$TERM
+OVERRIDE := -/usr/bin/agetty --skip-login --nonewline --noissue --autologin $(USER) --noclear %I '$$TERM'
 
 .PHONY: agetty
 agetty:
@@ -450,6 +449,7 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 user:
 	@echo -e "\n* Making desktop user account ..."
 	@useradd -c "" -m -G audio,input,video,wheel $(USER)
+	@passwd $(USER)
 
 # Make the (X11) (xorg) display server.
 .PHONY: x
@@ -504,10 +504,9 @@ plasma-nopasswd:
 .PHONY: gnome-nologin
 gnome-nologin:
 	@echo -e "\n* Making automatic login for GNOME display manger service ..."
-	@touch /etc/gdm3/auto.conf
-	@echo "[Autologin]" > /etc/gdm3/auto.conf
-	@echo "User=$(USER)" >> /etc/gdm3/auto.conf
-	@echo "Session=$(DESKTOP_SESSION)" >> /etc/gdm3/auto.conf
+	@echo "[Autologin]" >> /etc/gdm/custom.conf
+	@echo "User=$(USER)" >> /etc/gdm3/custom.conf
+	@echo "Session=$(DESKTOP_SESSION)" >> /etc/gdm/custom.conf
 
 # Configure passwordless login for GNOME desktop user account:
 .PHONY: gnome-nopasswd

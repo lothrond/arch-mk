@@ -61,6 +61,10 @@ NVIDIA_BOARD := Nvidia Geforce GTX 970
 # Define nvidia graphics kernel modules:
 NVIDIA_KMOD := nvidia nvidia_modeset nvidia_uvm nvidia_drm
 
+# Define Nvidia graphics driver packages:
+#NVIDIA_DRIVER := nvidia-dkms
+NVIDIA_DRIVER := nvidia
+
 # Define Linux kernel:
 KERNEL := linux linux-firmware
 
@@ -85,7 +89,7 @@ BOOT_OPTS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.g
 INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems
 
 # Define Archlinux base system make operations:
-ARCH_MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin archlinux-32 archlinux-steam 
+ARCH_MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin archlinux-32 archlinux-steam
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)
@@ -121,9 +125,7 @@ PKGS_X := xorg xdg-desktop-portal
 # Define Intel graphics driver 32 bit library support:
 #PKGS_INTEL_GRAPHICS_32 :=
 
-# Define Nvidia graphics driver packages:
-#NVIDIA_DRIVER := nvidia-dkms
-NVIDIA_DRIVER := nvidia
+# Define nvidia driver graphics packages:
 PKGS_NVIDIA_GRAPHICS := $(NVIDIA_DRIVER) nvidia-utils
 
 # Define Nvidia graphics driver 32 bit library support:
