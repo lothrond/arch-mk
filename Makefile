@@ -82,7 +82,7 @@ archlinux-lqx: lqx
 archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
 
 ## Enable automatic desktop login (no password for lock screen):
-archlinux-nologin: $(DESKTOP)-nologin $(DESKTOP)-nopasswd
+archlinux-nologin: $(DESKTOP)-nologin
 
 ## Ebable CD/DVD and bluray disk suport:
 #archlinux-dvd: (wip)
@@ -491,10 +491,6 @@ plasma-nologin:
 	@echo "Session=$(DESKTOP_SESSION)" >> /etc/sddm.conf
 	@echo -e "\n* Making passwordless login for KDE plasma desktop login screen ..."
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
-
-# Configure passwordless login for KDE Plasma user account:
-.PHONY: plasma-nopasswd
-plasma-nopasswd:
 	@echo -e "\n* Making automatic login for KDE Plasma desktop user accounts ..."
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
 	@groupadd nopasswdlogin
@@ -507,14 +503,6 @@ gnome-nologin:
 	@echo "[Autologin]" >> /etc/gdm/custom.conf
 	@echo "User=$(USER)" >> /etc/gdm/custom.conf
 	@echo "Session=$(DESKTOP_SESSION)" >> /etc/gdm/custom.conf
-
-# Configure passwordless login for GNOME desktop user account:
-.PHONY: gnome-nopasswd
-gnome-nopasswd:
-	@echo -e "\n* Making automatic login for GNOME desktop lockscreen ..."
-	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/gdm-password
-	@groupadd nopasswdlogin
-	@gpasswd -a $(USER) nopasswdlogin
 
 ###################
 ## STEAM GAMING: ##

@@ -9,7 +9,7 @@ This repository is a way to install archlinux via Makefile in an archiso environ
 
 ## Downloading archiso:
 Start by downloading an archlinux archiso medium.
-A helper script is available @ https://github.com/lothrond/archlinux-dl.
+A helper script is available @ https://github.com/lothrond/arch-dl.
 
 Clone that repository, change into the working directory and either run:
 
@@ -48,7 +48,7 @@ Boot the archiso installation medium.
 
 Obtain this repository:
 
-	git clone https://github.com/lothrond/archbuild.git
+	git clone https://github.com/lothrond/arch-mk.git
 
 Change into working directory, and make sure to edit `config.mk` as needed.
 
