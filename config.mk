@@ -32,7 +32,7 @@ LOCALE_A := en_US.UTF-8
 LOCALE_B := UTF-8
 
 # Define base system keyboard keymap:
-KEYB := US
+KEYB := us
 
 # Define Arch Linux desktop:
 #DESKTOP := plasma

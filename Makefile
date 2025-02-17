@@ -183,7 +183,7 @@ PHONY: keymap
 keymap:
 	@echo -e "\n* Setting system keyboard keymap ..."
 	@touch /etc/vconsole.conf
-	@echo "$(KEYB)" > /etc/vconsole.conf
+	@echo "KEYMAP=$(KEYB)" > /etc/vconsole.conf
 
 # Configure base system hostname.
 PHONY: host
