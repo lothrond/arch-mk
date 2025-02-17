@@ -505,7 +505,7 @@ plasma-nopasswd:
 gnome-nologin:
 	@echo -e "\n* Making automatic login for GNOME display manger service ..."
 	@echo "[Autologin]" >> /etc/gdm/custom.conf
-	@echo "User=$(USER)" >> /etc/gdm3/custom.conf
+	@echo "User=$(USER)" >> /etc/gdm/custom.conf
 	@echo "Session=$(DESKTOP_SESSION)" >> /etc/gdm/custom.conf
 
 # Configure passwordless login for GNOME desktop user account:
