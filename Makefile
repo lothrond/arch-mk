@@ -58,6 +58,8 @@ help:
 
 include config.mk
 
+archlinux: archlinux-base
+
 ## Build base installation:
 archlinux-base: partitions filesystems mount base other exit-chroot
 
@@ -146,7 +148,7 @@ other:
 	@echo -e "\n* Copying over Makefile to chroot ..."
 	@cp Makefile config.mk /mnt
 	@echo -e "\n* Changing root to system ..."
-	@arch-chroot /mnt
+	@arch-chroot /mnt make $(ARCH_MAKEOPTS)
 
 ## Run this command when your done with all other commands.
 

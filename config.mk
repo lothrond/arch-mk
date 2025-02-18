@@ -11,6 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+###
+
+# Define Archlinux base system make operations:
+ARCH_MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin archlinux-32 archlinux-steam
+
+###
 
 # Define base system Hostname:
 HOSTNAME := fathership

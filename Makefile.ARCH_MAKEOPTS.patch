@@ -1,0 +1,40 @@
+diff --git a/Makefile b/Makefile
+index dc7ca56..6284b8f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -58,6 +58,8 @@ help:
+ 
+ include config.mk
+ 
++archlinux: archlinux-base
++
+ ## Build base installation:
+ archlinux-base: partitions filesystems mount base other exit-chroot
+ 
+@@ -146,7 +148,7 @@ other:
+ 	@echo -e "\n* Copying over Makefile to chroot ..."
+ 	@cp Makefile config.mk /mnt
+ 	@echo -e "\n* Changing root to system ..."
+-	@arch-chroot /mnt
++	@arch-chroot /mnt make $(ARCH_MAKEOPTS)
+ 
+ ## Run this command when your done with all other commands.
+ 
+diff --git a/config.mk b/config.mk
+index fe278e5..1500b60 100644
+--- a/config.mk
++++ b/config.mk
+@@ -11,6 +11,13 @@
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
++#
++###
++
++# Define Archlinux base system make operations:
++ARCH_MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin archlinux-32 archlinux-steam
++
++###
+ 
+ # Define base system Hostname:
+ HOSTNAME := fathership
