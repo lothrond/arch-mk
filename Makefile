@@ -497,12 +497,25 @@ plasma-nologin:
 	@gpasswd -a $(USER) nopasswdlogin
 
 # Configure automatic login for GNOME display manager:
+GNOMEDM := /etc/gdm/custom.conf
 .PHONY: gnome-nologin
 gnome-nologin:
 	@echo -e "\n* Making automatic login for GNOME display manger service ..."
+	@echo -e "# GDM config" > $(GNOMEDM)
+	@echo -e "" >> $(GNOMEDM)
 	@echo -e "[daemon]" >> /etc/gdm/custom.conf
 	@echo -e "User=$(USER)" >> /etc/gdm/custom.conf
 	@echo -e "Session=$(DESKTOP_SESSION)" >> /etc/gdm/custom.conf
+	@echo -e "#WaylandEnable=false" >> $(GNOMEDM)
+	@echo -e "" >> $(GNOMEDM)
+	@echo -e "[security]" >> $(GNOMEDM)
+	@echo -e "" >> $(GNOMEDM)
+	@echo -e "[xdmcp]" >> $(GNOMEDM)
+	@echo -e "" >> $(GNOMEDM)
+	@echo -e "[chooser]" >> $(GNOMEDM)
+	@echo -e "" >> $(GNOMEDM)
+	@echo -e "[debug]" >> $(GNOMEDM)
+	@echo -e "#Enable=true" >> $(GNOMEDM)
 
 ###################
 ## STEAM GAMING: ##
