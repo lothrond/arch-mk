@@ -469,6 +469,7 @@ PHONY: plasma
 plasma:
 	@echo -e "\n* Making KDE plasma desktop environment packages ..."
 	@pacman -S $(PKGS_PLASMA_DESKTOP) $(PKGS_PLASMA_APPS) $(PKGS_PLASMA_FILES) --noconfirm
+	@systemctl enable sddm
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
@@ -477,6 +478,7 @@ plasma:
 gnome:
 	@echo -e "\n* Making GNOME desktop environment packages ..."
 	@pacman -S $(PKGS_GNOME_DESKTOP) $(PKGS_GNOME_APPS) --noconfirm
+	@systemctl enable gdm
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
@@ -500,9 +502,9 @@ plasma-nologin:
 .PHONY: gnome-nologin
 gnome-nologin:
 	@echo -e "\n* Making automatic login for GNOME display manger service ..."
-	@echo "[Autologin]" >> /etc/gdm/custom.conf
-	@echo "User=$(USER)" >> /etc/gdm/custom.conf
-	@echo "Session=$(DESKTOP_SESSION)" >> /etc/gdm/custom.conf
+	@echo -e "[Autologin]" >> /etc/gdm/custom.conf
+	@echo -e "User=$(USER)" >> /etc/gdm/custom.conf
+	@echo -e "Session=$(DESKTOP_SESSION)" >> /etc/gdm/custom.conf
 
 ###################
 ## STEAM GAMING: ##
