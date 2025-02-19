@@ -504,7 +504,8 @@ gnome-nologin:
 	@echo -e "# GDM config" > $(GNOMEDM)
 	@echo -e "" >> $(GNOMEDM)
 	@echo -e "[daemon]" >> /etc/gdm/custom.conf
-	@echo -e "User=$(USER)" >> /etc/gdm/custom.conf
+	@echo -e "AutomaticLoginEnable=True" >> /etc/gdm/custom.conf
+	@echo -e "AutomaticLogin=$(USER)" >> /etc/gdm/custom.conf
 	@echo -e "Session=$(DESKTOP_SESSION)" >> /etc/gdm/custom.conf
 	@echo -e "#WaylandEnable=false" >> $(GNOMEDM)
 	@echo -e "" >> $(GNOMEDM)
