@@ -527,7 +527,7 @@ multilib:
 	@echo -e "\n* Making 32 bit architecture support ..."
 	@sed -i "92i [multilib]" /etc/pacman.conf
 	@sed -i "93i Include = /etc/pacman.d/mirrorlist" /etc/pacman.conf
-	@pacman -Syu
+	@pacman -Sy
 
 # Increase VM max heap count for better performance:
 .PHONY: vm-max
