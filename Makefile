@@ -18,7 +18,7 @@ help:
 	@echo Arch Linux - Makefile installation
 	@echo
 	@echo "[USAGE]: make archlinux"
-	@echo           make [ MAKEOPTS-OPTIONS ADDITIONAL-OPTIONS | OTHER-OPTION ]
+	@echo "         make [ MAKEOPTS-OPTIONS ADDITIONAL-OPTIONS | OTHER-OPTION ]"
 	@echo
 	@echo "[MAKEOPTS-OPTIONS]:"
 	@echo
