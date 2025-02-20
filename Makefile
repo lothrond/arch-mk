@@ -23,8 +23,8 @@ help:
 	@echo "[MAKEOPTS-OPTIONS]:"
 	@echo
 	@echo " * The MAKEOPTS build variable defines the base system installation."
-	@echo "   By default, this is defined as a plasma/gnome desktop, with a silent bootloader,
-	@echo "   with passwordless login for the desktop user account.
+	@echo "   By default, this is defined as a plasma/gnome desktop, with a silent bootloader,"
+	@echo "   with passwordless login for the desktop user account."
 	@echo
 	@echo "    archlinux-base     -  Make the base Arch linux system."
 	@echo "    archlinux-system   -  Arch Linux base system configuration (made by archlinux-base)."
