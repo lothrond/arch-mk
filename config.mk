@@ -90,7 +90,7 @@ INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vcon
 MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin
 
 # Define additional make operations:
-OPTS := archlinux-dev archlinux-32 archlinux-steam
+OPTS :=
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)
