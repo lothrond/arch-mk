@@ -17,46 +17,58 @@
 help:
 	@echo Arch Linux - Makefile installation
 	@echo
-	@echo "[USAGE]: make [ OPTION ]"
+	@echo "[USAGE]: make archlinux"
+	@echo           make[ MAKEOPTS OPTIONS | OTHER OPTION ]
 	@echo
-	@echo "[OPTIONS]:"
+	@echo "[MAKEOPTS OPTIONS]:"
 	@echo
-	@echo "    help               -  Show this help message"
-	@echo "    clean              -  Quickly wipe device disk drive."
-	@echo "    wipe               -  Completely wipe device disk drive."
+	@echo " * The \`MAKEOPTS\` build variable defines the base system installation."
+	@echo "   By default, this is defined as a plasma/gnome desktop, with a silent bootloader,
+	@echo "   with passwordless login for the desktop user account.
+	@echo
 	@echo "    archlinux-base     -  Make the base Arch linux system."
-	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-system   -  Arch Linux base system configuration (made by archlinux-base)."
-	@echo "    archlinux-silent   -  Configure a silent Arch Linux bootloader."
-	@echo "    archlinux-lqx      -  Install custom liqourix linux kernel."
 	@echo "    archlinux-desktop  -  Install Arch Linux desktop (including display server and graphics drivers)."
 	@echo "    archlinux-nologin  -  Enable automatic login support for Arch Linux desktop."
+	@echo "    archlinux-silent   -  Configure a silent Arch Linux bootloader."
+	@echo
+	@echo "[ ADDITIONAL OPTIONS ]:"
+	@echo
+	@echo " * Any additional options can be specified with \`OPTS\` build variable."
+	@echo
+	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC."
+	@echo "    archlinux-lqx      -  Install custom liqourix linux kernel."
 	@echo "    archlinux-32       -  Enable Arch Linux 32 bit architecture support."
 	@echo "    archlinux-steam    -  Install Arch Linux steam gaming packages."
 	@echo "    archlinux-steamos  -  Configure a SteamOS Arch Linux."
 	@echo
+	@echo "[OTHER OPTIONS]:"
+	@echo
+	@echo " * Other options can be used to wipe/prepare the disk before installation,"
+	@echo "   poweroff he system after installation, and show this help message."
+	@echo
+	@echo "    help               -  Show this help message"
+	@echo "    clean              -  Quickly wipe device disk drive."
+	@echo "    wipe               -  Completely wipe device disk drive."
+	@echo
+	@echo "(All build variables are defined in the \`config.mk\` makefile configuation.)"
+	@echo
 	@echo "[EXAMPLES]:"
 	@echo
-	@echo ' * Run `make archlinux-base` to setup the build process.'
-	@echo "   Once completed, you will be inside an arch linux build chroot."
-	@echo
-	@echo "(All other make options are executed in the chroot build environment.)"
-	@echo
-	@echo ' * Run `make archlinux-system` to start making the base system.'
-	@echo "   You will be prompted for a root password at the end."
-	@echo
-	@echo ' * Run `make archlinux-desktop` To make the desktop environment.'
-	@echo "   You will also create a desktop user account, and be prompted for a user password."
-	@echo
-	@echo " root@archiso: make archlinux-base"
-	@echo " [root@chroot]: make archlinux-desktop archlinux-nologin archlinux-silent archlinux-dev"
+	@echo "   make archlinux"
+	@echo "   make archlinux archlinux-lxq archlinux-dvd"
+	@echo "   make archlinux archlinux-steamos"
+	@echo "   make clean archlinux archlinux-dev"
 	@echo
 	@echo "Copyright (C) 2025, lothrond <lothrond@proton.me>"
 
 ###########################################################################
 
 include config.mk
+
+## ...
+archlinux: archlinux-base
 
 ## Build base installation:
 archlinux-base: partitions filesystems mount base other exit-chroot
@@ -80,7 +92,7 @@ archlinux-lqx: lqx
 archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
 
 ## Enable automatic desktop login (no password for lock screen):
-archlinux-nologin: $(DESKTOP)-nologin
+archlinux-nologin: $(DESKTOP)-nologin $(DESKTOP)-nopasswd
 
 ## Ebable CD/DVD and bluray disk suport:
 #archlinux-dvd: (wip)
@@ -146,7 +158,7 @@ other:
 	@echo -e "\n* Copying over Makefile to chroot ..."
 	@cp Makefile config.mk /mnt
 	@echo -e "\n* Changing root to system ..."
-	@arch-chroot /mnt
+	@arch-chroot /mnt make $(MAKEOPTS)
 
 ## Run this command when your done with all other commands.
 
@@ -481,23 +493,27 @@ gnome:
 	@systemctl enable power-profiles-daemon
 
 # Configure automatic login for KDE Plasma display manager:
-# Also, configure passwordless login for KDE Plasma login screen:
 .PHONY: plasma-nologin
 plasma-nologin:
 	@echo -e "\n* Making automatic login for KDE display manager service ..."
 	@touch /etc/sddm.conf
 	@echo "[Autologin]" > /etc/sddm.conf
 	@echo "User=$(USER)" >> /etc/sddm.conf
-	@echo "Session=$(DESKTOP_SESSION)" >> /etc/sddm.conf
-	@echo -e "\n* Making passwordless login for KDE plasma desktop login screen ..."
-	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
+	@echo "Session=$(PLASMA_SESSION)" >> /etc/sddm.conf
 	@echo -e "\n* Making automatic login for KDE Plasma desktop user accounts ..."
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
+
+
+# Configure passwordless login for KDE Plasma login screen:
+.PHONY: plasma-nopasswd
+plasma-nopasswd:
+	@echo -e "\n* Making passwordless login for KDE plasma desktop login screen ..."
+	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
 	@groupadd nopasswdlogin
 	@gpasswd -a $(USER) nopasswdlogin
 
 # Configure automatic login for GNOME display manager:
-GNOMEDM := /etc/gdm/custom.conf
+GNOMEDM := /etc/gdm/nologin.conf
 .PHONY: gnome-nologin
 gnome-nologin:
 	@echo -e "\n* Making automatic login for GNOME display manger service ..."
@@ -506,7 +522,7 @@ gnome-nologin:
 	@echo -e "[daemon]" >> /etc/gdm/custom.conf
 	@echo -e "AutomaticLoginEnable=True" >> /etc/gdm/custom.conf
 	@echo -e "AutomaticLogin=$(USER)" >> /etc/gdm/custom.conf
-	@echo -e "Session=$(DESKTOP_SESSION)" >> /etc/gdm/custom.conf
+	@echo -e "Session=$(GNOME_SESSION)" >> /etc/gdm/custom.conf
 	@echo -e "#WaylandEnable=false" >> $(GNOMEDM)
 	@echo -e "" >> $(GNOMEDM)
 	@echo -e "[security]" >> $(GNOMEDM)
@@ -517,6 +533,14 @@ gnome-nologin:
 	@echo -e "" >> $(GNOMEDM)
 	@echo -e "[debug]" >> $(GNOMEDM)
 	@echo -e "#Enable=true" >> $(GNOMEDM)
+
+# Configure passwordless login for GNOME login screen:
+.PHONY: gnome-nopasswd
+gnome-nopasswd:
+    @echo -e "\n* Making passwordless login for GNOME desktop user accounts ..."
+    @sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/gdm-password
+    @groupadd nopasswdlogin
+    @gpasswd -a $(USER) nopasswdlogin
 
 ###################
 ## STEAM GAMING: ##
@@ -557,18 +581,20 @@ wine-pkgs:
 .PHONY: steamos-session
 steamos-session:
 	@echo -e "\n* Making SteamOS desktop session ..."
-	@touch /usr/share/wayland-sessions/steamos.desktop
 	@echo "[Desktop Entry]" > /usr/share/wayland-sessions/steamos.desktop
 	@echo "Name=Steam OS Mode" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Comment=Start Steam in Big Picture Mode" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Exec=/usr/bin/gamescope -e -- /usr/bin/steam -tenfoot" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Type=Application" >> /usr/share/wayland-sessions/steamos.desktop
+	@touch /var/lib/AccountService/users/$(USER)
+	@echo "Session=steamos" > /var/lib/AccountService/users/$(USER)
 
 # Create SteamOS desktop user.
 .PHONY: desktop-user
 desktop-user:
 	@echo -e "\n* Making SteamOS desktop user account ..."
 	@adduser -c "" -m -G audio,input,video,$(USER) desktop
+	@gpasswd -a desktop nopasswdlogin
 
 ################
 ## Clean/Wipe ##

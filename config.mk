@@ -35,14 +35,12 @@ LOCALE_B := UTF-8
 KEYB := us
 
 # Define Arch Linux desktop:
-#DESKTOP := plasma
-DESKTOP := gnome
+#DESKTOP := gnome
+DESKTOP := plasma
 
 # Define default desktop login session:
-#DESKTOP_SESSION := plasma
-#DESKTOP_SESSION := steamos
-#DESKTOP_SESSION := plasmax11
-DESKTOP_SESSION := gnome-flashback
+GNOME_SESSION := gnome-flashback
+PLASMA_SESSION := plasma
 
 # Define graphics card:
 #GRAPHICS := amd-graphics
@@ -87,6 +85,12 @@ BOOT_OPTS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.g
 
 # Define initramfs base system options:
 INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems
+
+# Define Arch Linux make operations:
+MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin
+
+# Define additional make operations:
+OPTS := archlinux-dev archlinux-32 archlinux-steam
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)
