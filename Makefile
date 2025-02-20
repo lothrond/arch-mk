@@ -22,7 +22,7 @@ help:
 	@echo
 	@echo "[MAKEOPTS-OPTIONS]:"
 	@echo
-	@echo " * The \`MAKEOPTS\` build variable defines the base system installation."
+	@echo " * The MAKEOPTS build variable defines the base system installation."
 	@echo "   By default, this is defined as a plasma/gnome desktop, with a silent bootloader,
 	@echo "   with passwordless login for the desktop user account.
 	@echo
@@ -34,7 +34,7 @@ help:
 	@echo
 	@echo "[ ADDITIONAL-OPTIONS ]:"
 	@echo
-	@echo " * Any additional options can be specified with \`OPTS\` build variable."
+	@echo " * Any additional options can be specified with OPTS build variable."
 	@echo
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC."
@@ -52,7 +52,7 @@ help:
 	@echo "    clean              -  Quickly wipe device disk drive."
 	@echo "    wipe               -  Completely wipe device disk drive."
 	@echo
-	@echo "(All build variables are defined in the \`config.mk\` makefile configuation.)"
+	@echo "(All build variables are defined in the config.mk makefile configuation.)"
 	@echo
 	@echo "[ EXAMPLES ]:"
 	@echo
