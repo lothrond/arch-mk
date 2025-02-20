@@ -26,7 +26,15 @@ to install to your system for later use.
 ### CD
 The CD/DVD drive is usually `/dev/sr0` or `/dev/sr1` etc.
 
-Identify the name of the CD/DVD drive
+Identify the name of the CD/DVD drive: 
+
+	dmesg | grep dvd | grep sr
+
+Look for `[sr0]` or `[sr1]` etc.
+
+Then, with smething like `wodim` installed:
+
+	wodim -eject -tao  speed=2 dev=/dev/sr0 -v -data archiso-x86_64.iso
 
 ### USB
 Identify the device label of the USB:
@@ -52,70 +60,42 @@ Obtain this repository:
 
 Change into working directory, and make sure to edit `config.mk` as needed.
 
-## Arch Linux build options
+## Arch Linux make options
 
-The mian build options are:
+The main make option is:
 
-	make help
+	make archlinux
+
+This will run:
+
 	make archlinux-base
-	make archlinux-dev
 	make archlinux-system
 	make archlinux-desktop
 	make archlinux-nologin
+	make archlinux-dev
 
-Gaming and SteamOS build options:
+Additional make options:
 
+	make archlinux-32
 	make archlinux-steam
 	make archlinux-steamos
+
+Other make options:
+
+	make wipe
+	make clean
+
+(Run `make help` for more information)
 
 ## Building Arch Linux
 
 ### Base system
 
-Make base system packages by running:
+Make the base system by running:
 
-	make archlinux-base
+	make archlinux
 
-Once complete, you will be inside the chroot build environment.
-
-Make the base system configuration with:
-
-	make archlinux-system
-
-Once complete, you will be prompted for a root password.
-
-Additional developer tools can be made with:
-
-	make archlinux-dev
-
-### Desktop
-
-To make the desktop environment, run:
-
-	archlinux-desktop
-
-#### Automatic login
-
-After making the desktop environment, for automatic login support, run:
-
-	make archlinux-nologin
-
-This will also allow the user to still have a lock screen
-for the desktop environment, without requiring a password to unlock the desktop session.
-
-### Gaming (Steam)
-
-First, enable 32 bit architecture support with:
-
-	make archlinux-32
-
-Then, make steam client and WINE packages (with system configurations):
-
-	make archlinux-steam
-
-Additionally, to make a SteamOS desktop session, run:
-
-	make archlinux-steamos
+you will be prompted for a root and desktop user password.
 
 See `make` or `make help` for more information.
 
