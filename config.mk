@@ -12,17 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#################################
+### Base System Configuration ###
+#################################
+
 # Define base system Hostname:
 HOSTNAME := fathership
 
 # Define user name:
 USER := steam
-
-# Define device disk drive:
-DRIVE := /dev/sda
-
-# Define UUID of device disk drive:
-BLKID := `blkid -s UUID | grep $(DRIVE)3 | cut -d '"' -f 2 | cut -d '"' -f 1`
 
 # Define base system timezone:
 TZ := America/New_York
@@ -33,6 +31,9 @@ LOCALE_B := UTF-8
 
 # Define base system keyboard keymap:
 KEYB := us
+
+# Define device disk drive:
+DRIVE := /dev/sda
 
 # Define Arch Linux desktop:
 #DESKTOP := gnome
@@ -47,30 +48,36 @@ PLASMA_SESSION := plasma
 #GRAPHICS := intel
 GRAPHICS := nvidia
 
-# Define AMD graphics:
-#AMD_BOARD :=
+# Define amd graphics:
+#AMD_BOARD := ?
+# Define amd graphics driver packages:
+#AMD_DRIVER := ?
+# Define amd graphics kernel modules:
+#AMD_KMOD := ?
 
-# Define Intel graphics:
-#INTEL_BOARD :=
+# Define intel graphics:
+#INTEL_BOARD := ?
+# Define intel graphics driver packages:
+#INTEL_DRIVER := ?
+# Define intel graphics kernel modules:
+#INTEL_KMOD := ?
 
-# Define Nvidia graphics:
+# Define nvidia graphics:
 NVIDIA_BOARD := Nvidia Geforce GTX 970
-
 # Define nvidia graphics kernel modules:
 NVIDIA_KMOD := nvidia nvidia_modeset nvidia_uvm nvidia_drm
-
-# Define Nvidia graphics driver packages:
+# Define nvidia graphics driver packages:
 #NVIDIA_DRIVER := nvidia-dkms
 NVIDIA_DRIVER := nvidia
 
-# Define Linux kernel:
+# Define linux kernel:
 KERNEL := linux linux-firmware
 
 # Define CPU microcode:
 #MICROCODE := amd-ucode
 MICROCODE := intel-ucode
 
-# Define bootloader (Don't change. (Probably.)):
+# Define bootloader:
 BOOTLOADER := grub
 #BOOTLOADER := systemd
 
@@ -86,11 +93,19 @@ BOOT_OPTS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.g
 # Define initramfs base system options:
 INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems
 
+# Define UUID of device disk drive:
+BLKID := `blkid -s UUID | grep $(DRIVE)3 | cut -d '"' -f 2 | cut -d '"' -f 1`
+
 # Define Arch Linux make operations:
 MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin
 
 # Define additional make operations:
+# (archlinux-dvd archlinux-32 archlinux-steam archlinux-lqx archlinux-steamos)
 OPTS :=
+
+#############################
+### Package Configuration ###
+#############################
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)

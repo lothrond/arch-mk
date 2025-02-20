@@ -18,9 +18,9 @@ help:
 	@echo Arch Linux - Makefile installation
 	@echo
 	@echo "[USAGE]: make archlinux"
-	@echo           make[ MAKEOPTS OPTIONS | OTHER OPTION ]
+	@echo           make [ MAKEOPTS-OPTIONS ADDITIONAL-OPTIONS | OTHER-OPTION ]
 	@echo
-	@echo "[MAKEOPTS OPTIONS]:"
+	@echo "[MAKEOPTS-OPTIONS]:"
 	@echo
 	@echo " * The \`MAKEOPTS\` build variable defines the base system installation."
 	@echo "   By default, this is defined as a plasma/gnome desktop, with a silent bootloader,
@@ -32,7 +32,7 @@ help:
 	@echo "    archlinux-nologin  -  Enable automatic login support for Arch Linux desktop."
 	@echo "    archlinux-silent   -  Configure a silent Arch Linux bootloader."
 	@echo
-	@echo "[ ADDITIONAL OPTIONS ]:"
+	@echo "[ ADDITIONAL-OPTIONS ]:"
 	@echo
 	@echo " * Any additional options can be specified with \`OPTS\` build variable."
 	@echo
@@ -43,7 +43,7 @@ help:
 	@echo "    archlinux-steam    -  Install Arch Linux steam gaming packages."
 	@echo "    archlinux-steamos  -  Configure a SteamOS Arch Linux."
 	@echo
-	@echo "[OTHER OPTIONS]:"
+	@echo "[ OTHER-OPTIONS ]:"
 	@echo
 	@echo " * Other options can be used to wipe/prepare the disk before installation,"
 	@echo "   poweroff he system after installation, and show this help message."
@@ -54,7 +54,7 @@ help:
 	@echo
 	@echo "(All build variables are defined in the \`config.mk\` makefile configuation.)"
 	@echo
-	@echo "[EXAMPLES]:"
+	@echo "[ EXAMPLES ]:"
 	@echo
 	@echo "   make archlinux"
 	@echo "   make archlinux archlinux-lxq archlinux-dvd"
@@ -67,7 +67,6 @@ help:
 
 include config.mk
 
-## ...
 archlinux: archlinux-base
 
 ## Build base installation:
