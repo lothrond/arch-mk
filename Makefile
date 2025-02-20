@@ -537,10 +537,10 @@ gnome-nologin:
 # Configure passwordless login for GNOME login screen:
 .PHONY: gnome-nopasswd
 gnome-nopasswd:
-    @echo -e "\n* Making passwordless login for GNOME desktop user accounts ..."
-    @sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/gdm-password
-    @groupadd nopasswdlogin
-    @gpasswd -a $(USER) nopasswdlogin
+	@echo -e "\n* Making passwordless login for GNOME desktop user accounts ..."
+	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/gdm-password
+	@groupadd nopasswdlogin
+	@gpasswd -a $(USER) nopasswdlogin
 
 ###################
 ## STEAM GAMING: ##
