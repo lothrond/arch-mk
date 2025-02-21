@@ -38,7 +38,6 @@ help:
 	@echo
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
 	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC."
-	@echo "    archlinux-lqx      -  Install custom liqourix linux kernel."
 	@echo "    archlinux-32       -  Enable Arch Linux 32 bit architecture support."
 	@echo "    archlinux-steam    -  Install Arch Linux steam gaming packages."
 	@echo "    archlinux-steamos  -  Configure a SteamOS Arch Linux."
@@ -84,14 +83,11 @@ archlinux-silent: $(BOOTLOADER)-silent lastlogin kmsgs agetty
 ## Configure third party kernel-based iptables network firewall:
 #archlinux-firewall: firewall
 
-## Custom (Gaming) kernel:
-archlinux-lqx: lqx
-
 ## Build desktop:
 archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
 
 ## Enable automatic desktop login (no password for lock screen):
-archlinux-nologin: $(DESKTOP)-nologin $(DESKTOP)-nopasswd
+archlinux-nopass: $(DESKTOP)-nopass
 
 ## Ebable CD/DVD and bluray disk suport:
 #archlinux-dvd: (wip)
@@ -267,16 +263,6 @@ exit-chroot:
 	@echo "Run \`make done\` or \`systemctl poweroff\` when done."
 	@echo
 
-###########################
-## Liqourix Linux kernel ##
-###########################
-
-.PHONY: lqx
-lqx:
-	@echo -e "\n* Making liqourix kernel ..."
-	@curl -s 'https://liquorix.net/install-liquorix.sh' | sudo bash
-	@echo -e "\n* Reboot before installing new graphics drivers ..."
-
 ###################################
 ## ADDITIONAL DEVELOPMENT TOOLS: ##
 ###################################
@@ -286,6 +272,7 @@ lqx:
 dev-pkgs:
 	@echo -e "\n* Making additional development packages ..."
 	@pacman -S $(PKGS_DEV) --noconfirm
+	@systemctl enable sshd
 
 # Make remote development tools.
 .PHONY: remote-pkgs
@@ -492,29 +479,25 @@ gnome:
 	@systemctl enable power-profiles-daemon
 
 # Configure automatic login for KDE Plasma display manager:
+# Also, configure passwordless login for KDE Plasma login screen:
 .PHONY: plasma-nologin
-plasma-nologin:
+plasma-nopass:
 	@echo -e "\n* Making automatic login for KDE display manager service ..."
-	@touch /etc/sddm.conf
 	@echo "[Autologin]" > /etc/sddm.conf
 	@echo "User=$(USER)" >> /etc/sddm.conf
 	@echo "Session=$(PLASMA_SESSION)" >> /etc/sddm.conf
 	@echo -e "\n* Making automatic login for KDE Plasma desktop user accounts ..."
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
-
-
-# Configure passwordless login for KDE Plasma login screen:
-.PHONY: plasma-nopasswd
-plasma-nopasswd:
-	@echo -e "\n* Making passwordless login for KDE plasma desktop login screen ..."
-	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
 	@groupadd nopasswdlogin
 	@gpasswd -a $(USER) nopasswdlogin
+	@echo -e "\n* Making passwordless login for KDE plasma desktop login screen ..."
+	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
 
 # Configure automatic login for GNOME display manager:
+# Also, configure passwordless login for GNOME login screen:
 GNOMEDM := /etc/gdm/nologin.conf
 .PHONY: gnome-nologin
-gnome-nologin:
+gnome-nopass:
 	@echo -e "\n* Making automatic login for GNOME display manger service ..."
 	@echo -e "# GDM config" > $(GNOMEDM)
 	@echo -e "" >> $(GNOMEDM)
@@ -532,10 +515,6 @@ gnome-nologin:
 	@echo -e "" >> $(GNOMEDM)
 	@echo -e "[debug]" >> $(GNOMEDM)
 	@echo -e "#Enable=true" >> $(GNOMEDM)
-
-# Configure passwordless login for GNOME login screen:
-.PHONY: gnome-nopasswd
-gnome-nopasswd:
 	@echo -e "\n* Making passwordless login for GNOME desktop user accounts ..."
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/gdm-password
 	@groupadd nopasswdlogin
