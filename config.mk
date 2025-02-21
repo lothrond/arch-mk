@@ -106,8 +106,8 @@ BLKID := `blkid -s UUID | grep $(DRIVE)3 | cut -d '"' -f 2 | cut -d '"' -f 1`
 MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nopass
 
 # Define additional make operations:
-# (archlinux-dev archlinux-dvd archlinux-32 archlinux-steam archlinux-lqx archlinux-steamos)
-OPTS :=
+# (archlinux-dev archlinux-32 archlinux-steam archlinux-steamos)
+OPTS := 
 
 #############################
 ### Package Configuration ###
