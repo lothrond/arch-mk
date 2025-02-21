@@ -272,13 +272,13 @@ exit-chroot:
 dev-pkgs:
 	@echo -e "\n* Making additional development packages ..."
 	@pacman -S $(PKGS_DEV) --noconfirm
-	@systemctl enable sshd
 
 # Make remote development tools.
 .PHONY: remote-pkgs
 remote-pkgs:
 	@echo -e "\n* Making remote development packages ..."
 	@pacman -S $(PKGS_REMOTE) --noconfirm
+	@systemctl enable sshd
 
 # Make development shell.
 .PHONY: zsh-pkgs
