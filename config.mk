@@ -133,7 +133,7 @@ PKGS_REMOTE := openssh screen tmux
 PKGS_BLUEZ := bluez bluez-utils
 
 # Define DVD/Blue-ray packages:
-PKGS_DVD := vlc libblueray libdvdcss
+PKGS_DVD := vlc libbluray libdvdcss
 
 # Define display server packages:
 PKGS_X := xorg xdg-desktop-portal
