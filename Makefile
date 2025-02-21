@@ -559,14 +559,14 @@ wine-pkgs:
 dvd-br:
 	@echo -e "\n* Making DVD/Bluray playback available with VLC media player ..."
 	@echo -e "\n* Retrieving KEYDB config ..."
-	@mkdir /home/$(USER)/.config/aacs
+	@mkdir -p /home/$(USER)/.config/aacs
 	@wget http://fvonline-db.bplaced.net/fv_download.php?lang=eng
 	@mv fv_download.php?lang=eng keydb.cfg.zip
 	@unzip keydb.cfg.zip
 	@rm keydb.cfg.zip
 	@mv keydb.cfg /home/$(USER)/.config/aacs/KEYDB.cfg
 	@chmod 644 /home/$(USER)/.config/aacs/KEYDB.cfg
-	@chown -R $(USER):$(USER) /home/$(USER)/.config/aacs
+	@chown -R $(USER):$(USER) /home/$(USER)
 	echo -e "\n* Making DVD/Bluray packages ..."
 	@pacman -S $(PKGS_DVD) --noconfirm
 
