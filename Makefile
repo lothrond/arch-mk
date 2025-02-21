@@ -68,37 +68,37 @@ include config.mk
 
 archlinux: archlinux-base
 
-## Build base installation:
+## Make base installation:
 archlinux-base: partitions filesystems mount base other exit-chroot
 
-## Build base system configuration:
+## Make base system configuration:
 archlinux-system: timezone locales keymap host net-sys init $(BOOTLOADER) pass
 
-## Build development tools:
+## Make development tools:
 archlinux-dev: dev-pkgs remote-pkgs zsh-pkgs
 
-## Build silent bootloader:
+## Make silent bootloader:
 archlinux-silent: $(BOOTLOADER)-silent lastlogin kmsgs agetty
 
-## Configure third party kernel-based iptables network firewall:
+## Make third party kernel-based iptables network firewall:
 #archlinux-firewall: firewall
 
-## Build desktop:
+## Make desktop:
 archlinux-desktop: user x $(GRAPHICS) $(GRAPHICS)-config $(DESKTOP) bluetooth
 
-## Enable automatic desktop login (no password for lock screen):
+## Make automatic desktop login (no password entry):
 archlinux-nopass: $(DESKTOP)-nopass
 
-## Ebable CD/DVD and bluray disk suport:
-#archlinux-dvd: (wip)
+## Make CD/DVD and bluray disk suport:
+archlinux-dvd: dvd-br
 
-## Enable 32 bit architecture support:
+## Make 32 bit architecture support:
 archlinux-32: multilib $(GRAPHICS)-32
 
-## Build steam client:
+## Make steam client (and WINE):
 archlinux-steam: steam-pkgs wine-pkgs
 
-## Build SteamOS configuration:
+## Make SteamOS configuration:
 archlinux-steamos: steamos-session
 
 ## Clean/Wipe device disk drive.
@@ -267,20 +267,20 @@ exit-chroot:
 ## ADDITIONAL DEVELOPMENT TOOLS: ##
 ###################################
 
-# Make additonal development tools.
+# Install additonal development tools.
 .PHONY: dev-pkgs
 dev-pkgs:
 	@echo -e "\n* Making additional development packages ..."
 	@pacman -S $(PKGS_DEV) --noconfirm
 
-# Make remote development tools.
+# Install/Setup remote development tools.
 .PHONY: remote-pkgs
 remote-pkgs:
 	@echo -e "\n* Making remote development packages ..."
 	@pacman -S $(PKGS_REMOTE) --noconfirm
 	@systemctl enable sshd
 
-# Make development shell.
+# Install development shell.
 .PHONY: zsh-pkgs
 zsh-pkgs:
 	@echo -e "\n* Making ZSH developer shell packages ..."
@@ -326,7 +326,6 @@ kmsgs:
 # Hide agetty messages.
 AGETTY_OVERRIDE := /etc/systemd/system/getty@tty1.service.d/skip-prompt.conf
 OVERRIDE := -/usr/bin/agetty --skip-login --nonewline --noissue --autologin $(USER) --noclear %I '$$TERM'
-
 .PHONY: agetty
 agetty:
 	@echo -e "\n* Hiding agetty messages ..."
@@ -386,7 +385,7 @@ nvidia-graphics:
 
 nvidia: nvidia-graphics vulkan-graphics
 
-# Nvidia 32 bit architecture support:
+# Nvidia 32 bit architecture support.
 .PHONY: nvidia-graphics-32
 nvidia-graphics-32:
 	@echo -e "\n* Making 32 bit Nvidia Graphics driver packages ..."
@@ -394,7 +393,7 @@ nvidia-graphics-32:
 
 nvidia-32: nvidia-graphics-32 vulkan-graphics-32
 
-# Configure nvidia X11 Xorg config:
+# Configure nvidia X11 Xorg config.
 .PHONY: nvidia-xconfig
 nvidia-xconfig:
 	@echo -e "\n* Creating Nvidia graphics X11 Xorg configuration ..."
@@ -408,7 +407,7 @@ nvidia-xconfig:
 	@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo '' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 
-# Fix nvidia screen tearing issues:
+# Fix nvidia screen tearing issues.
 .PHONY: nvidia-tearing
 nvidia-tearing:
 	@echo -e "\n* Fixing screen tearing issues for Nvidia graphics graphics ..."
@@ -421,14 +420,14 @@ nvidia-tearing:
 	@echo '    Option         "TripleBuffer" "on"' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 	@echo 'EndSection' >> /etc/X11/xorg.conf.d/20-nvidia.conf
 
-# Enable the PAT feature for nvidia graphics:
+# Enable the PAT feature for nvidia graphics.
 .PHONY: nvidia-pat
 nvidia-pat:
 	@echo -e "\n* Enabling PAT for Nvidia graphics ..."
 	@touch /etc/modprobe.d/nvidia.conf
 	@echo "options nvidia NVreg_UsePageAttributeTable=1" >> /etc/modprobe.d/nvidia.conf
 
-# Early Kernel module loading (KMS) for nvidia graphics:
+# Early Kernel module loading (KMS) for nvidia graphics.
 .PHONY: nvidia-kms
 nvidia-kms:
 	@echo -e "\n* Setting early kernel mode settings for Nvidia graphics ..."
@@ -440,27 +439,27 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 ## DESKTOP: ##
 ##############
 
-# Create desktop user:
+# Create desktop user.
 .PHONY: user
 user:
 	@echo -e "\n* Making desktop user account ..."
 	@useradd -c "" -m -G audio,input,video,wheel $(USER)
 	@passwd $(USER)
 
-# Make the (X11) (xorg) display server.
+# Install X (X11) (xorg) display server.
 .PHONY: x
 x:
 	@echo -e "\n* Making desktop display server packages ..."
 	@pacman -S $(PKGS_X) --noconfirm
 
-# Make bluetooth.
+# Install bluetooth.
 .PHONY: bluetooth
 bluetooth:
 	@echo -e "\n* Making desktop bluetooth packages ..."
 	@pacman -S $(PKGS_BLUEZ) --noconfirm
 	@systemctl enable bluetooth
 
-# Make KDE Plasma dektop.
+# Install KDE Plasma dektop.
 PHONY: plasma
 plasma:
 	@echo -e "\n* Making KDE plasma desktop environment packages ..."
@@ -469,7 +468,7 @@ plasma:
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
-# Make GNOME desktop.
+# Install GNOME desktop.
 .PHONY: gnome
 gnome:
 	@echo -e "\n* Making GNOME desktop environment packages ..."
@@ -478,8 +477,8 @@ gnome:
 	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
 
-# Configure automatic login for KDE Plasma display manager:
-# Also, configure passwordless login for KDE Plasma login screen:
+# Configure automatic login for KDE Plasma display manager.
+# Also, configure no password entry.
 .PHONY: plasma-nologin
 plasma-nopass:
 	@echo -e "\n* Making automatic login for KDE display manager service ..."
@@ -493,8 +492,8 @@ plasma-nopass:
 	@echo -e "\n* Making passwordless login for KDE plasma desktop login screen ..."
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/kde
 
-# Configure automatic login for GNOME display manager:
-# Also, configure passwordless login for GNOME login screen:
+# Configure automatic login for GNOME display manager.
+# Also, configure no password entry.
 GNOMEDM := /etc/gdm/nologin.conf
 .PHONY: gnome-nologin
 gnome-nopass:
@@ -532,24 +531,44 @@ multilib:
 	@sed -i "93i Include = /etc/pacman.d/mirrorlist" /etc/pacman.conf
 	@pacman -Sy
 
-# Increase VM max heap count for better performance:
+# Increase VM max heap count for better performance.
 .PHONY: vm-max
 vm-max:
 	@echo -e "\n* Increasing VM Max heap count ..."
 	@touch /etc/sysctl.d/80-gamecompatibility.conf
 	@echo "" > /etc/sysctl.d/80-gamecompatibility.conf
 
-# Make steam client packages:
+# Install steam client packages.
 .PHONY: steam-pkgs
 steam-pkgs:
 	@echo -e "\n* Making steam client packages ..."
 	@pacman -S $(PKGS_STEAM) --noconfirm
 
-# Make WINE packages.
+# Install WINE packages.
 .PHONY: wine-pkgs
 wine-pkgs:
 	@echo -e "\n* Making WINE packages ..."
 	@pacman -S $(PKGS_WINE) --noconfirm
+
+#################
+## DVD/Blu-ray ##
+#################
+
+# Install dvd/bluray playback (with vlc media player).
+.PHONY: dvd-br
+dvd-br:
+	@echo -e "\n* Making DVD/Bluray playback available with VLC media player ..."
+	@echo -e "\n* Retrieving KEYDB config ..."
+	@mkdir /home/$(USER)/.config/aacs
+	@wget http://fvonline-db.bplaced.net/fv_download.php?lang=eng
+	@mv fv_download.php?lang=eng keydb.cfg.zip
+	@unzip keydb.cfg.zip
+	@rm keydb.cfg.zip
+	@mv keydb.cfg /home/$(USER)/.config/aacs/KEYDB.cfg
+	@chmod 644 /home/$(USER)/.config/aacs/KEYDB.cfg
+	@chown -R $(USER):$(USER) /home/$(USER)/.config/aacs
+	echo -e "\n* Making DVD/Bluray packages ..."
+	@pacman -S $(PKGS_DVD) --noconfirm
 
 ###############
 ## STEAM OS: ##
