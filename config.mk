@@ -148,7 +148,7 @@ PKGS_X := xorg xdg-desktop-portal
 #PKGS_INTEL_GRAPHICS_32 :=
 
 # Define nvidia driver graphics packages:
-PKGS_NVIDIA_GRAPHICS := $(NVIDIA_DRIVER) nvidia-utils
+PKGS_NVIDIA_GRAPHICS := $(NVIDIA_DRIVER) nvidia-utils nvidia-settings
 
 # Define Nvidia graphics driver 32 bit library support:
 PKGS_NVIDIA_GRAPHICS_32 := lib32-nvidia-utils
