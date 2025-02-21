@@ -50,22 +50,28 @@ GRAPHICS := nvidia
 
 # Define amd graphics:
 #AMD_BOARD := ?
+
 # Define amd graphics driver packages:
 #AMD_DRIVER := ?
+
 # Define amd graphics kernel modules:
 #AMD_KMOD := ?
 
 # Define intel graphics:
 #INTEL_BOARD := ?
+
 # Define intel graphics driver packages:
 #INTEL_DRIVER := ?
+
 # Define intel graphics kernel modules:
 #INTEL_KMOD := ?
 
 # Define nvidia graphics:
 NVIDIA_BOARD := Nvidia Geforce GTX 970
+
 # Define nvidia graphics kernel modules:
 NVIDIA_KMOD := nvidia nvidia_modeset nvidia_uvm nvidia_drm
+
 # Define nvidia graphics driver packages:
 #NVIDIA_DRIVER := nvidia-dkms
 NVIDIA_DRIVER := nvidia
