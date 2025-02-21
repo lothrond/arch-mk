@@ -103,10 +103,10 @@ INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vcon
 BLKID := `blkid -s UUID | grep $(DRIVE)3 | cut -d '"' -f 2 | cut -d '"' -f 1`
 
 # Define Arch Linux make operations:
-MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nologin
+MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nopass
 
 # Define additional make operations:
-# (archlinux-dvd archlinux-32 archlinux-steam archlinux-lqx archlinux-steamos)
+# (archlinux-dev archlinux-dvd archlinux-32 archlinux-steam archlinux-lqx archlinux-steamos)
 OPTS :=
 
 #############################
