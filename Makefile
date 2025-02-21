@@ -583,8 +583,8 @@ steamos-session:
 	@echo "Comment=Start Steam in Big Picture Mode" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Exec=/usr/bin/gamescope -e -- /usr/bin/steam -tenfoot" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Type=Application" >> /usr/share/wayland-sessions/steamos.desktop
-	@touch /var/lib/AccountService/users/$(USER)
-	@echo "Session=steamos" > /var/lib/AccountService/users/$(USER)
+	@touch /var/lib/AccountsService/users/$(USER)
+	@echo "Session=steamos" > /var/lib/AccountsService/users/$(USER)
 
 # Create SteamOS desktop user.
 .PHONY: desktop-user
