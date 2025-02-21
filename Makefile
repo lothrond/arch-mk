@@ -567,7 +567,7 @@ dvd-br:
 	@mv keydb.cfg /home/$(USER)/.config/aacs/KEYDB.cfg
 	@chmod 644 /home/$(USER)/.config/aacs/KEYDB.cfg
 	@chown -R $(USER):$(USER) /home/$(USER)
-	echo -e "\n* Making DVD/Bluray packages ..."
+	@echo -e "\n* Making DVD/Bluray packages ..."
 	@pacman -S $(PKGS_DVD) --noconfirm
 
 ###############

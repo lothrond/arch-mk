@@ -121,7 +121,7 @@ PKGS_BASE := base $(KERNEL) $(MICROCODE) $(BOOTLOADER)
 PKGS_DOCS := man-db man-pages texinfo
 
 # Define base system tools:
-PKGS_TOOLS := dosfstools e2fsprogs efibootmgr git make nano sudo wget
+PKGS_TOOLS := dosfstools e2fsprogs efibootmgr git make nano sudo unzip wget
 
 # Define base system networking packages:
 PKGS_NET := dhcpcd iwd
