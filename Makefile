@@ -18,7 +18,7 @@ help:
 	@echo Arch Linux - Makefile installation
 	@echo
 	@echo "[USAGE]: make archlinux"
-	@echo "         make [ MAKEOPTS-OPTIONS ADDITIONAL-OPTIONS | OTHER-OPTION ]"
+	@echo "         make [ MAKEOPTS-OPTIONS ADDITIONAL-OPTIONS || OTHER-OPTION ]"
 	@echo
 	@echo "[MAKEOPTS-OPTIONS]:"
 	@echo
@@ -34,10 +34,10 @@ help:
 	@echo
 	@echo "[ ADDITIONAL-OPTIONS ]:"
 	@echo
-	@echo " * Any additional options can be specified with OPTS build variable."
+	@echo " * Any additional options can be specified with the OPTS build variable."
 	@echo
 	@echo "    archlinux-dev      -  Install additional Arch Linux development packages."
-	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC."
+	@echo "    archlinux-dvd      -  Enable CD/DVD and bluray disk support with VLC (WIP)."
 	@echo "    archlinux-32       -  Enable Arch Linux 32 bit architecture support."
 	@echo "    archlinux-steam    -  Install Arch Linux steam gaming packages."
 	@echo "    archlinux-steamos  -  Configure a SteamOS Arch Linux."
@@ -483,9 +483,9 @@ gnome:
 .PHONY: plasma-nologin
 plasma-nopass:
 	@echo -e "\n* Making automatic login for KDE display manager service ..."
-	@echo "[Autologin]" > /etc/sddm.conf
-	@echo "User=$(USER)" >> /etc/sddm.conf
-	@echo "Session=$(PLASMA_SESSION)" >> /etc/sddm.conf
+	@echo -e "[Autologin]" > /etc/sddm.conf
+	@echo -e "User=$(USER)" >> /etc/sddm.conf
+	@echo -e "Session=$(PLASMA_SESSION)" >> /etc/sddm.conf
 	@echo -e "\n* Making automatic login for KDE Plasma desktop user accounts ..."
 	@sed -i '2i auth        sufficient  pam_succeed_if.so user ingroup nopasswdlogin' /etc/pam.d/sddm
 	@groupadd nopasswdlogin
