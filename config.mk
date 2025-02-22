@@ -163,7 +163,7 @@ PKGS_VULKAN := vkd3d
 PKGS_VULKAN_32 := lib32-vkd3d
 
 # Define KDE Plasma base desktop packages:
-PKGS_PLASMA_DESKTOP := plasma plasma-pa plasma-nm sddm power-profiles-daemon
+PKGS_PLASMA_DESKTOP := plasma plasma-pa plasma-nm sddm power-profiles-daemon uncluter
 
 # Define KDE Plasma base desktop application packages:
 PKGS_PLASMA_APPS := konsole kdialog kgpg kdf sweeper
@@ -172,7 +172,7 @@ PKGS_PLASMA_APPS := konsole kdialog kgpg kdf sweeper
 PKGS_PLASMA_FILES := dolphin ark ffmpegthumbs kdegraphics-thumbnailers kio-admin xdg-desktop-portal-kde
 
 # Define GNOME base desktop packages:
-PKGS_GNOME_DESKTOP := gnome gnome-flashback networkmanager power-profiles-daemon
+PKGS_GNOME_DESKTOP := gnome gnome-flashback networkmanager power-profiles-daemon unclutter
 
 # Define GNOME desktop application packages:
 PKGS_GNOME_APPS := gnome-extra firewalld
@@ -187,7 +187,10 @@ PKGS_STEAM := steam ttf-liberation gamemode gamescope
 PKGS_WINE := wine
 
 # Define CLI development tools:
-PKGS_DEV := base-devel htop strace lm_sensors atool libcaca mediainfo highlight ranger tree vim
+PKGS_DEV := base-devel linux-headers htop strace lm_sensors tree vim
+
+# Define CLI development file management tools (ranger):
+PKGS_RNGR := atool libcaca mediainfo highlight ranger
 
 # Define CLI development shell (zsh):
 PKGS_ZSH := zsh zsh-syntax-highlighting zsh-completions

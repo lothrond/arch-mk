@@ -270,21 +270,27 @@ exit-chroot:
 # Install additonal development tools.
 .PHONY: dev-pkgs
 dev-pkgs:
-	@echo -e "\n* Making additional development packages ..."
+	@echo -e "\n* Installing additional development packages ..."
 	@pacman -S $(PKGS_DEV) --noconfirm
 
 # Install/Setup remote development tools.
 .PHONY: remote-pkgs
 remote-pkgs:
-	@echo -e "\n* Making remote development packages ..."
+	@echo -e "\n* Installing remote development packages ..."
 	@pacman -S $(PKGS_REMOTE) --noconfirm
 	@systemctl enable sshd
 
-# Install development shell.
+# Install CLI development shell.
 .PHONY: zsh-pkgs
 zsh-pkgs:
-	@echo -e "\n* Making ZSH developer shell packages ..."
+	@echo -e "\n* Installing ZSH developer shell packages ..."
 	@pacman -S $(PKGS_ZSH) --noconfirm
+
+# Install CLI file management tools.
+.PHONY: ranger-pkgs
+ranger-pkgs:
+	@echo -e "\n* Installing ranger packages ..."
+	@pacman -S $(PKGS_RNGR) --noconfirm
 
 ##################################
 ## CONFIGURE SILENT BOOTLOADER: ##
