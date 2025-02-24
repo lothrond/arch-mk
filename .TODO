@@ -1,0 +1,4 @@
+-Copy over network information from archiso
+-Create steamos-session script
+-Set network,bluetooth etc. from session script
+-Call script from wayland-session
