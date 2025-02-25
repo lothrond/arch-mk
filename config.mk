@@ -163,7 +163,7 @@ PKGS_VULKAN := vkd3d
 PKGS_VULKAN_32 := lib32-vkd3d
 
 # Define KDE Plasma base desktop packages:
-PKGS_PLASMA_DESKTOP := plasma plasma-pa plasma-nm sddm power-profiles-daemon unclutter
+PKGS_PLASMA_DESKTOP := plasma plasma-pa plasma-nm sddm power-profiles-daemon kdeconnect unclutter
 
 # Define KDE Plasma base desktop application packages:
 PKGS_PLASMA_APPS := konsole kdialog kgpg kdf sweeper
