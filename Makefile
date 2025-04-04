@@ -56,9 +56,8 @@ help:
 	@echo "[EXAMPLES]:"
 	@echo
 	@echo "   make archlinux"
-	@echo "   make archlinux archlinux-lxq archlinux-dvd"
-	@echo "   make archlinux archlinux-steamos"
 	@echo "   make clean archlinux archlinux-dev"
+	@echo "   make archlinux archlinux-steamos"
 	@echo
 	@echo "Copyright (C) 2025, lothrond <lothrond@proton.me>"
 
@@ -579,6 +578,13 @@ dvd-br:
 ###############
 ## STEAM OS: ##
 ###############
+
+# Third party github repo SteamOS setup.
+.PHONY: steamos-arch
+steamos-arch:
+	@echo -e "Setting up SteamOS ..."
+	@git clone https://github.com/lothrond/arch-steamos.git
+	@cd arch-steamos && make install-$(DESKTOP_DISPLAY_MGR)
 
 # Create SteamOS desktop session.
 .PHONY: steamos-session

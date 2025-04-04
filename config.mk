@@ -48,6 +48,10 @@ PLASMA_SESSION := plasma
 #GRAPHICS := intel
 GRAPHICS := nvidia
 
+# Define X or Wayland installation.
+# (install-wayland or install-x)
+DESKTOP_SESSION_MGR := install-wayland
+
 # Define amd graphics:
 #AMD_BOARD := ?
 
@@ -108,6 +112,8 @@ MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nopass
 # Define additional make operations:
 # (archlinux-dev archlinux-dvd archlinux-32 archlinux-steam archlinux-steamos)
 OPTS := 
+
+# Define
 
 #############################
 ### Package Configuration ###
