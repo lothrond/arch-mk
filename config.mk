@@ -98,7 +98,7 @@ BOOT_ID := Arch Linux
 BOOT_BM := /usr/share/systemd/bootctl/arch-splash.bmp
 
 # Define (silent) boot options:
-BOOT_OPTS := quiet loglevel=3 systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 bootsplash.bootfile=$(BOOT_BM) splash
+BOOT_OPTS := quiet loglevel=3 tsc=reliable clocksource=tsc systemd.show_status=false rd.udev.log_level=3 vt.global_cursor_default=0 bootsplash.bootfile=$(BOOT_BM) splash
 
 # Define initramfs base system options:
 INITRAMFS_OPTS := base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems

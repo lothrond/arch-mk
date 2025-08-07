@@ -98,7 +98,7 @@ archlinux-32: multilib $(GRAPHICS)-32
 archlinux-steam: steam-pkgs wine-pkgs
 
 ## Make SteamOS configuration:
-archlinux-steamos: steamos-session
+archlinux-steamos: steamos-session game-perf
 
 ## Clean/Wipe device disk drive.
 clean: archlinux-clean
@@ -604,6 +604,30 @@ desktop-user:
 	@echo -e "\n* Making SteamOS desktop user account ..."
 	@adduser -c "" -m -G audio,input,video,$(USER) desktop
 	@gpasswd -a desktop nopasswdlogin
+
+# Game/Performance tweaks.
+.PHONY: game-perf
+game-perf:
+	@echo -e "\n* Setting up gaming performance tweaks ..."
+	@touch /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "#    Path                  Mode UID  GID  Age Argument" > /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/vm/compaction_proactiveness - - - - 0" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/vm/watermark_boost_factor - - - - 1" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/vm/min_free_kbytes - - - - 1048576" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/vm/watermark_scale_factor - - - - 500" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/vm/swappiness - - - - 10" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /sys/kernel/mm/lru_gen/enabled - - - - 5" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/vm/zone_reclaim_mode - - - - 0" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /sys/kernel/mm/transparent_hugepage/enabled - - - - madvise" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /sys/kernel/mm/transparent_hugepage/shmem_enabled - - - - advise" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /sys/kernel/mm/transparent_hugepage/defrag - - - - never" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/vm/page_lock_unfairness - - - - 1" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/kernel/sched_child_runs_first - - - - 0" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/kernel/sched_autogroup_enabled - - - - 1" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /proc/sys/kernel/sched_cfs_bandwidth_slice_us - - - - 3000" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /sys/kernel/debug/sched/base_slice_ns  - - - - 3000000" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /sys/kernel/debug/sched/migration_cost_ns - - - - 500000" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+	@echo "w /sys/kernel/debug/sched/nr_migrate - - - - 8" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
 
 ################
 ## Clean/Wipe ##
