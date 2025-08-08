@@ -98,7 +98,7 @@ archlinux-32: multilib $(GRAPHICS)-32
 archlinux-steam: steam-pkgs wine-pkgs
 
 ## Make SteamOS configuration:
-archlinux-steamos: steamos-session game-perf
+archlinux-steamos: steamos-session game-perf dri-lat
 
 ## Clean/Wipe device disk drive.
 clean: archlinux-clean
@@ -628,6 +628,19 @@ game-perf:
 	@echo "w /sys/kernel/debug/sched/base_slice_ns  - - - - 3000000" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
 	@echo "w /sys/kernel/debug/sched/migration_cost_ns - - - - 500000" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
 	@echo "w /sys/kernel/debug/sched/nr_migrate - - - - 8" >> /etc/tmpfiles.d/consistent-response-time-for-gaming.conf
+
+# Reduce DRI latency
+.PHONY: dri-lat
+dri-lat:
+	@echo =e "\n* Reducing DRI latency ..."
+	@touch /etc/drirc
+	@echo '<driconf>' > /etc/drirc
+	@echo '	<device>' >> /etc/drirc
+	@echo '		<application name="Default">' >> /etc/drirc
+	@echo '			<option name="vblank_mode" value="0" />' >> /etc/drirc
+	@echo '		</application>' >> /etc/drirc
+	@echo '	</device>' >> /etc/drirc
+	@echo '</driconf>' >> /etc/drirc
 
 ################
 ## Clean/Wipe ##
