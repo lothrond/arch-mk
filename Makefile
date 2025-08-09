@@ -98,7 +98,7 @@ archlinux-32: multilib $(GRAPHICS)-32
 archlinux-steam: steam-pkgs wine-pkgs
 
 ## Make SteamOS configuration:
-archlinux-steamos: steamos-session game-perf dri-lat
+archlinux-steamos: steamos-session led-pkgs game-perf dri-lat
 
 ## Clean/Wipe device disk drive.
 clean: archlinux-clean
@@ -586,7 +586,13 @@ steamos-arch:
 	@git clone https://github.com/lothrond/arch-steamos.git
 	@cd arch-steamos && make install-$(DESKTOP_DISPLAY_MGR)
 
-# Create SteamOS desktop session.
+# Install LED control packeges.
+.PHONY: led-pkgs
+led-pkgs:
+	@echo -e "\n* Installing LED control packages ..."
+	@pacman -S $(LED_PKGS) --noconfirm
+
+# Create SteamOS desktop session (WIP).
 .PHONY: steamos-session
 steamos-session:
 	@echo -e "\n* Making SteamOS desktop session ..."
@@ -598,7 +604,7 @@ steamos-session:
 	@touch /var/lib/AccountsService/users/$(USER)
 	@echo "Session=steamos" > /var/lib/AccountsService/users/$(USER)
 
-# Create SteamOS desktop user.
+# Create SteamOS desktop user (WIP).
 .PHONY: desktop-user
 desktop-user:
 	@echo -e "\n* Making SteamOS desktop user account ..."

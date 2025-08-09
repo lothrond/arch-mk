@@ -192,6 +192,9 @@ PKGS_STEAM := steam ttf-liberation gamemode gamescope
 # Define WINE (gaming) packages (also for steam):
 PKGS_WINE := wine
 
+# Define LED control packages:
+PKGS_LED := openrgb i2c-tools
+
 # Define CLI development tools:
 PKGS_DEV := base-devel linux-headers htop strace lm_sensors tree vim
 
