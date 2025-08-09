@@ -375,7 +375,7 @@ grub-silent-hook:
     @echo "Description = Configure GRUB bootloader configuration file after upgrades..." >> /etc/pacman.d/hooks/grub-silent.hook
     @echo "Depends = grub" >> /etc/pacman.d/hooks/grub-silent.hook
     @echo "When = PostTransaction" >> /etc/pacman.d/hooks/grub-silent.hook
-    @echo "Exec = /usr/bin/sed -i '/^echo\b//' /boot/grub/grub.cfg" >> /etc/pacman.d/hooks/grub-silent.hook
+    @echo "Exec = /usr/bin/sed -i '/^echo\b//d' /boot/grub/grub.cfg" >> /etc/pacman.d/hooks/grub-silent.hook
 
 # Configure a silent GRUB bootloader.
 .PHONY: grub-silent
