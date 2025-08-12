@@ -395,7 +395,7 @@ vulkan-graphics-32:
 	@echo -e "\n Making Vulkan graphics 32 bit libraries ..."
 	@pacman -S $(PKGS_VULKAN_32) --noconfirm
 
-## AMD Graphics ##
+## AMD Graphics (WIP) ##
 #
 #.PHONY: amd-graphics
 #amd-graphics:
@@ -409,7 +409,7 @@ vulkan-graphics-32:
 #
 #amd-32: amd-graphics-32 vulkan-graphics-32
 
-## Intel Graphics ##
+## Intel Graphics (WIP) ##
 #
 #.PHONY: intel-graphics
 #intel-graphics:
@@ -566,9 +566,29 @@ gnome-nopass:
 	@groupadd nopasswdlogin
 	@gpasswd -a $(USER) nopasswdlogin
 
-###################
-## STEAM GAMING: ##
-###################
+##################
+## DVD/Blu-ray: ##
+##################
+
+# Install dvd/bluray playback (with vlc media player).
+.PHONY: dvd-br
+dvd-br:
+	@echo -e "\n* Making DVD/Bluray playback available with VLC media player ..."
+	@echo -e "\n* Retrieving KEYDB config ..."
+	@mkdir -p /home/$(USER)/.config/aacs
+	@wget http://fvonline-db.bplaced.net/fv_download.php?lang=eng
+	@mv fv_download.php?lang=eng keydb.cfg.zip
+	@unzip keydb.cfg.zip
+	@rm keydb.cfg.zip
+	@mv keydb.cfg /home/$(USER)/.config/aacs/KEYDB.cfg
+	@chmod 644 /home/$(USER)/.config/aacs/KEYDB.cfg
+	@chown -R $(USER):$(USER) /home/$(USER)
+	@echo -e "\n* Making DVD/Bluray packages ..."
+	@pacman -S $(PKGS_DVD) --noconfirm
+
+############
+## STEAM: ##
+############
 
 # Enable 32 bit architecture support.
 .PHONY: multilib
@@ -597,31 +617,11 @@ wine-pkgs:
 	@echo -e "\n* Making WINE packages ..."
 	@pacman -S $(PKGS_WINE) --noconfirm
 
-#################
-## DVD/Blu-ray ##
-#################
+#####################
+## STEAM OS (WIP): ##
+#####################
 
-# Install dvd/bluray playback (with vlc media player).
-.PHONY: dvd-br
-dvd-br:
-	@echo -e "\n* Making DVD/Bluray playback available with VLC media player ..."
-	@echo -e "\n* Retrieving KEYDB config ..."
-	@mkdir -p /home/$(USER)/.config/aacs
-	@wget http://fvonline-db.bplaced.net/fv_download.php?lang=eng
-	@mv fv_download.php?lang=eng keydb.cfg.zip
-	@unzip keydb.cfg.zip
-	@rm keydb.cfg.zip
-	@mv keydb.cfg /home/$(USER)/.config/aacs/KEYDB.cfg
-	@chmod 644 /home/$(USER)/.config/aacs/KEYDB.cfg
-	@chown -R $(USER):$(USER) /home/$(USER)
-	@echo -e "\n* Making DVD/Bluray packages ..."
-	@pacman -S $(PKGS_DVD) --noconfirm
-
-###############
-## STEAM OS: ##
-###############
-
-# Third party github repo SteamOS setup.
+# Third party github repo SteamOS setup (WIP).
 .PHONY: steamos-arch
 steamos-arch:
 	@echo -e "Setting up SteamOS ..."
@@ -652,6 +652,10 @@ desktop-user:
 	@echo -e "\n* Making SteamOS desktop user account ..."
 	@adduser -c "" -m -G audio,input,video,$(USER) desktop
 	@gpasswd -a desktop nopasswdlogin
+
+#############
+## Gaming: ##
+#############
 
 # Game/Performance tweaks.
 .PHONY: game-perf
@@ -690,9 +694,9 @@ dri-lat:
 	@echo '	</device>' >> /etc/drirc
 	@echo '</driconf>' >> /etc/drirc
 
-################
-## Clean/Wipe ##
-################
+#################
+## Clean/Wipe: ##
+#################
 
 # Quickly clean device disk drive.
 .PHONY: archlinux-clean
