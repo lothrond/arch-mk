@@ -44,6 +44,18 @@ Now:
 
 	dd if=/path/to/liveISO of=/path/to/USB bs=1M status=progress
 
+### ChromeOS devices:
+
+The `Chromebook Recovery Utility` extension needs to be installed.
+
+Rename the `archlinux-x86_64.iso` to a `.bin` file:
+
+    mv archlinux-x86_64.iso archlinux-x86_64.bin
+
+Then, open `chrome` and open the `Chromebook Recovery Utility`.
+Click the gear icon in the top right corner, and click `use local image`.
+Plug in a USB drive and On the next screen, make sure to select the correct drive, etc.
+
 # With an archiso
 ## Arch Linux build environment setup
 Boot the archiso installation medium.
