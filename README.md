@@ -31,7 +31,7 @@ Identify the name of the CD/DVD drive:
 
 Look for `[sr0]` or `[sr1]` etc.
 
-Then, with smething like `wodim` installed:
+Then, with something like `wodim` installed:
 
 	wodim -eject -tao  speed=2 dev=/dev/sr0 -v -data archiso-x86_64.iso
 
