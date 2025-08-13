@@ -622,7 +622,8 @@ wine-pkgs:
 vulkan-shader-proc:
 	@echo -e "\n* Making vulkan shader processing faster ..."
 	@touch .steam/steam/steam_dev.cfg
-	@echo "unShaderBackgroundProcessingThreads $(SHADER_THREADS)" > .steam/steam/steam_dev.cfg
+	@echo "@ShaderBackgroundProcessingThreads $(SHADER_THREADS)" > .steam/steam/steam_dev.cfg
+	@echo "unShaderBackgroundProcessingThreads $(SHADER_THREADS)" >> .steam/steam/steam_dev.cfg
 
 #####################
 ## STEAM OS (WIP): ##
