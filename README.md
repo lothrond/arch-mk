@@ -108,6 +108,11 @@ Make the base system by running:
 
 you will be prompted for a root and desktop user password.
 
+### Steam gaming
+
+For processing vulkan shaders faster, edit the `SHADER_THREADS` variable in `config.mk`.
+Replace `4` with the number of threads your CPU supports.
+
 See `make` or `make help` for more information.
 
 #### Copyright (C) 2025, lothrond <lothrond AT proton DOT me>

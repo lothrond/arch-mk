@@ -52,22 +52,22 @@ GRAPHICS := nvidia
 # (install-wayland or install-x)
 DESKTOP_SESSION_MGR := install-wayland
 
-# Define amd graphics:
+# Define amd graphics (WIP):
 #AMD_BOARD := ?
 
-# Define amd graphics driver packages:
+# Define amd graphics driver packages (WIP):
 #AMD_DRIVER := ?
 
-# Define amd graphics kernel modules:
+# Define amd graphics kernel modules (WIP):
 #AMD_KMOD := ?
 
-# Define intel graphics:
+# Define intel graphics (WIP):
 #INTEL_BOARD := ?
 
-# Define intel graphics driver packages:
+# Define intel graphics driver packages (WIP):
 #INTEL_DRIVER := ?
 
-# Define intel graphics kernel modules:
+# Define intel graphics kernel modules (WIP):
 #INTEL_KMOD := ?
 
 # Define nvidia graphics:
@@ -113,7 +113,8 @@ MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nopass
 # (archlinux-dev archlinux-dvd archlinux-32 archlinux-steam archlinux-steamos)
 OPTS := 
 
-# Define
+# Define the number of CPU threads for vulkan shader processing (for steam):
+SHADER_THREADS := 4
 
 #############################
 ### Package Configuration ###
@@ -191,6 +192,9 @@ PKGS_STEAM := steam ttf-liberation gamemode gamescope
 
 # Define WINE (gaming) packages (also for steam):
 PKGS_WINE := wine
+
+# Define the number of CPU threads for vulkan shader processing (for steam):
+SHADER_THREADS := 4
 
 # Define LED control packages:
 PKGS_LED := openrgb i2c-tools
