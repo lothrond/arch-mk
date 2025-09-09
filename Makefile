@@ -102,7 +102,7 @@ archlinux-32: multilib $(GRAPHICS)-32
 archlinux-steam: steam-pkgs wine-pkgs
 
 ## Make additional (steam) gaming performance configurations:
-archlinux-gaming: game-perf dri-lat led=pkgs
+archlinux-gaming: game-perf dri-lat
 
 ## Make SteamOS session configuration:
 archlinux-steamos: steamos-session
