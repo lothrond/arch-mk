@@ -91,6 +91,7 @@ Additional make options:
 	make archlinux-steam
 	make archlinux-gaming
 	make archlinux-steamos
+	make archlinux-open
 
 Other make options:
 
