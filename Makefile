@@ -97,7 +97,7 @@ archlinux-dvd: dvd-br
 archlinux-32: multilib $(GRAPHICS)-32
 
 ## Make steam client (and WINE):
-archlinux-steam: steam-pkgs wine-pkgs vulkan-shader-proc
+archlinux-steam: steam-pkgs wine-pkgs
 
 ## Make additional (steam) gaming performance configurations:
 archlinux-gaming: game-perf dri-lat led=pkgs
@@ -618,7 +618,7 @@ wine-pkgs:
 .PHONY: vulkan-shader-proc
 vulkan-shader-proc:
 	@echo -e "\n* Making vulkan shader processing faster ..."
-	@touch .steam/steam/steam_dev.cfg
+	@touch /home/$(USER)/.steam/steam/steam_dev.cfg
 	@echo "@ShaderBackgroundProcessingThreads $(SHADER_THREADS)" > .steam/steam/steam_dev.cfg
 	@echo "unShaderBackgroundProcessingThreads $(SHADER_THREADS)" >> .steam/steam/steam_dev.cfg
 

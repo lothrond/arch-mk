@@ -128,9 +128,6 @@ And a complete SteamOS session with:
 
 	make archlinux-steamos
 
-For processing vulkan shaders faster, edit the `SHADER_THREADS` variable in `config.mk`.
-Replace `4` with the number of threads your CPU supports.
-
 See `make` or `make help` for more information and additional make options.
 
 ### Media playback
