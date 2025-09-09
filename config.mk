@@ -81,7 +81,10 @@ NVIDIA_KMOD := nvidia nvidia_modeset nvidia_uvm nvidia_drm
 NVIDIA_DRIVER := nvidia
 
 # Define linux kernel:
-KERNEL := linux-lts linux-lts-headers linux-firmware
+KERNEL := linux-lts linux-lts-headers
+
+# Define linux kernel firmware:
+KERNEL_FW := linux-firmware-nvidia linux-firmware-intel linux-firmware-atheros
 
 # Define CPU microcode:
 #MICROCODE := amd-ucode
@@ -110,7 +113,7 @@ BLKID := `blkid -s UUID | grep $(DRIVE)3 | cut -d '"' -f 2 | cut -d '"' -f 1`
 MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nopass
 
 # Define additional make operations:
-# (archlinux-dev archlinux-dvd archlinux-32 archlinux-steam archlinux-gaming archlinux-steamos)
+# (archlinux-dev archlinux-dvd archlinux-32 archlinux-steam archlinux-gaming archlinux-steamos archlinux-open)
 OPTS := 
 
 # Define the number of CPU threads for vulkan shader processing (for steam):
@@ -122,7 +125,7 @@ SHADER_THREADS := 4
 
 # Define base system packages.
 # (This includes the kernel and kernel firmware.)
-PKGS_BASE := base $(KERNEL) $(MICROCODE) $(BOOTLOADER)
+PKGS_BASE := base $(KERNEL) $(KERNEL_FW) $(MICROCODE) $(BOOTLOADER)
 
 # Define base system documentation:
 PKGS_DOCS := man-db man-pages texinfo
@@ -173,7 +176,7 @@ PKGS_VULKAN := vkd3d
 PKGS_VULKAN_32 := lib32-vkd3d
 
 # Define KDE Plasma base desktop packages:
-PKGS_PLASMA_DESKTOP := plasma plasma-pa plasma-nm sddm power-profiles-daemon kdeconnect unclutter
+PKGS_PLASMA_DESKTOP := plasma plasma-pa plasma-nm sddm power-profiles-daemon kdeconnect
 
 # Define KDE Plasma base desktop application packages:
 PKGS_PLASMA_APPS := konsole kdialog kgpg kdf sweeper
@@ -182,7 +185,7 @@ PKGS_PLASMA_APPS := konsole kdialog kgpg kdf sweeper
 PKGS_PLASMA_FILES := dolphin ark ffmpegthumbs kdegraphics-thumbnailers kio-admin xdg-desktop-portal-kde
 
 # Define GNOME base desktop packages:
-PKGS_GNOME_DESKTOP := gnome gnome-flashback networkmanager power-profiles-daemon unclutter
+PKGS_GNOME_DESKTOP := gnome gnome-flashback networkmanager power-profiles-daemon
 
 # Define GNOME desktop application packages:
 PKGS_GNOME_APPS := gnome-extra firewalld
@@ -196,14 +199,11 @@ PKGS_STEAM := steam ttf-liberation gamemode gamescope
 # Define WINE (gaming) packages (also for steam):
 PKGS_WINE := wine
 
-# Define the number of CPU threads for vulkan shader processing (for steam):
-SHADER_THREADS := 4
-
 # Define LED control packages:
 PKGS_LED := openrgb i2c-tools
 
 # Define CLI development tools:
-PKGS_DEV := base-devel linux-headers htop strace lm_sensors tree vim
+PKGS_DEV := base-devel htop strace lm_sensors tree vim
 
 # Define CLI development file management tools (ranger):
 PKGS_RNGR := atool libcaca mediainfo highlight ranger
