@@ -108,7 +108,7 @@ archlinux-gaming: game-perf dri-lat
 archlinux-steamos: steamos-session
 
 ## Make system with open sshd ports.
-archlinux-ssh: open-ssh
+archlinux-open: open-ssh
 
 ## Clean/Wipe device disk drive.
 clean: archlinux-clean
@@ -690,7 +690,7 @@ game-perf:
 # Reduce DRI latency
 .PHONY: dri-lat
 dri-lat:
-	@echo =e "\n* Reducing DRI latency ..."
+	@echo -e "\n* Reducing DRI latency ..."
 	@touch /etc/drirc
 	@echo '<driconf>' > /etc/drirc
 	@echo '	<device>' >> /etc/drirc
