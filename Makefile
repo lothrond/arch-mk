@@ -43,6 +43,8 @@ help:
 	@echo "    archlinux-steam     -  Install Arch Linux steam gaming packages."
 	@echo "    archlinux-steamos   -  Configure a SteamOS desktop session."
 	@echo "    archlinux-gaming    -  Configure additional performance for gaming."
+	@echo "	   archlinux-dev       -  Install additional development packages."
+	@echo "    archlinux-open      -  Allow remote development."
 	@echo
 	@echo "[OTHER-OPTIONS]:"
 	@echo
@@ -104,6 +106,9 @@ archlinux-gaming: game-perf dri-lat led=pkgs
 
 ## Make SteamOS session configuration:
 archlinux-steamos: steamos-session
+
+## Make system with open sshd ports.
+archlinux-ssh: open-ssh
 
 ## Clean/Wipe device disk drive.
 clean: archlinux-clean
@@ -295,6 +300,12 @@ zsh-pkgs:
 ranger-pkgs:
 	@echo -e "\n* Installing ranger packages ..."
 	@pacman -S $(PKGS_RNGR) --noconfirm
+
+# Enable remote development.
+.PHONY: open-ssh
+open-ssh:
+	@echo -e "\n* Configuring remote development ..."
+	@systemctl enable sshd
 
 ##################################
 ## CONFIGURE SILENT BOOTLOADER: ##
