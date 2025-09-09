@@ -517,8 +517,10 @@ plasma:
 	@echo -e "\n* Making KDE plasma desktop environment packages ..."
 	@pacman -S $(PKGS_PLASMA_DESKTOP) $(PKGS_PLASMA_APPS) $(PKGS_PLASMA_FILES) --noconfirm
 	@systemctl enable sddm
-	@systemctl enable NetworkManager
 	@systemctl enable power-profiles-daemon
+	@systemctl enable NetworkManager
+	@systemctl disable iwd || echo "iwd not active ..."
+	@systemctl stop iwd || echo "iwd not running ..."
 
 # Install GNOME desktop.
 .PHONY: gnome
