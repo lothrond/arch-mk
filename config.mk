@@ -45,7 +45,7 @@ PLASMA_SESSION := plasma
 
 # Define graphics card:
 #GRAPHICS := amd-graphics
-#GRAPHICS := intel
+#GRAPHICS := intel-graphics
 GRAPHICS := nvidia
 
 # Define X or Wayland installation.
@@ -77,8 +77,8 @@ NVIDIA_BOARD := Nvidia Geforce GTX 970
 NVIDIA_KMOD := nvidia nvidia_modeset nvidia_uvm nvidia_drm
 
 # Define nvidia graphics driver packages:
-#NVIDIA_DRIVER := nvidia-dkms
-NVIDIA_DRIVER := nvidia
+# (nvidia nvidia-dkms nvidia-lts)
+NVIDIA_DRIVER := nvidia-lts
 
 # Define linux kernel:
 KERNEL := linux-lts linux-lts-headers
