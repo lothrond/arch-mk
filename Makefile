@@ -531,7 +531,7 @@ gnome:
 
 # Configure automatic login for KDE Plasma display manager.
 # Also, configure no password entry.
-.PHONY: plasma-nologin
+.PHONY: plasma-nopass
 plasma-nopass:
 	@echo -e "\n* Making automatic login for KDE display manager service ..."
 	@echo -e "[Autologin]" > /etc/sddm.conf
@@ -547,7 +547,7 @@ plasma-nopass:
 # Configure automatic login for GNOME display manager.
 # Also, configure no password entry.
 GNOMEDM := /etc/gdm/nologin.conf
-.PHONY: gnome-nologin
+.PHONY: gnome-nopass
 gnome-nopass:
 	@echo -e "\n* Making automatic login for GNOME display manger service ..."
 	@echo -e "# GDM config" > $(GNOMEDM)
