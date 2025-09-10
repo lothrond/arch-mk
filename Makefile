@@ -105,7 +105,7 @@ archlinux-steam: steam-pkgs wine-pkgs
 archlinux-gaming: game-perf dri-lat
 
 ## Make SteamOS session configuration:
-archlinux-steamos: steamos-session
+archlinux-steamos: steamos-session steamos-$(DESKTOP)
 
 ## Make system with open sshd ports.
 archlinux-open: open-ssh
@@ -391,7 +391,7 @@ grub-silent-hook:
 	@echo "Description = Configure GRUB bootloader configuration file after upgrades..." >> /etc/pacman.d/hooks/grub-silent.hook
 	@echo "Depends = grub" >> /etc/pacman.d/hooks/grub-silent.hook
 	@echo "When = PostTransaction" >> /etc/pacman.d/hooks/grub-silent.hook
-	@echo "Exec = /usr/bin/sed -i '/^echo\b//d' /boot/grub/grub.cfg" >> /etc/pacman.d/hooks/grub-silent.hook
+	@echo "Exec = /usr/bin/sed -i '/^echo/d' /boot/grub/grub.cfg" >> /etc/pacman.d/hooks/grub-silent.hook
 
 # Configure a silent GRUB bootloader.
 .PHONY: grub-silent
@@ -530,6 +530,7 @@ plasma:
 	@systemctl enable sddm
 	@systemctl enable power-profiles-daemon
 	@systemctl enable NetworkManager
+	@systemctl enable wpa_supplicant
 	@systemctl disable iwd || echo "iwd not active ..."
 	@systemctl stop iwd || echo "iwd not running ..."
 
@@ -540,7 +541,10 @@ gnome:
 	@pacman -S $(PKGS_GNOME_DESKTOP) $(PKGS_GNOME_APPS) --noconfirm
 	@systemctl enable gdm
 	@systemctl enable NetworkManager
+	@systemctl enable wpa_supplicant
 	@systemctl enable power-profiles-daemon
+	@systemctl disable iwd || echo "iwd not active ..."
+	@systemctl stop iwd || echo "iwd not running ..."
 
 # Configure automatic login for KDE Plasma display manager.
 # Also, configure no password entry.
@@ -646,8 +650,18 @@ steamos-session:
 	@echo "[Desktop Entry]" > /usr/share/wayland-sessions/steamos.desktop
 	@echo "Name=Steam OS Mode" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Comment=Start Steam in Big Picture Mode" >> /usr/share/wayland-sessions/steamos.desktop
-	@echo "Exec=/usr/bin/gamescope --expose-wayland --rt-notrace -e -- /usr/bin/steam -tenfoot" >> /usr/share/wayland-sessions/steamos.desktop
+	@echo "Exec=/usr/bin/gamescope --expose-wayland -e -- /usr/bin/steam -tenfoot" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Type=Application" >> /usr/share/wayland-sessions/steamos.desktop
+
+PHONY: steamos-plasma
+steamos-plasma:
+	@echo -e "\n [edit /etc/sddm.conf later and change Session to steamos]"
+	@echo -e "[Only do this after you run steam and login first]"
+	@echo -e "(This is done to allow adding multiple steam drives, etc.)"
+
+# Create automatic login for steamos destop session on GNOME.
+.PHONY: steamos-gnome
+steamos-gnome:
 	@touch /var/lib/AccountsService/users/$(USER)
 	@echo "[User]" > /var/lib/AccountsService/users/$(USER)
 	@echo "XSession=steamos" >> /var/lib/AccountsService/users/$(USER)

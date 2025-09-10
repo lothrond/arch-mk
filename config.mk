@@ -131,7 +131,7 @@ PKGS_BASE := base $(KERNEL) $(KERNEL_FW) $(MICROCODE) $(BOOTLOADER)
 PKGS_DOCS := man-db man-pages texinfo
 
 # Define base system tools:
-PKGS_TOOLS := dosfstools e2fsprogs efibootmgr git make nano sudo unzip wget
+PKGS_TOOLS := dosfstools e2fsprogs efibootmgr git make ntfs-3g nano sudo unzip wget
 
 # Define base system networking packages:
 PKGS_NET := dhcpcd iwd
@@ -167,7 +167,7 @@ PKGS_X := xorg xdg-desktop-portal
 PKGS_NVIDIA_GRAPHICS := $(NVIDIA_DRIVER) nvidia-lts nvidia-utils nvidia-settings
 
 # Define Nvidia graphics driver 32 bit library support:
-PKGS_NVIDIA_GRAPHICS_32 := lib32-nvidia-utils
+PKGS_NVIDIA_GRAPHICS_32 := lib32-nvidia-utils libvdpau-va-gl
 
 # Define Vulkan (gaming) packages:
 PKGS_VULKAN := vkd3d

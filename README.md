@@ -87,10 +87,7 @@ This will run:
 
 Additional make options:
 
-	make archlinux-32
-	make archlinux-steam
-	make archlinux-gaming
-	make archlinux-steamos
+	make archlinux-media
 	make archlinux-open
 
 Other make options:
@@ -116,18 +113,6 @@ Make the base system by running:
 	make archlinux
 
 you will be prompted for a root and desktop user password.
-
-### Steam gaming
-
-(Editing the `OPTS` variable in `config.mk` before making the base system can also be done instead.)
-
-Make a steam gaming setup by then running:
-
-	make archlinux-32 archlinux-steam archlinux-gaming
-
-And a complete SteamOS session with:
-
-	make archlinux-steamos
 
 See `make` or `make help` for more information and additional make options.
 
