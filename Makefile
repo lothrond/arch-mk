@@ -105,7 +105,7 @@ archlinux-steam: steam-pkgs wine-pkgs
 archlinux-gaming: game-perf dri-lat
 
 ## Make SteamOS session configuration:
-archlinux-steamos: steamos-session steamos-$(DESKTOP)
+archlinux-steamos: gamescope-fx steamos-session steamos-$(DESKTOP)
 
 ## Make system with open sshd ports.
 archlinux-open: open-ssh
@@ -643,6 +643,22 @@ vulkan-shader-proc:
 ## STEAMOS (WIP): ##
 ####################
 
+# Create custom gamescope wrapper ..."
+.PHONY: gamescope-fx
+gamescope-fx:
+	@echo -e "\n Making gamescope-fx ..."
+	@touch /usr/bin/gamescope-fx
+	@echo '#!/bin/bash' > /usr/bin/gamescope-fx
+	@echo 'set -e' >> /usr/bin/gamescope-fx
+	@echo 'export INTEL_DEBUG="--rt-notrace"' >> /usr/bin/gamescope-fx
+	@echo 'export mesa_glthread=true' >> /usr/bin/gamescope-fx
+	@echo 'export ENABLE_GAMESCOPE_WSI=0' >> /usr/bin/gamescope-fx
+	@echo 'export SDL_MINIMIZE_ON_FOCUS_LOSS=0' >> /usr/bin/gamescope-fx
+	@echo 'DISRES=$(STEAMOS_DISPLAY)' >>/usr/bin/gamescope-fx
+	@echo 'SET_OPTIONS="$(STEAMOS_GAMESCOPE)"' >> /usr/bin/gamescope-fx
+	@echo 'SET_DISPLAY="-f -h ${DISRES} -H ${DISRES}"' >> /usr/bin/gamescope-fx
+	@echo 'gamescope ${SET_OPTIONS} ${SET_DISPLAY} "$@"' >> /usr/bin/gamescope-fx
+
 # Create SteamOS desktop session (WIP).
 .PHONY: steamos-session
 steamos-session:
@@ -650,7 +666,7 @@ steamos-session:
 	@echo "[Desktop Entry]" > /usr/share/wayland-sessions/steamos.desktop
 	@echo "Name=Steam OS Mode" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Comment=Start Steam in Big Picture Mode" >> /usr/share/wayland-sessions/steamos.desktop
-	@echo "Exec=/usr/bin/gamescope --expose-wayland -e -- /usr/bin/steam -tenfoot" >> /usr/share/wayland-sessions/steamos.desktop
+	@echo "Exec=/usr/bin/gamescope --expose-wayland -e -- /usr/bin/steam $(STEAMOS_CLIENTCMD)" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Type=Application" >> /usr/share/wayland-sessions/steamos.desktop
 
 PHONY: steamos-plasma

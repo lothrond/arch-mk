@@ -116,6 +116,21 @@ MAKEOPTS := archlinux-system archlinux-desktop archlinux-silent archlinux-nopass
 # (archlinux-dev archlinux-dvd archlinux-32 archlinux-steam archlinux-gaming archlinux-steamos archlinux-open)
 OPTS := 
 
+#############################
+### SteamOS configuration ###
+#############################
+
+# Define resolution for compositor (gamescope):
+# (Only the width needs defined)
+STEAMOS_DISPLAY := 1080
+
+# Define SteamOS compositor (gamescope) command line:
+STEAMOS_GAMESCOPE := --expose-wayland --hdr-enabled --rt --force-composition --synchonous-x11 
+
+# Define SteamOS client (steam) command line:
+STEAMOS_CLIENTCMD := -steamdeck -cef-force-gpu
+
+# (Currently not in use, with later plans?)
 # Define the number of CPU threads for vulkan shader processing (for steam):
 SHADER_THREADS := 4
 
