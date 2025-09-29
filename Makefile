@@ -654,10 +654,10 @@ gamescope-fx:
 	@echo 'export mesa_glthread=true' >> /usr/bin/gamescope-fx
 	@echo 'export ENABLE_GAMESCOPE_WSI=0' >> /usr/bin/gamescope-fx
 	@echo 'export SDL_MINIMIZE_ON_FOCUS_LOSS=0' >> /usr/bin/gamescope-fx
-	@echo 'DISRES=$(STEAMOS_DISPLAY)' >>/usr/bin/gamescope-fx
+	@echo "DISRES=$(STEAMOS_DISPLAY)" >>/usr/bin/gamescope-fx
 	@echo 'SET_OPTIONS="$(STEAMOS_GAMESCOPE)"' >> /usr/bin/gamescope-fx
 	@echo 'SET_DISPLAY="-f -h ${DISRES} -H ${DISRES}"' >> /usr/bin/gamescope-fx
-	@echo -e "gamescope \${SET_OPTIONS} \${SET_DISPLAY} \"\$@\"" >> /usr/bin/gamescope-fx
+	@echo "gamescope \${SET_OPTIONS} \${SET_DISPLAY} \"\$@\"" >> /usr/bin/gamescope-fx
 	@chmod 755 /usr/bin/gamescope-fx
 
 # Create SteamOS desktop session (WIP).
