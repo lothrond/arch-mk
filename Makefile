@@ -648,16 +648,16 @@ vulkan-shader-proc:
 gamescope-fx:
 	@echo -e "\n* Making gamescope-fx ..."
 	@touch /usr/bin/gamescope-fx
-	@echo '#!/bin/bash' > /usr/bin/gamescope-fx
-	@echo 'set -e' >> /usr/bin/gamescope-fx
-	@echo 'export INTEL_DEBUG="--rt-notrace"' >> /usr/bin/gamescope-fx
-	@echo 'export mesa_glthread=true' >> /usr/bin/gamescope-fx
-	@echo 'export ENABLE_GAMESCOPE_WSI=0' >> /usr/bin/gamescope-fx
-	@echo 'export SDL_MINIMIZE_ON_FOCUS_LOSS=0' >> /usr/bin/gamescope-fx
-	@echo "DISRES=$(STEAMOS_DISPLAY)" >>/usr/bin/gamescope-fx
-	@echo 'SET_OPTIONS="$(STEAMOS_GAMESCOPE)"' >> /usr/bin/gamescope-fx
-	@echo 'SET_DISPLAY="-f -h ${DISRES} -H ${DISRES}"' >> /usr/bin/gamescope-fx
-	@echo 'gamescope ${SET_OPTIONS} ${SET_DISPLAY} "$@"' >> /usr/bin/gamescope-fx
+	@echo -e '#!/bin/bash' > /usr/bin/gamescope-fx
+	@echo -e 'set -e' >> /usr/bin/gamescope-fx
+	@echo -e 'export INTEL_DEBUG="--rt-notrace"' >> /usr/bin/gamescope-fx
+	@echo -e 'export mesa_glthread=true' >> /usr/bin/gamescope-fx
+	@echo -e 'export ENABLE_GAMESCOPE_WSI=0' >> /usr/bin/gamescope-fx
+	@echo -e 'export SDL_MINIMIZE_ON_FOCUS_LOSS=0' >> /usr/bin/gamescope-fx
+	@echo -e"DISRES=$(STEAMOS_DISPLAY)" >>/usr/bin/gamescope-fx
+	@echo -e 'SET_OPTIONS="$(STEAMOS_GAMESCOPE)"' >> /usr/bin/gamescope-fx
+	@echo -e "SET_DISPLAY=\"-f -h ${DISRES} -H ${DISRES}\"" >> /usr/bin/gamescope-fx
+	@echo -e 'gamescope $(GAMESCOPE_CMD)' >> /usr/bin/gamescope-fx
 	@chmod 755 /usr/bin/gamescope-fx
 
 # Create SteamOS desktop session (WIP).

@@ -20,7 +20,7 @@
 HOSTNAME := fathership
 
 # Define user name:
-USER := steam
+USER := deck
 
 # Define base system timezone:
 TZ := America/New_York
@@ -129,6 +129,10 @@ STEAMOS_GAMESCOPE := --expose-wayland --hdr-enabled --rt --force-composition --s
 
 # Define SteamOS client (steam) command line:
 STEAMOS_CLIENTCMD := -steamdeck -cef-force-gpu
+
+# Define gamescope-fx command line:
+# (Needs to be set seperate. Don't change.)
+GAMESCOPE_CMD := ${SET_DISPLAY} ${SET_OPTIONS} "$@"
 
 # (Currently not in use, with later plans?)
 # Define the number of CPU threads for vulkan shader processing (for steam):
