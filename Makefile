@@ -657,7 +657,8 @@ gamescope-fx:
 	@echo 'DISRES=$(STEAMOS_DISPLAY)' >>/usr/bin/gamescope-fx
 	@echo 'SET_OPTIONS="$(STEAMOS_GAMESCOPE)"' >> /usr/bin/gamescope-fx
 	@echo 'SET_DISPLAY="-f -h ${DISRES} -H ${DISRES}"' >> /usr/bin/gamescope-fx
-	@echo 'gamescope ${SET_OPTIONS} ${SET_DISPLAY} "$@"' >> /usr/bin/gamescope-fx
+	@echo 'gamescope \${SET_OPTIONS} \${SET_DISPLAY} "\$@"' >> /usr/bin/gamescope-fx
+	@chmod 755 /usr/bin/gamescope-fx
 
 # Create SteamOS desktop session (WIP).
 .PHONY: steamos-session
@@ -666,7 +667,7 @@ steamos-session:
 	@echo "[Desktop Entry]" > /usr/share/wayland-sessions/steamos.desktop
 	@echo "Name=Steam OS Mode" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Comment=Start Steam in Big Picture Mode" >> /usr/share/wayland-sessions/steamos.desktop
-	@echo "Exec=/usr/bin/gamescope --expose-wayland -e -- /usr/bin/steam $(STEAMOS_CLIENTCMD)" >> /usr/share/wayland-sessions/steamos.desktop
+	@echo "Exec=/usr/bin/gamescope-fx -e -- /usr/bin/steam $(STEAMOS_CLIENTCMD)" >> /usr/share/wayland-sessions/steamos.desktop
 	@echo "Type=Application" >> /usr/share/wayland-sessions/steamos.desktop
 
 PHONY: steamos-plasma
