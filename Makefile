@@ -505,7 +505,7 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 # Create desktop user.
 .PHONY: user
 user:
-	@echo -e "\n* Making desktop user account ..."
+	@echo -e "\n* Making user account ($USER) ..."
 	@useradd -c "" -m -G audio,input,video,wheel $(USER)
 	@passwd $(USER)
 
@@ -646,7 +646,7 @@ vulkan-shader-proc:
 # Create custom gamescope wrapper ..."
 .PHONY: gamescope-fx
 gamescope-fx:
-	@echo -e "\n Making gamescope-fx ..."
+	@echo -e "\n* Making gamescope-fx ..."
 	@touch /usr/bin/gamescope-fx
 	@echo '#!/bin/bash' > /usr/bin/gamescope-fx
 	@echo 'set -e' >> /usr/bin/gamescope-fx
