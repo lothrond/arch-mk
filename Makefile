@@ -505,7 +505,7 @@ nvidia-config: nvidia-xconfig nvidia-tearing nvidia-pat nvidia-kms
 # Create desktop user.
 .PHONY: user
 user:
-	@echo -e "\n* Making user account ($USER) ..."
+	@echo -e "\n* Making user account ($(USER)) ..."
 	@useradd -c "" -m -G audio,input,video,wheel $(USER)
 	@passwd $(USER)
 
