@@ -318,9 +318,9 @@ grub-silent-config:
 	@cp /etc/default/grub /root
 	@echo "GRUB_DEFAULT=0" > /etc/default/grub
 	@echo "GRUB_TIMEOUT=0" >> /etc/default/grub
-	@echo 'GRUB_RECORDFAIL_TIMEOUT=$GRUB_TIMEOUT' >> /etc/default/grub
+	@echo -e "GRUB_RECORDFAIL_TIMEOUT=\$GRUB_TIMEOUT" >> /etc/default/grub
 	@echo -e "GRUB_CMDLINE_LINUX=\"$(BOOT_OPTS)\"" >> /etc/default/grub
-	@echo -e 'GRUB_CMDLINE_LINUX_DEFAULT=$GRUB_CMDLINE_LINUX' >> /etc/default/grub
+	@echo -e "GRUB_CMDLINE_LINUX_DEFAULT=\$GRUB_CMDLINE_LINUX" >> /etc/default/grub
 	@echo "GRUB_DISABLE_RECOVERY=true" >> /etc/default/grub
 	@echo "GRUB_GFXPAYLOAD_LINUX=keep" >> /etc/default/grub
 	@echo "GRUB_GFXMODE=auto" >> /etc/default/grub
@@ -657,7 +657,7 @@ gamescope-fx:
 	@echo 'DISRES=$(STEAMOS_DISPLAY)' >>/usr/bin/gamescope-fx
 	@echo 'SET_OPTIONS="$(STEAMOS_GAMESCOPE)"' >> /usr/bin/gamescope-fx
 	@echo 'SET_DISPLAY="-f -h ${DISRES} -H ${DISRES}"' >> /usr/bin/gamescope-fx
-	@echo 'gamescope \${SET_OPTIONS} \${SET_DISPLAY} "\$@"' >> /usr/bin/gamescope-fx
+	@echo -e "gamescope \${SET_OPTIONS} \${SET_DISPLAY} \"\$@\"" >> /usr/bin/gamescope-fx
 	@chmod 755 /usr/bin/gamescope-fx
 
 # Create SteamOS desktop session (WIP).
