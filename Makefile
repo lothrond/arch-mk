@@ -657,7 +657,7 @@ gamescope-fx:
 	@echo "DISRES=$(STEAMOS_DISPLAY)" >>/usr/bin/gamescope-fx
 	@echo 'SET_OPTIONS="$(STEAMOS_GAMESCOPE)"' >> /usr/bin/gamescope-fx
 	@echo 'SET_DISPLAY="-f -h ${DISRES} -H ${DISRES}"' >> /usr/bin/gamescope-fx
-	@echo "gamescope \${SET_OPTIONS} \${SET_DISPLAY} \"\$@\"" >> /usr/bin/gamescope-fx
+	@echo 'gamescope ${SET_OPTIONS} ${SET_DISPLAY} "$@"' >> /usr/bin/gamescope-fx
 	@chmod 755 /usr/bin/gamescope-fx
 
 # Create SteamOS desktop session (WIP).
