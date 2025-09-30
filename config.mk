@@ -132,7 +132,7 @@ STEAMOS_CLIENTCMD := -steamdeck -cef-force-gpu
 
 # Define gamescope-fx command line:
 # (Needs to be set seperate. Don't change.)
-GAMESCOPE_CMD := ${SET_DISPLAY} ${SET_OPTIONS} "$@"
+GAMESCOPE_CMD := $(STEAMOS_GAMESCOPE) -h $(STEAMOS_DISPLAY) -H $(STEAMOS_DISPLAY)
 
 # (Currently not in use, with later plans?)
 # Define the number of CPU threads for vulkan shader processing (for steam):
