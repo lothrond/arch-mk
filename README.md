@@ -118,7 +118,7 @@ See `make` or `make help` for more information and additional make options.
 
 ### Media playback
 
-The user will not be able to dycrypt encrypted CD/DVD/Blueray disks,
+The user will not be able to decrypt encrypted CD/DVD/Blueray disks,
 and will need to supply their own `KEYDB.cfg` file.
 
 #### Copyright (C) 2025, lothrond <lothrond AT proton DOT me>
